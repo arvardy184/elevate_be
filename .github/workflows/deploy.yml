@@ -36,9 +36,14 @@ jobs:
           # Create the .env file from GitHub Secret
           echo "${{ secrets.ENV }}" > .env
           chmod 600 .env  # Secure the .env file
+          
+          # Build the application
+          rm -rf node_modules package-lock.json
 
           # Install dependencies
           npm install
+
+          npm rebuild bcrypt --update-binary
 
           # Restart the application using PM2
           pm2 restart elevate_be || pm2 start app.js --name elevate_be
