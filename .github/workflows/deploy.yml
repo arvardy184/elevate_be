@@ -41,7 +41,7 @@ jobs:
           npm install
 
           # Restart the application using PM2
-          pm2 restart elevate_be || pm2 start app.js --name elevate_be
+          pm2 start app.js --name elevate_be
 
           # Save PM2 state
           pm2 save
