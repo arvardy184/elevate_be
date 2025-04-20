@@ -1,6 +1,6 @@
 
 exports.getProfile = (req, res) => {
-    // req.user di-set di middleware JWT
+    // req.user di-set di middleware JWTaaa
     const user = req.user; 
     return res.status(200).json({
       message: 'Profile user berhasil diakses!',
