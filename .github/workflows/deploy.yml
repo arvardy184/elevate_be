@@ -31,7 +31,7 @@ jobs:
           # Pull the latest code
           git reset --hard HEAD
           git clean -fd
-          git pull origin dev
+          git pull origin main
 
           # Create the .env file from GitHub Secret
           echo "${{ secrets.ENV }}" > .env
@@ -40,17 +40,8 @@ jobs:
           # Install dependencies
           npm install
 
-          # Apply patches
-          npm run postinstall
-
-          # Build the application
-          npm run build
-
-          # Seed database
-          npm run seed
-
           # Restart the application using PM2
-          pm2 restart elevate-be || pm2 start dist/main.js --name graphql-be
+          pm2 restart elevate_be || pm2 start app.js --name elevate_be
 
           # Save PM2 state
           pm2 save
