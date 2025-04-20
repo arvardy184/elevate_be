@@ -1,21 +1,16 @@
-// app.js
-
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const db = require('./config/database');
 
 // Routes
-const authRoutes = require('./routes/auth.routes');
-const userRoutes = require('./routes/user.routes');
-
+const authRoutes = require('./routes/auth_routes');
+const userRoutes = require('./routes/user_routes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json()); // atau app.use(express.json());
+app.use(express.json());
 
 // Daftar routes
 app.use('/api/auth', authRoutes);

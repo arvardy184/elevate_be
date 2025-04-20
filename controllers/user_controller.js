@@ -1,4 +1,3 @@
-// controllers/user.controller.js
 
 exports.getProfile = (req, res) => {
     // req.user di-set di middleware JWT

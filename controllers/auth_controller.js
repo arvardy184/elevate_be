@@ -1,13 +1,12 @@
 // controllers/auth.controller.js
-
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const UserModel = require('../models/user.model');
+const UserModel = require('../models/user_model');
 
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
+    console.log('body', req.body);
     // Validasi sederhana
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -39,6 +38,7 @@ exports.register = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    
     return res.status(500).json({
       message: 'Terjadi kesalahan server.'
     });
@@ -79,7 +79,7 @@ exports.login = async (req, res) => {
         email: user.email
       },
       process.env.SECRET_KEY,
-      { expiresIn: '1h' } // token berlaku 1 jam, bisa diubah sesuai kebutuhan
+      { expiresIn: '1h' } 
     );
 
     return res.status(200).json({

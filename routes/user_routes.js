@@ -2,8 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const UserController = require('../controllers/user.controller');
-const { verifyToken } = require('../middleware/auth.middleware');
+const UserController = require('../controllers/user_controller');
+const { verifyToken } = require('../middleware/auth_middleware');
 
 // Route /api/user/profile hanya bisa diakses jika JWT valid
 router.get('/profile', verifyToken, UserController.getProfile);

@@ -50,7 +50,7 @@ jobs:
           npm run seed
 
           # Restart the application using PM2
-          pm2 restart graphql-test || pm2 start dist/main.js --name graphql-test
+          pm2 restart elevate-be || pm2 start dist/main.js --name graphql-be
 
           # Save PM2 state
           pm2 save
