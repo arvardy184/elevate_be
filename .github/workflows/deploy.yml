@@ -46,7 +46,10 @@ jobs:
           npm rebuild bcrypt --update-binary
 
           # Restart the application using PM2
-          pm2 restart elevate_be || pm2 start npm -- start --name elevate_be
+          pm2 delete elevate_be || true
+          pm2 start app.js --name elevate_be
+          pm2 save
+
 
           # Save PM2 state
           pm2 save
