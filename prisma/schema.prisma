@@ -1,0 +1,233 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int                 @id @default(autoincrement())
+  name           String
+  email          String              @unique
+  password       String
+  role           Role                @default(USER)
+  profilePicture String?
+  createdAt      DateTime            @default(now())
+  createdCourses Course[]            @relation("CreatedCourses")
+  assessments    Assessment[]
+  enrollments    Enrollment[]
+  progress       CourseProgress[]
+  payments       Payment[]
+  roadmaps       UserRoadmap[]
+  certificates   Certificate[]
+  cvReviews      CVReview[]
+  jobMatches     JobMatch[]
+  sessions       CounselingSession[] @relation("UserSession")
+  chatMessages   ChatMessage[]       @relation("SenderMessage")
+  counselor      Counselor?
+  notifications  Notification[]
+}
+
+enum Role {
+  USER
+  CONSULTANT
+}
+
+model Assessment {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          Int
+  studentStatus   String
+  majorStudy      String
+  currentSemester String
+  passionArea     String
+  achievementGoal String
+  createdAt       DateTime @default(now())
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  thumbnail   String
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  isPaid      Boolean
+  price       Int
+  createdBy   User     @relation("CreatedCourses", fields: [createdById], references: [id])
+
+  createdById    Int
+  createdAt      DateTime         @default(now())
+  payments       Payment[]
+  videos         CourseVideo[]
+  quizzes        Quiz[]
+  enrollments    Enrollment[]
+  progress       CourseProgress[]
+  certificates   Certificate[]
+  roadmapCourses RoadmapCourse[]
+}
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String
+  courses Course[]
+}
+
+model CourseVideo {
+  id       Int     @id @default(autoincrement())
+  course   Course  @relation(fields: [courseId], references: [id])
+  courseId Int
+  title    String
+  videoUrl String
+  isLocked Boolean
+  order    Int
+}
+
+model Quiz {
+  id            Int     @id @default(autoincrement())
+  course        Course  @relation(fields: [courseId], references: [id])
+  courseId      Int
+  question      String
+  options       Json
+  correctAnswer String
+  isLocked      Boolean
+}
+
+model Enrollment {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  course     Course   @relation(fields: [courseId], references: [id])
+  courseId   Int
+  enrolledAt DateTime @default(now())
+  isPaid     Boolean
+  paymentId  Int?
+  payment    Payment? @relation(fields: [paymentId], references: [id])
+}
+
+model CourseProgress {
+  id                  Int     @id @default(autoincrement())
+  user                User    @relation(fields: [userId], references: [id])
+  userId              Int
+  course              Course  @relation(fields: [courseId], references: [id])
+  courseId            Int
+  completedVideoCount Int
+  completedQuizCount  Int
+  isCompleted         Boolean
+}
+
+model Payment {
+  id         Int          @id @default(autoincrement())
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int
+  courseId   Int?
+  roadmapId  Int?
+  enrollment Enrollment[]
+  course     Course?      @relation(fields: [courseId], references: [id])
+  roadmap    Roadmap?     @relation(fields: [roadmapId], references: [id])
+  amount     Int
+  status     String
+  paidAt     DateTime
+}
+
+model Roadmap {
+  id             Int             @id @default(autoincrement())
+  name           String
+  description    String
+  rewardVoucher  String
+  roadmapCourses RoadmapCourse[]
+  userRoadmaps   UserRoadmap[]
+  payments       Payment[]
+}
+
+model RoadmapCourse {
+  id        Int     @id @default(autoincrement())
+  roadmap   Roadmap @relation(fields: [roadmapId], references: [id])
+  roadmapId Int
+  course    Course  @relation(fields: [courseId], references: [id])
+  courseId  Int
+}
+
+model UserRoadmap {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     Int
+  roadmap    Roadmap   @relation(fields: [roadmapId], references: [id])
+  roadmapId  Int
+  isUnlocked Boolean
+  unlockedAt DateTime?
+}
+
+model Certificate {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId Int
+  filePath String
+  issuedAt DateTime
+}
+
+model Counselor {
+  id             Int                 @id @default(autoincrement())
+  user           User                @relation(fields: [userId], references: [id])
+  userId         Int                 @unique
+  specialization String
+  bio            String
+  verified       Boolean
+  sessions       CounselingSession[] @relation("ConsultantSession")
+}
+
+model CounselingSession {
+  id          Int           @id @default(autoincrement())
+  user        User          @relation("UserSession", fields: [userId], references: [id])
+  userId      Int
+  counselor   Counselor     @relation("ConsultantSession", fields: [counselorId], references: [id])
+  counselorId Int
+  topic       String
+  question    String
+  response    String?
+  status      String
+  createdAt   DateTime      @default(now())
+  messages    ChatMessage[]
+}
+
+model ChatMessage {
+  id        Int               @id @default(autoincrement())
+  session   CounselingSession @relation(fields: [sessionId], references: [id])
+  sessionId Int
+  sender    User              @relation("SenderMessage", fields: [senderId], references: [id])
+  senderId  Int
+  message   String
+  sentAt    DateTime          @default(now())
+}
+
+model CVReview {
+  id           Int      @id @default(autoincrement())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int
+  cvFilePath   String
+  reviewResult String
+  createdAt    DateTime @default(now())
+}
+
+model JobMatch {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  cvFilePath  String
+  matchedJobs Json
+  generatedAt DateTime @default(now())
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
