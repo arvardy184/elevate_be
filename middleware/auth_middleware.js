@@ -1,17 +1,20 @@
 // middleware/auth.middleware.js..
 
 const jwt = require('jsonwebtoken');
+const prisma = require('../prisma/client');
 
 exports.verifyToken = (req, res, next) => {
-  const bearerHeader = req.headers['authorization'];
-  if (!bearerHeader) {
+  const authHeader = req.headers.authorization;
+
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({
       message: 'Akses ditolak! Token tidak tersedia.'
     });
   }
 
   // Format Authorization: Bearer <token>
-  const token = bearerHeader.split(' ')[1];
+  const token = authHeader.split(' ')[1];
 
   if (!token) {
     return res.status(401).json({
@@ -29,3 +32,15 @@ exports.verifyToken = (req, res, next) => {
     });
   }
 };
+
+exports.checkRole = (requiredRole) => {
+  return (req, res, next) => {
+    if(!req.user || req.user.role !== requiredRole) {
+      return res.status(403).json({
+        message: 'Akses ditolak! Role tidak sesuai.'
+      })
+   
+    }
+    next();
+  }
+}

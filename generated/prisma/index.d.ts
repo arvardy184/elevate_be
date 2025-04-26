@@ -2787,6 +2787,8 @@ export namespace Prisma {
     role: $Enums.Role | null
     profilePicture: string | null
     createdAt: Date | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2797,6 +2799,8 @@ export namespace Prisma {
     role: $Enums.Role | null
     profilePicture: string | null
     createdAt: Date | null
+    resetToken: string | null
+    resetTokenExpiry: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2807,6 +2811,8 @@ export namespace Prisma {
     role: number
     profilePicture: number
     createdAt: number
+    resetToken: number
+    resetTokenExpiry: number
     _all: number
   }
 
@@ -2827,6 +2833,8 @@ export namespace Prisma {
     role?: true
     profilePicture?: true
     createdAt?: true
+    resetToken?: true
+    resetTokenExpiry?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2837,6 +2845,8 @@ export namespace Prisma {
     role?: true
     profilePicture?: true
     createdAt?: true
+    resetToken?: true
+    resetTokenExpiry?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2847,6 +2857,8 @@ export namespace Prisma {
     role?: true
     profilePicture?: true
     createdAt?: true
+    resetToken?: true
+    resetTokenExpiry?: true
     _all?: true
   }
 
@@ -2944,6 +2956,8 @@ export namespace Prisma {
     role: $Enums.Role
     profilePicture: string | null
     createdAt: Date
+    resetToken: string | null
+    resetTokenExpiry: Date | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2973,6 +2987,8 @@ export namespace Prisma {
     role?: boolean
     profilePicture?: boolean
     createdAt?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
     createdCourses?: boolean | User$createdCoursesArgs<ExtArgs>
     assessments?: boolean | User$assessmentsArgs<ExtArgs>
     enrollments?: boolean | User$enrollmentsArgs<ExtArgs>
@@ -2999,9 +3015,11 @@ export namespace Prisma {
     role?: boolean
     profilePicture?: boolean
     createdAt?: boolean
+    resetToken?: boolean
+    resetTokenExpiry?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "profilePicture" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "profilePicture" | "createdAt" | "resetToken" | "resetTokenExpiry", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdCourses?: boolean | User$createdCoursesArgs<ExtArgs>
     assessments?: boolean | User$assessmentsArgs<ExtArgs>
@@ -3044,6 +3062,8 @@ export namespace Prisma {
       role: $Enums.Role
       profilePicture: string | null
       createdAt: Date
+      resetToken: string | null
+      resetTokenExpiry: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3433,6 +3453,8 @@ export namespace Prisma {
     readonly role: FieldRef<"User", 'Role'>
     readonly profilePicture: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
+    readonly resetToken: FieldRef<"User", 'String'>
+    readonly resetTokenExpiry: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -22183,7 +22205,9 @@ export namespace Prisma {
     password: 'password',
     role: 'role',
     profilePicture: 'profilePicture',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    resetToken: 'resetToken',
+    resetTokenExpiry: 'resetTokenExpiry'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -22424,7 +22448,8 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     password: 'password',
-    profilePicture: 'profilePicture'
+    profilePicture: 'profilePicture',
+    resetToken: 'resetToken'
   };
 
   export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
@@ -22635,6 +22660,8 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     profilePicture?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdCourses?: CourseListRelationFilter
     assessments?: AssessmentListRelationFilter
     enrollments?: EnrollmentListRelationFilter
@@ -22658,6 +22685,8 @@ export namespace Prisma {
     role?: SortOrder
     profilePicture?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiry?: SortOrderInput | SortOrder
     createdCourses?: CourseOrderByRelationAggregateInput
     assessments?: AssessmentOrderByRelationAggregateInput
     enrollments?: EnrollmentOrderByRelationAggregateInput
@@ -22685,6 +22714,8 @@ export namespace Prisma {
     role?: EnumRoleFilter<"User"> | $Enums.Role
     profilePicture?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdCourses?: CourseListRelationFilter
     assessments?: AssessmentListRelationFilter
     enrollments?: EnrollmentListRelationFilter
@@ -22708,6 +22739,8 @@ export namespace Prisma {
     role?: SortOrder
     profilePicture?: SortOrderInput | SortOrder
     createdAt?: SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiry?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -22726,6 +22759,8 @@ export namespace Prisma {
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     profilePicture?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
   export type AssessmentWhereInput = {
@@ -23894,6 +23929,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -23917,6 +23954,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -23939,6 +23978,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -23962,6 +24003,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -23985,6 +24028,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -23994,6 +24039,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -24004,6 +24051,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type AssessmentCreateInput = {
@@ -25119,6 +25168,17 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type CourseListRelationFilter = {
     every?: CourseWhereInput
     some?: CourseWhereInput
@@ -25263,6 +25323,8 @@ export namespace Prisma {
     role?: SortOrder
     profilePicture?: SortOrder
     createdAt?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -25277,6 +25339,8 @@ export namespace Prisma {
     role?: SortOrder
     profilePicture?: SortOrder
     createdAt?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -25287,6 +25351,8 @@ export namespace Prisma {
     role?: SortOrder
     profilePicture?: SortOrder
     createdAt?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiry?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -25367,6 +25433,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -25944,17 +26024,6 @@ export namespace Prisma {
     courseId?: SortOrder
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type UserRoadmapCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -25989,20 +26058,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     roadmapId?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type CertificateOrderByRelevanceInput = {
@@ -26502,6 +26557,10 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type CourseUpdateManyWithoutCreatedByNestedInput = {
@@ -27612,10 +27671,6 @@ export namespace Prisma {
     connect?: RoadmapWhereUniqueInput
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type UserUpdateOneRequiredWithoutRoadmapsNestedInput = {
     create?: XOR<UserCreateWithoutRoadmapsInput, UserUncheckedCreateWithoutRoadmapsInput>
     connectOrCreate?: UserCreateOrConnectWithoutRoadmapsInput
@@ -27915,6 +27970,17 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -28013,6 +28079,20 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -28074,31 +28154,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type CourseCreateWithoutCreatedByInput = {
@@ -28814,6 +28869,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
     progress?: CourseProgressCreateNestedManyWithoutUserInput
@@ -28836,6 +28893,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
     progress?: CourseProgressUncheckedCreateNestedManyWithoutUserInput
@@ -28873,6 +28932,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
     progress?: CourseProgressUpdateManyWithoutUserNestedInput
@@ -28895,6 +28956,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
     progress?: CourseProgressUncheckedUpdateManyWithoutUserNestedInput
@@ -28930,6 +28993,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
     progress?: CourseProgressCreateNestedManyWithoutUserInput
@@ -28952,6 +29017,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
     progress?: CourseProgressUncheckedCreateNestedManyWithoutUserInput
@@ -29180,6 +29247,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
     progress?: CourseProgressUpdateManyWithoutUserNestedInput
@@ -29202,6 +29271,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
     progress?: CourseProgressUncheckedUpdateManyWithoutUserNestedInput
@@ -29601,6 +29672,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     progress?: CourseProgressCreateNestedManyWithoutUserInput
@@ -29623,6 +29696,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     progress?: CourseProgressUncheckedCreateNestedManyWithoutUserInput
@@ -29724,6 +29799,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     progress?: CourseProgressUpdateManyWithoutUserNestedInput
@@ -29746,6 +29823,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     progress?: CourseProgressUncheckedUpdateManyWithoutUserNestedInput
@@ -29843,6 +29922,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -29865,6 +29946,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -29942,6 +30025,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -29964,6 +30049,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -30031,6 +30118,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -30053,6 +30142,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -30177,6 +30268,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -30199,6 +30292,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -30565,6 +30660,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -30587,6 +30684,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -30646,6 +30745,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -30668,6 +30769,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -30717,6 +30820,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -30739,6 +30844,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -30816,6 +30923,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -30838,6 +30947,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -30905,6 +31016,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -30927,6 +31040,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -30995,6 +31110,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -31017,6 +31134,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -31054,6 +31173,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -31076,6 +31197,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -31156,6 +31279,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -31178,6 +31303,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -31267,6 +31394,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -31289,6 +31418,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -31358,6 +31489,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -31380,6 +31513,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -31401,6 +31536,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -31423,6 +31560,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -31460,6 +31599,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -31482,6 +31623,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -31503,6 +31646,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -31525,6 +31670,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -31562,6 +31709,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -31584,6 +31733,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput
@@ -31605,6 +31756,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentCreateNestedManyWithoutUserInput
@@ -31627,6 +31780,8 @@ export namespace Prisma {
     role?: $Enums.Role
     profilePicture?: string | null
     createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
     createdCourses?: CourseUncheckedCreateNestedManyWithoutCreatedByInput
     assessments?: AssessmentUncheckedCreateNestedManyWithoutUserInput
     enrollments?: EnrollmentUncheckedCreateNestedManyWithoutUserInput
@@ -31664,6 +31819,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUpdateManyWithoutUserNestedInput
@@ -31686,6 +31843,8 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdCourses?: CourseUncheckedUpdateManyWithoutCreatedByNestedInput
     assessments?: AssessmentUncheckedUpdateManyWithoutUserNestedInput
     enrollments?: EnrollmentUncheckedUpdateManyWithoutUserNestedInput

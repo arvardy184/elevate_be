@@ -124,7 +124,9 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   profilePicture: 'profilePicture',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  resetToken: 'resetToken',
+  resetTokenExpiry: 'resetTokenExpiry'
 };
 
 exports.Prisma.AssessmentScalarFieldEnum = {
@@ -299,7 +301,8 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
-  profilePicture: 'profilePicture'
+  profilePicture: 'profilePicture',
+  resetToken: 'resetToken'
 };
 
 exports.Prisma.AssessmentOrderByRelevanceFieldEnum = {

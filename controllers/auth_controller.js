@@ -2,6 +2,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user_model');
+const { sendOtpEmail } = require('../utils/mailer');
+const Prisma = require('../prisma/client');
 
 exports.register = async (req, res) => {
   try {
@@ -76,7 +78,8 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         id: user.id,
-        email: user.email
+        email: user.email,
+        role: user.role
       },
       process.env.SECRET_KEY,
       { expiresIn: '1h' } 
@@ -93,3 +96,84 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+//kirim otp
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try{
+    const user = await Prisma.user.findUnique({
+      where: {email}
+    });
+    if(!user){
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+
+    //generate otp (angka 6 digit)
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    //simpan otp ke db
+    await Prisma.user.update({
+      where: {email},
+      data: {
+        resetToken: otp,
+        resetTokenExpiry: new Date(Date.now() + 3600000) //1 jam
+      },
+    });
+      await sendOtpEmail(email, otp);
+    console.log('OTP untuk reset password dikirim ke email:', email + 'OTP: ' + otp);
+
+    return res.status(200).json({
+      message: 'OTP dikirim ke email'
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Terjadi kesalahan server.'
+    });
+  }
+}
+
+//reset password
+exports.resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  try{
+    const user = await Prisma.user.findUnique({
+      where: {email}
+    });
+
+    if(!user || user.resetToken !== otp || user.resetTokenExpiry < new Date()){
+      return res.status(400).json({
+        message: 'OTP tidak valid'
+      });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      await Prisma.user.update({
+        where: {email},
+        data: {
+          password: hashedPassword,
+          resetToken: null,
+          resetTokenExpiry: null
+        }
+      });
+
+      return res.status(200).json({
+        message: 'Password berhasil direset'
+      });
+    
+
+
+    }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Terjadi kesalahan server.'
+    });
+  }
+}
+
