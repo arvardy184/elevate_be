@@ -35,6 +35,8 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
+  
+
     return res.status(201).json({
       message: 'Registrasi berhasil!'
     });
@@ -85,9 +87,22 @@ exports.login = async (req, res) => {
       { expiresIn: '1h' } 
     );
 
+    const assesment = await Prisma.assessment.findFirst({
+      where: {
+        userId: user.id,
+      },
+    })
+
     return res.status(200).json({
       message: 'Login berhasil!',
-      token
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isAssesmentCompleted: !!assesment
+      }
     });
   } catch (error) {
     console.error(error);

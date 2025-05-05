@@ -1,5 +1,9 @@
 generator client {
   provider = "prisma-client-js"
+
+  output   = "../generated/prisma"
+
+
 }
 
 datasource db {
@@ -8,13 +12,18 @@ datasource db {
 }
 
 model User {
-  id               Int                 @id @default(autoincrement())
-  name             String
-  email            String              @unique
-  password         String
+  id        Int       @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  email     String    @unique
+  password  String
+  address   String?
+  gender    String?
+  birthDate DateTime?
   role             Role                @default(USER)
   profilePicture   String?
   createdAt        DateTime            @default(now())
+  quizSubmissions  QuizSubmission[]
   createdCourses   Course[]            @relation("CreatedCourses")
   assessments      Assessment[]
   enrollments      Enrollment[]
@@ -65,6 +74,7 @@ model Course {
 
   createdById    Int
   createdAt      DateTime         @default(now())
+  quizSubmission QuizSubmission[]
   payments       Payment[]
   videos         CourseVideo[]
   quizzes        Quiz[]
@@ -92,13 +102,14 @@ model CourseVideo {
 }
 
 model Quiz {
-  id            Int     @id @default(autoincrement())
-  course        Course  @relation(fields: [courseId], references: [id])
-  courseId      Int
-  question      String
-  options       Json
-  correctAnswer String
-  isLocked      Boolean
+  id             Int              @id @default(autoincrement())
+  course         Course           @relation(fields: [courseId], references: [id])
+  courseId       Int
+  question       String
+  options        Json
+  correctAnswer  String
+  isLocked       Boolean
+  quizSubmission QuizSubmission[]
 }
 
 model Enrollment {
@@ -122,6 +133,21 @@ model CourseProgress {
   completedVideoCount Int
   completedQuizCount  Int
   isCompleted         Boolean
+}
+
+model QuizSubmission {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  courseId       Int
+  quizId         Int
+  answers        Json // Jawaban yang diberikan oleh user
+  score          Int // Skor yang didapat
+  totalQuestions Int // Total jumlah soal
+  isPassed       Boolean // Apakah lulus atau tidak
+  createdAt      DateTime @default(now())
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
 }
 
 model Lesson {
@@ -179,7 +205,7 @@ model RoadmapCourse {
   roadmapId Int
   course    Course  @relation(fields: [courseId], references: [id])
   courseId  Int
-  order     Int  //menentukan urutan course dalam roadmap
+  order     Int //menentukan urutan course dalam roadmap
 }
 
 model UserRoadmap {
@@ -223,8 +249,8 @@ model CounselingSession {
   response    String?
   status      String
   createdAt   DateTime      @default(now())
-  rating Int?
-  feedback String?
+  rating      Int?
+  feedback    String?
   messages    ChatMessage[]
 }
 
@@ -243,7 +269,7 @@ model CVReview {
   user           User     @relation(fields: [userId], references: [id])
   userId         Int
   cvFilePath     String
-  cvVersion Int
+  cvVersion      Int
   reviewResult   String
   relevanceScore Int
   feedback       String
@@ -266,5 +292,5 @@ model Notification {
   message   String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
-  type String
+  type      String
 }
