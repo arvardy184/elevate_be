@@ -7,10 +7,10 @@ const Prisma = require('../prisma/client');
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { firstName,lastName, email, password } = req.body;
     console.log('body', req.body);
     // Validasi sederhana
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({
         message: 'Harap isi semua field!'
       });
