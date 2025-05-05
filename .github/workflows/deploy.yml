@@ -35,6 +35,7 @@ jobs:
 
           # Create the .env file from GitHub Secret
           echo "${{ secrets.ENV }}" > .env
+          echo "File .env dari GitHub Secret:" && cat .env
           chmod 600 .env  # Secure the .env file
           
           # Build the application
@@ -42,6 +43,8 @@ jobs:
 
           # Install dependencies
           npm install
+          npx prisma generate
+
 
           npm rebuild bcrypt --update-binary
 

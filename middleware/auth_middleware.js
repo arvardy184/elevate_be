@@ -1,7 +1,6 @@
 // middleware/auth.middleware.js..
 
 const jwt = require('jsonwebtoken');
-const prisma = require('../prisma/client');
 
 exports.verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
