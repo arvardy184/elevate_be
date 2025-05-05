@@ -1,64 +1,75 @@
-const prisma = require('./client'); // pastikan prisma/client.js sudah singleton
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
- * Main function to seed database
- * 
- * Steps:
- * 1. Seed categories
- * 2. Seed courses
- */
-/*******  7c106f36-c034-4653-a31b-97b207886296  *******/async function main() {
-  // 1. Seed Categories
-  const categories = await prisma.category.createMany({
-    data: [
-      { name: 'Design' },
-      { name: 'Web Development' },
-      { name: 'Marketing' },
-      { name: 'Business' }
-    ],
-    skipDuplicates: true // biar kalau udah ada, gak error
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt');
+const prisma = new PrismaClient();
+
+async function main() {
+  const passwordHash = await bcrypt.hash('password123', 10);
+
+  const user = await prisma.user.upsert({
+    where: { email: 'dummyuser@example.com' },
+    update: {},
+    create: {
+      email: 'dummyuser@example.com',
+      password: passwordHash,
+      firstName: 'Dummy',
+      lastName: 'User',
+    },
   });
 
-  console.log('Seeded categories!');
+  let category = await prisma.category.findFirst({
+    where: { name: "Tech" },
+  });
+  
+  if (!category) {
+    category = await prisma.category.create({
+      data: { name: "Tech" },
+    });
+  }
+  
 
-  // 2. Get categories
-  const designCategory = await prisma.category.findFirst({ where: { name: 'Design' } });
-  const devCategory = await prisma.category.findFirst({ where: { name: 'Web Development' } });
+  const course = await prisma.course.create({
+    data: {
+      title: 'Belajar Node.js',
+      description: 'Dasar-dasar backend development.',
+      thumbnail: 'https://example.com/image.png',
+      isPaid: false,
+      price: 0,
+      createdById: user.id,
+      categoryId: category.id,
+    },
+  });
 
-  // 3. Seed Courses
-  await prisma.course.createMany({
-    data: [
-      {
-        title: 'Intro to UI/UX',
-        description: 'Belajar dasar-dasar UI/UX untuk pemula',
-        thumbnail: 'https://via.placeholder.com/300',
-        isPaid: false,
-        price: 0,
-        categoryId: designCategory.id,
-        createdById: 1 // ganti sesuai ID admin atau user pertama
+  const lesson = await prisma.lesson.create({
+    data: {
+      title: 'Intro Node.js',
+      content: 'Materi dasar',
+      courseId: course.id,
+      order: 1,
+    },
+  });
+
+  const quiz = await prisma.quiz.create({
+    data: {
+      question: 'Apa itu Node.js?',
+      options: {
+        a: 'Framework PHP',
+        b: 'Runtime JavaScript',
+        c: 'Database',
       },
-      {
-        title: 'Fullstack Web Developer',
-        description: 'Belajar membangun aplikasi web fullstack dari nol',
-        thumbnail: 'https://via.placeholder.com/300',
-        isPaid: true,
-        price: 250000,
-        categoryId: devCategory.id,
-        createdById: 1
-      }
-    ],
-    skipDuplicates: true
+      correctAnswer: 'b',
+      isLocked: false,
+      courseId: course.id,
+    },
   });
 
-  console.log('Seeded courses!');
+  console.log('✅ Seeder selesai.');
 }
 
 main()
-  .then(() => {
-    console.log('Seeding selesai!');
-    process.exit(0);
-  })
   .catch((e) => {
     console.error(e);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });

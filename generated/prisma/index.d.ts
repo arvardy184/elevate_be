@@ -26708,12 +26708,12 @@ export namespace Prisma {
 
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    name?: string
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
-    name?: StringFilter<"Category"> | string
     courses?: CourseListRelationFilter
-  }, "id">
+  }, "id" | "name">
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder

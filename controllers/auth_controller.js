@@ -30,7 +30,8 @@ exports.register = async (req, res) => {
 
     // Simpan user baru
     await UserModel.createUser({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword
     });
