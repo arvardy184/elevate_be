@@ -7,28 +7,17 @@ const Prisma = require('../prisma/client');
 
 exports.register = async (req, res) => {
   try {
-    const { firstName,lastName, email, password } = req.body;
-    console.log('body', req.body);
-    // Validasi sederhana
+    const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({
-        message: 'Harap isi semua field!'
-      });
+      return res.status(400).json({ message: 'Harap isi semua field!' });
     }
 
-    // Cek apakah email sudah terdaftar
     const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
-      return res.status(400).json({
-        message: 'Email sudah terdaftar!'
-      });
+      return res.status(400).json({ message: 'Email sudah terdaftar!' });
     }
 
-    // Hash password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    // Simpan user baru
+    const hashedPassword = await bcrypt.hash(password, 10);
     await UserModel.createUser({
       firstName,
       lastName,
@@ -36,82 +25,60 @@ exports.register = async (req, res) => {
       password: hashedPassword
     });
 
-  
-
-    return res.status(201).json({
-      message: 'Registrasi berhasil!'
-    });
+    return res.status(201).json({ message: 'Registrasi berhasil!' });
   } catch (error) {
     console.error(error);
-    
-    return res.status(500).json({
-      message: 'Terjadi kesalahan server.'
-    });
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' });
   }
 };
+
 
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Validasi sederhana
     if (!email || !password) {
-      return res.status(400).json({
-        message: 'Harap isi email dan password!'
-      });
+      return res.status(400).json({ message: 'Harap isi email dan password!' });
     }
 
-    // Cari user berdasarkan email
     const user = await UserModel.findByEmail(email);
     if (!user) {
-      return res.status(400).json({
-        message: 'User tidak ditemukan!'
-      });
+      return res.status(400).json({ message: 'User tidak ditemukan!' });
     }
 
-    // Bandingkan password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({
-        message: 'Password salah!'
-      });
+      return res.status(401).json({ message: 'Password salah!' });
     }
 
-    // Jika password cocok, buat token JWT
     const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role
-      },
+      { id: user.id, email: user.email, role: user.role },
       process.env.SECRET_KEY,
-      { expiresIn: '1h' } 
+      { expiresIn: '1h' }
     );
 
-    const assesment = await Prisma.assessment.findFirst({
-      where: {
-        userId: user.id,
-      },
-    })
+    const prisma = new PrismaClient();
+    const assessment = await prisma.assessment.findFirst({
+      where: { userId: user.id },
+    });
 
     return res.status(200).json({
       message: 'Login berhasil!',
       token,
       user: {
         id: user.id,
-        name: user.name,
         email: user.email,
         role: user.role,
-        isAssesmentCompleted: !!assesment
+        firstName: user.firstName,
+        lastName: user.lastName,
+        isAssessmentCompleted: !!assessment
       }
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({
-      message: 'Terjadi kesalahan server.'
-    });
+    return res.status(500).json({ message: 'Terjadi kesalahan server.' });
   }
 };
+
 
 //kirim otp
 exports.forgotPassword = async (req, res) => {
