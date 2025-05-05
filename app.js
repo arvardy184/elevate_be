@@ -35,7 +35,7 @@ console.log('Swagger UI test:', swaggerUi);
 app.get('/', (req, res) => {
   res.send('Selamat datang di API dengan Node.js, Express.js, MySQL, dan JWT!');
 });
-
+//aa
 
 // Jalankan server
 app.listen(PORT, '0.0.0.0', () => {
