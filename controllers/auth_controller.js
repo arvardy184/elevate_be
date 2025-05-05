@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user_model');
 const { sendOtpEmail } = require('../utils/mailer');
-const Prisma = require('../prisma/client');
+const prisma = require('../prisma/client');
 
 exports.register = async (req, res) => {
   try {

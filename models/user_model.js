@@ -1,8 +1,5 @@
 const db = require('../config/database');
-// models/user_model.js
-const { PrismaClient } = require('../generated/prisma');
-const prisma = new PrismaClient();
-
+const prisma = require('../prisma/client');
 exports.findByEmail = async (email) => {
   return await prisma.user.findUnique({
     where: { email },
