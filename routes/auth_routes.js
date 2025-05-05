@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/auth_controller');
+const { verify } = require('jsonwebtoken');
 /**
  * @swagger
  * /auth/register:
@@ -115,5 +116,12 @@ router.post('/forgot-password', AuthController.forgotPassword);
 
 // RESET PASSWORD
 router.post('/reset-password', AuthController.resetPassword);
+
+// cek token
+router.get('/check-token',verifyToken, AuthController.checkToken);
+
+//ganti password
+router.patch('change-password',verifyToken,AuthController.changePassword);
+
 
 module.exports = router;

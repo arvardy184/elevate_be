@@ -1,3 +1,5 @@
+const RoadmapController = require('../controllers/roadmap_controller');
+const { verifyToken } = require('../middleware/auth_middleware');
 /**
  * @swagger
  * /roadmap/{id}:
@@ -14,6 +16,9 @@
  *       200:
  *         description: Detail roadmap berhasil diambil
  */
+
+const { verify } = require("jsonwebtoken");
+const router = require('./auth_routes');
 
 /**
  * @swagger
@@ -34,3 +39,18 @@
  *       200:
  *         description: Roadmap berhasil di-unlock
  */
+router.use(verifyToken);
+
+//daftar semua roadmap
+router.get('/', RoadmapController.getRoadmaps);
+
+//daftar roadmap yang sudah dibuka user
+router.get('me',RoadmapController.getUserRoadmaps);
+
+//detail satu roadmap dengna urutan course
+router.get('/:id', RoadmapController.getRoadmapById);
+
+//unlock roadmap
+router.post('/unlock/:id', RoadmapController.unlockRoadmap);
+
+module.exports = router;
