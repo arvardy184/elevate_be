@@ -132,7 +132,7 @@ exports.forgotPassword = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     //simpan otp ke db
-    await Prisma.user.update({
+    await prisma.user.update({
       where: { email },
       data: {
         resetToken: otp,
@@ -177,7 +177,7 @@ exports.resetPassword = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await Prisma.user.update({
+    await prisma.user.update({
       where: { email },
       data: {
         password: hashedPassword,
