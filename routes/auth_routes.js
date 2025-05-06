@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const AuthController = require('../controllers/auth_controller');
-const { verify } = require('jsonwebtoken');
+const {verifyToken, checkRole} = require('../middleware/auth_middleware');
+
 /**
  * @swagger
  * /auth/register:
