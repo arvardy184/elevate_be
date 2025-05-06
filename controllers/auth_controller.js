@@ -119,7 +119,7 @@ exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await Prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
     if (!user) {
@@ -161,7 +161,7 @@ exports.resetPassword = async (req, res) => {
   const { email, otp, newPassword } = req.body;
 
   try {
-    const user = await Prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     });
 
