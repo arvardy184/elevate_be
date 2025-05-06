@@ -122,7 +122,7 @@ router.post('/reset-password', AuthController.resetPassword);
 router.get('/check-token',verifyToken, AuthController.checkToken);
 
 //ganti password
-router.patch('change-password',verifyToken,AuthController.changePassword);
+router.patch('/change-password',verifyToken,AuthController.changePassword);
 
 
 module.exports = router;

@@ -45,7 +45,7 @@ return res.status(500).json({message: "Terjadi kesalahan server."});
 //   };
 
 
-expoers.updateProfile = async (req, res) => {
+exports.updateProfile = async (req, res) => {
   try{
     const userId = req.user.id;
     const { firstName, lastName, address, phoneNumber, gender, birthDate } = req.body;
