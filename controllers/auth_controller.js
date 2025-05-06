@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    const prisma = new PrismaClient();
+   
     const assessment = await prisma.assessment.findFirst({
       where: { userId: user.id },
     });
