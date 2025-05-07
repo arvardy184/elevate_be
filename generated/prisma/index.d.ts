@@ -4598,8 +4598,10 @@ export namespace Prisma {
     studentStatus: string | null
     majorStudy: string | null
     currentSemester: string | null
-    passionArea: string | null
-    achievementGoal: string | null
+    currentField: string | null
+    interestedField: string | null
+    dreamJob: string | null
+    mainGoal: string | null
     createdAt: Date | null
   }
 
@@ -4609,8 +4611,10 @@ export namespace Prisma {
     studentStatus: string | null
     majorStudy: string | null
     currentSemester: string | null
-    passionArea: string | null
-    achievementGoal: string | null
+    currentField: string | null
+    interestedField: string | null
+    dreamJob: string | null
+    mainGoal: string | null
     createdAt: Date | null
   }
 
@@ -4620,8 +4624,10 @@ export namespace Prisma {
     studentStatus: number
     majorStudy: number
     currentSemester: number
-    passionArea: number
-    achievementGoal: number
+    currentField: number
+    interestedField: number
+    dreamJob: number
+    mainGoal: number
     createdAt: number
     _all: number
   }
@@ -4643,8 +4649,10 @@ export namespace Prisma {
     studentStatus?: true
     majorStudy?: true
     currentSemester?: true
-    passionArea?: true
-    achievementGoal?: true
+    currentField?: true
+    interestedField?: true
+    dreamJob?: true
+    mainGoal?: true
     createdAt?: true
   }
 
@@ -4654,8 +4662,10 @@ export namespace Prisma {
     studentStatus?: true
     majorStudy?: true
     currentSemester?: true
-    passionArea?: true
-    achievementGoal?: true
+    currentField?: true
+    interestedField?: true
+    dreamJob?: true
+    mainGoal?: true
     createdAt?: true
   }
 
@@ -4665,8 +4675,10 @@ export namespace Prisma {
     studentStatus?: true
     majorStudy?: true
     currentSemester?: true
-    passionArea?: true
-    achievementGoal?: true
+    currentField?: true
+    interestedField?: true
+    dreamJob?: true
+    mainGoal?: true
     createdAt?: true
     _all?: true
   }
@@ -4763,8 +4775,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt: Date
     _count: AssessmentCountAggregateOutputType | null
     _avg: AssessmentAvgAggregateOutputType | null
@@ -4793,8 +4807,10 @@ export namespace Prisma {
     studentStatus?: boolean
     majorStudy?: boolean
     currentSemester?: boolean
-    passionArea?: boolean
-    achievementGoal?: boolean
+    currentField?: boolean
+    interestedField?: boolean
+    dreamJob?: boolean
+    mainGoal?: boolean
     createdAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["assessment"]>
@@ -4807,12 +4823,14 @@ export namespace Prisma {
     studentStatus?: boolean
     majorStudy?: boolean
     currentSemester?: boolean
-    passionArea?: boolean
-    achievementGoal?: boolean
+    currentField?: boolean
+    interestedField?: boolean
+    dreamJob?: boolean
+    mainGoal?: boolean
     createdAt?: boolean
   }
 
-  export type AssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "studentStatus" | "majorStudy" | "currentSemester" | "passionArea" | "achievementGoal" | "createdAt", ExtArgs["result"]["assessment"]>
+  export type AssessmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "studentStatus" | "majorStudy" | "currentSemester" | "currentField" | "interestedField" | "dreamJob" | "mainGoal" | "createdAt", ExtArgs["result"]["assessment"]>
   export type AssessmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -4828,8 +4846,10 @@ export namespace Prisma {
       studentStatus: string
       majorStudy: string
       currentSemester: string
-      passionArea: string
-      achievementGoal: string
+      currentField: string
+      interestedField: string
+      dreamJob: string
+      mainGoal: string
       createdAt: Date
     }, ExtArgs["result"]["assessment"]>
     composites: {}
@@ -5206,8 +5226,10 @@ export namespace Prisma {
     readonly studentStatus: FieldRef<"Assessment", 'String'>
     readonly majorStudy: FieldRef<"Assessment", 'String'>
     readonly currentSemester: FieldRef<"Assessment", 'String'>
-    readonly passionArea: FieldRef<"Assessment", 'String'>
-    readonly achievementGoal: FieldRef<"Assessment", 'String'>
+    readonly currentField: FieldRef<"Assessment", 'String'>
+    readonly interestedField: FieldRef<"Assessment", 'String'>
+    readonly dreamJob: FieldRef<"Assessment", 'String'>
+    readonly mainGoal: FieldRef<"Assessment", 'String'>
     readonly createdAt: FieldRef<"Assessment", 'DateTime'>
   }
     
@@ -25878,8 +25900,10 @@ export namespace Prisma {
     studentStatus: 'studentStatus',
     majorStudy: 'majorStudy',
     currentSemester: 'currentSemester',
-    passionArea: 'passionArea',
-    achievementGoal: 'achievementGoal',
+    currentField: 'currentField',
+    interestedField: 'interestedField',
+    dreamJob: 'dreamJob',
+    mainGoal: 'mainGoal',
     createdAt: 'createdAt'
   };
 
@@ -26167,8 +26191,10 @@ export namespace Prisma {
     studentStatus: 'studentStatus',
     majorStudy: 'majorStudy',
     currentSemester: 'currentSemester',
-    passionArea: 'passionArea',
-    achievementGoal: 'achievementGoal'
+    currentField: 'currentField',
+    interestedField: 'interestedField',
+    dreamJob: 'dreamJob',
+    mainGoal: 'mainGoal'
   };
 
   export type AssessmentOrderByRelevanceFieldEnum = (typeof AssessmentOrderByRelevanceFieldEnum)[keyof typeof AssessmentOrderByRelevanceFieldEnum]
@@ -26518,8 +26544,10 @@ export namespace Prisma {
     studentStatus?: StringFilter<"Assessment"> | string
     majorStudy?: StringFilter<"Assessment"> | string
     currentSemester?: StringFilter<"Assessment"> | string
-    passionArea?: StringFilter<"Assessment"> | string
-    achievementGoal?: StringFilter<"Assessment"> | string
+    currentField?: StringFilter<"Assessment"> | string
+    interestedField?: StringFilter<"Assessment"> | string
+    dreamJob?: StringFilter<"Assessment"> | string
+    mainGoal?: StringFilter<"Assessment"> | string
     createdAt?: DateTimeFilter<"Assessment"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -26530,8 +26558,10 @@ export namespace Prisma {
     studentStatus?: SortOrder
     majorStudy?: SortOrder
     currentSemester?: SortOrder
-    passionArea?: SortOrder
-    achievementGoal?: SortOrder
+    currentField?: SortOrder
+    interestedField?: SortOrder
+    dreamJob?: SortOrder
+    mainGoal?: SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
     _relevance?: AssessmentOrderByRelevanceInput
@@ -26546,8 +26576,10 @@ export namespace Prisma {
     studentStatus?: StringFilter<"Assessment"> | string
     majorStudy?: StringFilter<"Assessment"> | string
     currentSemester?: StringFilter<"Assessment"> | string
-    passionArea?: StringFilter<"Assessment"> | string
-    achievementGoal?: StringFilter<"Assessment"> | string
+    currentField?: StringFilter<"Assessment"> | string
+    interestedField?: StringFilter<"Assessment"> | string
+    dreamJob?: StringFilter<"Assessment"> | string
+    mainGoal?: StringFilter<"Assessment"> | string
     createdAt?: DateTimeFilter<"Assessment"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -26558,8 +26590,10 @@ export namespace Prisma {
     studentStatus?: SortOrder
     majorStudy?: SortOrder
     currentSemester?: SortOrder
-    passionArea?: SortOrder
-    achievementGoal?: SortOrder
+    currentField?: SortOrder
+    interestedField?: SortOrder
+    dreamJob?: SortOrder
+    mainGoal?: SortOrder
     createdAt?: SortOrder
     _count?: AssessmentCountOrderByAggregateInput
     _avg?: AssessmentAvgOrderByAggregateInput
@@ -26577,8 +26611,10 @@ export namespace Prisma {
     studentStatus?: StringWithAggregatesFilter<"Assessment"> | string
     majorStudy?: StringWithAggregatesFilter<"Assessment"> | string
     currentSemester?: StringWithAggregatesFilter<"Assessment"> | string
-    passionArea?: StringWithAggregatesFilter<"Assessment"> | string
-    achievementGoal?: StringWithAggregatesFilter<"Assessment"> | string
+    currentField?: StringWithAggregatesFilter<"Assessment"> | string
+    interestedField?: StringWithAggregatesFilter<"Assessment"> | string
+    dreamJob?: StringWithAggregatesFilter<"Assessment"> | string
+    mainGoal?: StringWithAggregatesFilter<"Assessment"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Assessment"> | Date | string
   }
 
@@ -28100,8 +28136,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutAssessmentsInput
   }
@@ -28112,8 +28150,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt?: Date | string
   }
 
@@ -28121,8 +28161,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutAssessmentsNestedInput
   }
@@ -28133,8 +28175,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28144,8 +28188,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt?: Date | string
   }
 
@@ -28153,8 +28199,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28164,8 +28212,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29798,8 +29848,10 @@ export namespace Prisma {
     studentStatus?: SortOrder
     majorStudy?: SortOrder
     currentSemester?: SortOrder
-    passionArea?: SortOrder
-    achievementGoal?: SortOrder
+    currentField?: SortOrder
+    interestedField?: SortOrder
+    dreamJob?: SortOrder
+    mainGoal?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29814,8 +29866,10 @@ export namespace Prisma {
     studentStatus?: SortOrder
     majorStudy?: SortOrder
     currentSemester?: SortOrder
-    passionArea?: SortOrder
-    achievementGoal?: SortOrder
+    currentField?: SortOrder
+    interestedField?: SortOrder
+    dreamJob?: SortOrder
+    mainGoal?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29825,8 +29879,10 @@ export namespace Prisma {
     studentStatus?: SortOrder
     majorStudy?: SortOrder
     currentSemester?: SortOrder
-    passionArea?: SortOrder
-    achievementGoal?: SortOrder
+    currentField?: SortOrder
+    interestedField?: SortOrder
+    dreamJob?: SortOrder
+    mainGoal?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -33098,8 +33154,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt?: Date | string
   }
 
@@ -33108,8 +33166,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt?: Date | string
   }
 
@@ -33517,8 +33577,10 @@ export namespace Prisma {
     studentStatus?: StringFilter<"Assessment"> | string
     majorStudy?: StringFilter<"Assessment"> | string
     currentSemester?: StringFilter<"Assessment"> | string
-    passionArea?: StringFilter<"Assessment"> | string
-    achievementGoal?: StringFilter<"Assessment"> | string
+    currentField?: StringFilter<"Assessment"> | string
+    interestedField?: StringFilter<"Assessment"> | string
+    dreamJob?: StringFilter<"Assessment"> | string
+    mainGoal?: StringFilter<"Assessment"> | string
     createdAt?: DateTimeFilter<"Assessment"> | Date | string
   }
 
@@ -38028,8 +38090,10 @@ export namespace Prisma {
     studentStatus: string
     majorStudy: string
     currentSemester: string
-    passionArea: string
-    achievementGoal: string
+    currentField: string
+    interestedField: string
+    dreamJob: string
+    mainGoal: string
     createdAt?: Date | string
   }
 
@@ -38211,8 +38275,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38221,8 +38287,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -38231,8 +38299,10 @@ export namespace Prisma {
     studentStatus?: StringFieldUpdateOperationsInput | string
     majorStudy?: StringFieldUpdateOperationsInput | string
     currentSemester?: StringFieldUpdateOperationsInput | string
-    passionArea?: StringFieldUpdateOperationsInput | string
-    achievementGoal?: StringFieldUpdateOperationsInput | string
+    currentField?: StringFieldUpdateOperationsInput | string
+    interestedField?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    mainGoal?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -1,16 +1,34 @@
 const Prisma = require("../prisma/client");
 
 // create assesment
-exports.createAssesment = async (req, res) => {
+exports.createAssessment = async (req, res) => {
+  if (!req.body) {
+    return res.status(400).json({ message: "Data tidak ditemukan" });
+  }
   const {
+   
     studentStatus,
     majorStudy,
     currentSemester,
-    passionArea,
-    achievementGoal,
+    currentField,
+    interestedField,
+    dreamJob,
+    mainGoal,
   } = req.body;
-  const userId = req.user.id;
 
+  const userId = req.user.id;
+ 
+  if (
+    !studentStatus ||
+    !majorStudy ||
+    !currentSemester ||
+    !currentField ||
+    !interestedField ||
+    !dreamJob ||
+    !mainGoal
+  ) {
+    return res.status(400).json({ message: "Semua field harus diisi" });
+  }
   try {
     //cek apakah user sudah isi assesment
     const existingAssesment = await Prisma.assessment.findFirst({
@@ -26,20 +44,26 @@ exports.createAssesment = async (req, res) => {
     }
 
     //simpan assesment ke db
-    await Prisma.assessment.create({
+ const createdAssessment=   await Prisma.assessment.create({
       data: {
-        userId: userId,
+       userId: userId,
         studentStatus: studentStatus,
         majorStudy: majorStudy,
         currentSemester: currentSemester,
-        passionArea: passionArea,
-        achievementGoal: achievementGoal,
+        currentField: currentField,
+        interestedField: interestedField,
+        dreamJob: dreamJob,
+        mainGoal: mainGoal,
       },
     });
-    return res.status(200).json({
+
+    
+    return res.status(201).json({
       message: "Assesment berhasil disimpan!",
+      data: createdAssessment,
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       message: "Terjadi kesalahan server",
       error: {
@@ -63,6 +87,7 @@ exports.checkAssesment = async (req, res) => {
     return res.status(200).json({
       message: "Assesment berhasil diambil!",
       hasAssesment: !!assesment,
+      data: assesment || null,
     });
   } catch (error) {
     console.error(error);

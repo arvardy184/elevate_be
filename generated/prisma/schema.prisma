@@ -54,8 +54,10 @@ model Assessment {
   studentStatus   String
   majorStudy      String
   currentSemester String
-  passionArea     String
-  achievementGoal String
+  currentField    String
+  interestedField String
+  dreamJob        String
+  mainGoal        String
   createdAt       DateTime @default(now())
 }
 

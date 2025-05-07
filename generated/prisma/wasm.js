@@ -142,8 +142,10 @@ exports.Prisma.AssessmentScalarFieldEnum = {
   studentStatus: 'studentStatus',
   majorStudy: 'majorStudy',
   currentSemester: 'currentSemester',
-  passionArea: 'passionArea',
-  achievementGoal: 'achievementGoal',
+  currentField: 'currentField',
+  interestedField: 'interestedField',
+  dreamJob: 'dreamJob',
+  mainGoal: 'mainGoal',
   createdAt: 'createdAt'
 };
 
@@ -356,8 +358,10 @@ exports.Prisma.AssessmentOrderByRelevanceFieldEnum = {
   studentStatus: 'studentStatus',
   majorStudy: 'majorStudy',
   currentSemester: 'currentSemester',
-  passionArea: 'passionArea',
-  achievementGoal: 'achievementGoal'
+  currentField: 'currentField',
+  interestedField: 'interestedField',
+  dreamJob: 'dreamJob',
+  mainGoal: 'mainGoal'
 };
 
 exports.Prisma.CourseOrderByRelevanceFieldEnum = {

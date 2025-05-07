@@ -2,10 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const AssessmentController = require('../controllers/assesment_controller');
+const {verifyToken, checkRole} = require('../middleware/auth_middleware');
+router.post('/', verifyToken, AssessmentController.createAssessment);
 
-router.post('/assessment', AssessmentController.createAssesment);
-
-router.get('/assessment', AssessmentController.checkAssesment);
+router.get('/', verifyToken, AssessmentController.checkAssesment);
 
 module.exports = router;
 /**
