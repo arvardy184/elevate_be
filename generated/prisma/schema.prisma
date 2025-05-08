@@ -1,0 +1,375 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int                 @id @default(autoincrement())
+  firstName         String?
+  lastName          String?
+  email             String              @unique
+  password          String
+  address           String?
+  gender            String?
+  birthDate         DateTime?
+  role              Role                @default(USER)
+  profilePicture    String?
+  createdAt         DateTime            @default(now())
+  resetToken        String?
+  resetTokenExpiry  DateTime?
+  assessment        assessment[]
+  certificate       certificate[]
+  chatmessage       chatmessage[]
+  counselingsession counselingsession[]
+  counselor         counselor?
+  course            course[]
+  courseprogress    courseprogress[]
+  cvreview          cvreview[]
+  enrollment        enrollment[]
+  jobmatch          jobmatch[]
+  lessonprogress    lessonprogress[]
+  notification      notification[]
+  payment           payment[]
+  quizsubmission    quizsubmission[]
+  userroadmap       userroadmap[]
+  voucher           Voucher[]
+
+  @@map("users")
+}
+
+// prisma
+model RoadmapMatcher {
+  id         Int    @id @default(autoincrement())
+  keyword    String
+  roadmapId  Int
+  matchField String
+}
+
+model assessment {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  studentStatus   String
+  majorStudy      String
+  currentSemester String
+  createdAt       DateTime @default(now())
+  currentField    String
+  dreamJob        String
+  interestedField String
+  mainGoal        String
+  users           User     @relation(fields: [userId], references: [id], map: "Assessment_userId_fkey")
+
+  @@index([userId], map: "Assessment_userId_fkey")
+}
+
+model BookmarkCourse {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  courseId  Int
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId], map: "BookmarkCourse_userId_courseId_key")
+  @@map("bookmarkcourse")
+}
+
+model category {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique(map: "Category_name_key")
+  course course[]
+}
+
+model certificate {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  courseId Int
+  filePath String
+  issuedAt DateTime
+  course   course   @relation(fields: [courseId], references: [id], map: "Certificate_courseId_fkey")
+  users    User     @relation(fields: [userId], references: [id], map: "Certificate_userId_fkey")
+
+  @@index([courseId], map: "Certificate_courseId_fkey")
+  @@index([userId], map: "Certificate_userId_fkey")
+}
+
+model chatmessage {
+  id                Int               @id @default(autoincrement())
+  sessionId         Int
+  senderId          Int
+  message           String
+  sentAt            DateTime          @default(now())
+  users             User              @relation(fields: [senderId], references: [id], map: "ChatMessage_senderId_fkey")
+  counselingsession counselingsession @relation(fields: [sessionId], references: [id], map: "ChatMessage_sessionId_fkey")
+
+  @@index([senderId], map: "ChatMessage_senderId_fkey")
+  @@index([sessionId], map: "ChatMessage_sessionId_fkey")
+}
+
+model counselingsession {
+  id          Int           @id @default(autoincrement())
+  userId      Int
+  counselorId Int
+  topic       String
+  question    String
+  response    String?
+  status      String
+  createdAt   DateTime      @default(now())
+  rating      Int?
+  feedback    String?
+  chatmessage chatmessage[]
+  counselor   counselor     @relation(fields: [counselorId], references: [id], map: "CounselingSession_counselorId_fkey")
+  users       User          @relation(fields: [userId], references: [id], map: "CounselingSession_userId_fkey")
+
+  @@index([counselorId], map: "CounselingSession_counselorId_fkey")
+  @@index([userId], map: "CounselingSession_userId_fkey")
+}
+
+model counselor {
+  id                Int                 @id @default(autoincrement())
+  userId            Int                 @unique(map: "Counselor_userId_key")
+  specialization    String
+  bio               String
+  verified          Boolean
+  counselingsession counselingsession[]
+  users             User                @relation(fields: [userId], references: [id], map: "Counselor_userId_fkey")
+}
+
+model course {
+  id             Int              @id @default(autoincrement())
+  title          String
+  description    String
+  thumbnail      String
+  categoryId     Int
+  isPaid         Boolean
+  price          Int
+  createdById    Int
+  createdAt      DateTime         @default(now())
+  certificate    certificate[]
+  category       category         @relation(fields: [categoryId], references: [id], map: "Course_categoryId_fkey")
+  users          User             @relation(fields: [createdById], references: [id], map: "Course_createdById_fkey")
+  courseprogress courseprogress[]
+  coursevideo    coursevideo[]
+  enrollment     enrollment[]
+  lesson         lesson[]
+  payment        payment[]
+  quiz           quiz[]
+  quizsubmission quizsubmission[]
+  roadmapcourse  roadmapcourse[]
+
+  @@index([categoryId], map: "Course_categoryId_fkey")
+  @@index([createdById], map: "Course_createdById_fkey")
+}
+
+model courseprogress {
+  id                  Int     @id @default(autoincrement())
+  userId              Int
+  courseId            Int
+  completedVideoCount Int
+  completedQuizCount  Int
+  isCompleted         Boolean
+  course              course  @relation(fields: [courseId], references: [id], map: "CourseProgress_courseId_fkey")
+  users               User    @relation(fields: [userId], references: [id], map: "CourseProgress_userId_fkey")
+
+  @@index([courseId], map: "CourseProgress_courseId_fkey")
+  @@index([userId], map: "CourseProgress_userId_fkey")
+}
+
+model coursevideo {
+  id       Int     @id @default(autoincrement())
+  courseId Int
+  title    String
+  videoUrl String
+  isLocked Boolean
+  order    Int
+  s3Key    String?
+  course   course  @relation(fields: [courseId], references: [id], map: "CourseVideo_courseId_fkey")
+
+  @@index([courseId], map: "CourseVideo_courseId_fkey")
+}
+
+model cvreview {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  cvFilePath     String
+  cvVersion      Int
+  reviewResult   String
+  relevanceScore Int
+  feedback       String
+  createdAt      DateTime @default(now())
+  users          User     @relation(fields: [userId], references: [id], map: "CVReview_userId_fkey")
+
+  @@index([userId], map: "CVReview_userId_fkey")
+}
+
+model enrollment {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  courseId   Int
+  enrolledAt DateTime @default(now())
+  isPaid     Boolean
+  paymentId  Int?
+  course     course   @relation(fields: [courseId], references: [id], map: "Enrollment_courseId_fkey")
+  payment    payment? @relation(fields: [paymentId], references: [id], map: "Enrollment_paymentId_fkey")
+  users      User     @relation(fields: [userId], references: [id], map: "Enrollment_userId_fkey")
+
+  @@index([courseId], map: "Enrollment_courseId_fkey")
+  @@index([paymentId], map: "Enrollment_paymentId_fkey")
+  @@index([userId], map: "Enrollment_userId_fkey")
+}
+
+model jobmatch {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  cvFilePath  String
+  matchedJobs Json
+  generatedAt DateTime @default(now())
+  users       User     @relation(fields: [userId], references: [id], map: "JobMatch_userId_fkey")
+
+  @@index([userId], map: "JobMatch_userId_fkey")
+}
+
+model lesson {
+  id             Int              @id @default(autoincrement())
+  title          String
+  courseId       Int
+  content        String
+  order          Int
+  course         course           @relation(fields: [courseId], references: [id], map: "Lesson_courseId_fkey")
+  lessonprogress lessonprogress[]
+
+  @@index([courseId], map: "Lesson_courseId_fkey")
+}
+
+model lessonprogress {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  lessonId    Int
+  isCompleted Boolean  @default(false)
+  updatedAt   DateTime
+  lesson      lesson   @relation(fields: [lessonId], references: [id], map: "LessonProgress_lessonId_fkey")
+  users       User     @relation(fields: [userId], references: [id], map: "LessonProgress_userId_fkey")
+
+  @@unique([userId, lessonId], map: "LessonProgress_userId_lessonId_key")
+  @@index([lessonId], map: "LessonProgress_lessonId_fkey")
+}
+
+model notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  type      String
+  users     User     @relation(fields: [userId], references: [id], map: "Notification_userId_fkey")
+
+  @@index([userId], map: "Notification_userId_fkey")
+}
+
+model payment {
+  id            Int          @id @default(autoincrement())
+  userId        Int
+  courseId      Int?
+  roadmapId     Int?
+  amount        Int
+  paymentStatus String
+  status        String
+  paidAt        DateTime
+  createdAt     DateTime     @default(now())
+  orderId       String?      @unique(map: "Payment_orderId_key")
+  snapToken     String?
+  enrollment    enrollment[]
+  course        course?      @relation(fields: [courseId], references: [id], map: "Payment_courseId_fkey")
+  roadmap       roadmap?     @relation(fields: [roadmapId], references: [id], map: "Payment_roadmapId_fkey")
+  users         User         @relation(fields: [userId], references: [id], map: "Payment_userId_fkey")
+
+  @@index([courseId], map: "Payment_courseId_fkey")
+  @@index([roadmapId], map: "Payment_roadmapId_fkey")
+  @@index([userId], map: "Payment_userId_fkey")
+}
+
+model quiz {
+  id             Int              @id @default(autoincrement())
+  courseId       Int
+  question       String
+  options        Json
+  correctAnswer  String
+  isLocked       Boolean
+  course         course           @relation(fields: [courseId], references: [id], map: "Quiz_courseId_fkey")
+  quizsubmission quizsubmission[]
+
+  @@index([courseId], map: "Quiz_courseId_fkey")
+}
+
+model quizsubmission {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  courseId       Int
+  quizId         Int
+  answers        Json
+  score          Int
+  totalQuestions Int
+  isPassed       Boolean
+  createdAt      DateTime @default(now())
+  course         course   @relation(fields: [courseId], references: [id], map: "QuizSubmission_courseId_fkey")
+  quiz           quiz     @relation(fields: [quizId], references: [id], map: "QuizSubmission_quizId_fkey")
+  users          User     @relation(fields: [userId], references: [id], map: "QuizSubmission_userId_fkey")
+
+  @@index([courseId], map: "QuizSubmission_courseId_fkey")
+  @@index([quizId], map: "QuizSubmission_quizId_fkey")
+  @@index([userId], map: "QuizSubmission_userId_fkey")
+}
+
+model roadmap {
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String
+  rewardVoucher String
+  payment       payment[]
+  roadmapcourse roadmapcourse[]
+  userroadmap   userroadmap[]
+}
+
+model roadmapcourse {
+  id        Int     @id @default(autoincrement())
+  roadmapId Int
+  courseId  Int
+  order     Int
+  course    course  @relation(fields: [courseId], references: [id], map: "RoadmapCourse_courseId_fkey")
+  roadmap   roadmap @relation(fields: [roadmapId], references: [id], map: "RoadmapCourse_roadmapId_fkey")
+
+  @@index([courseId], map: "RoadmapCourse_courseId_fkey")
+  @@index([roadmapId], map: "RoadmapCourse_roadmapId_fkey")
+}
+
+model userroadmap {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  roadmapId  Int
+  isUnlocked Boolean
+  unlockedAt DateTime?
+  roadmap    roadmap   @relation(fields: [roadmapId], references: [id], map: "UserRoadmap_roadmapId_fkey")
+  users      User      @relation(fields: [userId], references: [id], map: "UserRoadmap_userId_fkey")
+
+  @@index([roadmapId], map: "UserRoadmap_roadmapId_fkey")
+  @@index([userId], map: "UserRoadmap_userId_fkey")
+}
+
+model Voucher {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  discount  Int
+  expiresAt DateTime
+  userId    Int
+  isUsed    Boolean  @default(false)
+  users     User     @relation(fields: [userId], references: [id])
+
+  @@map("voucher")
+}
+
+enum Role {
+  USER
+  CONSULTANT
+}

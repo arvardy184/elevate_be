@@ -1,12 +1,11 @@
 const Prisma = require("../prisma/client");
-
+const { mapAssessmentToRoadmap } = require("../services/roadmap_service");
 // create assesment
 exports.createAssessment = async (req, res) => {
   if (!req.body) {
     return res.status(400).json({ message: "Data tidak ditemukan" });
   }
   const {
-   
     studentStatus,
     majorStudy,
     currentSemester,
@@ -57,7 +56,7 @@ exports.createAssessment = async (req, res) => {
       },
     });
 
-    
+    await mapAssessmentToRoadmap(userId);
     return res.status(201).json({
       message: "Assesment berhasil disimpan!",
       data: createdAssessment,

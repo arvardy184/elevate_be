@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-     "dev": "nodemon --inspect app.js",
+    "dev": "nodemon --inspect app.js",
     "postinstall": "npx prisma generate"
   },
   "prisma": {
@@ -15,7 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^6.6.0",
+    "@prisma/client": "^6.7.0",
+    "backblaze-b2": "^1.7.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
