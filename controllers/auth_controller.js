@@ -11,6 +11,7 @@ exports.register = async (req, res) => {
     if (!email || !password || !phoneNumber) {
       return res.status(400).json({ message: "Harap isi semua field!" });
     }
+    console.log(email,phoneNumber, password);
 
     const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
