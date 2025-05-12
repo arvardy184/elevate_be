@@ -6,10 +6,9 @@ exports.findByEmail = async (email) => {
   });
 };
 
-exports.createUser = async ({ firstName, lastName, email, password }) => {
+exports.createUser = async ({ email,phoneNumber, password ,}) => {
   return await prisma.user.create({
     data: {
-      
       email,
       phoneNumber,
       password,

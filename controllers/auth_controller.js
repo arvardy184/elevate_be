@@ -7,7 +7,7 @@ const prisma = require("../prisma/client");
 
 exports.register = async (req, res) => {
   try {
-    const {  email, password, phoneNumber } = req.body;
+    const {  email,phoneNumber, password,  } = req.body;
     if (!email || !password || !phoneNumber) {
       return res.status(400).json({ message: "Harap isi semua field!" });
     }
