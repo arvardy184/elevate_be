@@ -7,8 +7,8 @@ const prisma = require("../prisma/client");
 
 exports.register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    if (!firstName || !lastName || !email || !password) {
+    const {  email, password, phoneNumber } = req.body;
+    if (!email || !password || !phoneNumber) {
       return res.status(400).json({ message: "Harap isi semua field!" });
     }
 
@@ -19,10 +19,9 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await UserModel.createUser({
-      firstName,
-      lastName,
       email,
       password: hashedPassword,
+      phoneNumber,
     });
 
     return res.status(201).json({ message: "Registrasi berhasil!" });
