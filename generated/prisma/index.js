@@ -531,11 +531,12 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "mysql://root:12345678@127.0.0.1:3306/elevate"
+        "value": null
       }
     }
   },
