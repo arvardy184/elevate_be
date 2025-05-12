@@ -177,7 +177,7 @@ exports.Prisma.CertificateScalarFieldEnum = {
   issuedAt: 'issuedAt'
 };
 
-exports.Prisma.ChatmessageScalarFieldEnum = {
+exports.Prisma.ChatMessageScalarFieldEnum = {
   id: 'id',
   sessionId: 'sessionId',
   senderId: 'senderId',
@@ -185,7 +185,7 @@ exports.Prisma.ChatmessageScalarFieldEnum = {
   sentAt: 'sentAt'
 };
 
-exports.Prisma.CounselingsessionScalarFieldEnum = {
+exports.Prisma.CounselingSessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   counselorId: 'counselorId',
@@ -218,7 +218,7 @@ exports.Prisma.CourseScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.CourseprogressScalarFieldEnum = {
+exports.Prisma.CourseProgressScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
@@ -237,7 +237,7 @@ exports.Prisma.CoursevideoScalarFieldEnum = {
   s3Key: 's3Key'
 };
 
-exports.Prisma.CvreviewScalarFieldEnum = {
+exports.Prisma.CVReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   cvFilePath: 'cvFilePath',
@@ -257,7 +257,7 @@ exports.Prisma.EnrollmentScalarFieldEnum = {
   paymentId: 'paymentId'
 };
 
-exports.Prisma.JobmatchScalarFieldEnum = {
+exports.Prisma.JobMatchScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   cvFilePath: 'cvFilePath',
@@ -273,7 +273,7 @@ exports.Prisma.LessonScalarFieldEnum = {
   order: 'order'
 };
 
-exports.Prisma.LessonprogressScalarFieldEnum = {
+exports.Prisma.LessonProgressScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   lessonId: 'lessonId',
@@ -313,7 +313,7 @@ exports.Prisma.QuizScalarFieldEnum = {
   isLocked: 'isLocked'
 };
 
-exports.Prisma.QuizsubmissionScalarFieldEnum = {
+exports.Prisma.QuizSubmissionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
@@ -332,19 +332,20 @@ exports.Prisma.RoadmapScalarFieldEnum = {
   rewardVoucher: 'rewardVoucher'
 };
 
-exports.Prisma.RoadmapcourseScalarFieldEnum = {
+exports.Prisma.RoadmapCourseScalarFieldEnum = {
   id: 'id',
   roadmapId: 'roadmapId',
   courseId: 'courseId',
   order: 'order'
 };
 
-exports.Prisma.UserroadmapScalarFieldEnum = {
+exports.Prisma.UserRoadmapScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   roadmapId: 'roadmapId',
   isUnlocked: 'isUnlocked',
-  unlockedAt: 'unlockedAt'
+  unlockedAt: 'unlockedAt',
+  paymentId: 'paymentId'
 };
 
 exports.Prisma.VoucherScalarFieldEnum = {
@@ -387,7 +388,7 @@ exports.Prisma.RoadmapMatcherOrderByRelevanceFieldEnum = {
   matchField: 'matchField'
 };
 
-exports.Prisma.assessmentOrderByRelevanceFieldEnum = {
+exports.Prisma.AssessmentOrderByRelevanceFieldEnum = {
   studentStatus: 'studentStatus',
   majorStudy: 'majorStudy',
   currentSemester: 'currentSemester',
@@ -397,19 +398,19 @@ exports.Prisma.assessmentOrderByRelevanceFieldEnum = {
   mainGoal: 'mainGoal'
 };
 
-exports.Prisma.categoryOrderByRelevanceFieldEnum = {
+exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
   name: 'name'
 };
 
-exports.Prisma.certificateOrderByRelevanceFieldEnum = {
+exports.Prisma.CertificateOrderByRelevanceFieldEnum = {
   filePath: 'filePath'
 };
 
-exports.Prisma.chatmessageOrderByRelevanceFieldEnum = {
+exports.Prisma.ChatMessageOrderByRelevanceFieldEnum = {
   message: 'message'
 };
 
-exports.Prisma.counselingsessionOrderByRelevanceFieldEnum = {
+exports.Prisma.CounselingSessionOrderByRelevanceFieldEnum = {
   topic: 'topic',
   question: 'question',
   response: 'response',
@@ -417,12 +418,12 @@ exports.Prisma.counselingsessionOrderByRelevanceFieldEnum = {
   feedback: 'feedback'
 };
 
-exports.Prisma.counselorOrderByRelevanceFieldEnum = {
+exports.Prisma.CounselorOrderByRelevanceFieldEnum = {
   specialization: 'specialization',
   bio: 'bio'
 };
 
-exports.Prisma.courseOrderByRelevanceFieldEnum = {
+exports.Prisma.CourseOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
   thumbnail: 'thumbnail'
@@ -434,7 +435,7 @@ exports.Prisma.coursevideoOrderByRelevanceFieldEnum = {
   s3Key: 's3Key'
 };
 
-exports.Prisma.cvreviewOrderByRelevanceFieldEnum = {
+exports.Prisma.CVReviewOrderByRelevanceFieldEnum = {
   cvFilePath: 'cvFilePath',
   reviewResult: 'reviewResult',
   feedback: 'feedback'
@@ -451,7 +452,7 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
-exports.Prisma.jobmatchOrderByRelevanceFieldEnum = {
+exports.Prisma.JobMatchOrderByRelevanceFieldEnum = {
   cvFilePath: 'cvFilePath'
 };
 
@@ -460,12 +461,12 @@ exports.Prisma.lessonOrderByRelevanceFieldEnum = {
   content: 'content'
 };
 
-exports.Prisma.notificationOrderByRelevanceFieldEnum = {
+exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
   message: 'message',
   type: 'type'
 };
 
-exports.Prisma.paymentOrderByRelevanceFieldEnum = {
+exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
   paymentStatus: 'paymentStatus',
   status: 'status',
   orderId: 'orderId',
@@ -477,7 +478,7 @@ exports.Prisma.quizOrderByRelevanceFieldEnum = {
   correctAnswer: 'correctAnswer'
 };
 
-exports.Prisma.roadmapOrderByRelevanceFieldEnum = {
+exports.Prisma.RoadmapOrderByRelevanceFieldEnum = {
   name: 'name',
   description: 'description',
   rewardVoucher: 'rewardVoucher'
@@ -494,28 +495,28 @@ exports.Role = exports.$Enums.Role = {
 exports.Prisma.ModelName = {
   User: 'User',
   RoadmapMatcher: 'RoadmapMatcher',
-  assessment: 'assessment',
+  Assessment: 'Assessment',
   BookmarkCourse: 'BookmarkCourse',
-  category: 'category',
-  certificate: 'certificate',
-  chatmessage: 'chatmessage',
-  counselingsession: 'counselingsession',
-  counselor: 'counselor',
-  course: 'course',
-  courseprogress: 'courseprogress',
+  Category: 'Category',
+  Certificate: 'Certificate',
+  ChatMessage: 'ChatMessage',
+  CounselingSession: 'CounselingSession',
+  Counselor: 'Counselor',
+  Course: 'Course',
+  CourseProgress: 'CourseProgress',
   coursevideo: 'coursevideo',
-  cvreview: 'cvreview',
-  enrollment: 'enrollment',
-  jobmatch: 'jobmatch',
+  CVReview: 'CVReview',
+  Enrollment: 'Enrollment',
+  JobMatch: 'JobMatch',
   lesson: 'lesson',
-  lessonprogress: 'lessonprogress',
-  notification: 'notification',
-  payment: 'payment',
+  LessonProgress: 'LessonProgress',
+  Notification: 'Notification',
+  Payment: 'Payment',
   quiz: 'quiz',
-  quizsubmission: 'quizsubmission',
-  roadmap: 'roadmap',
-  roadmapcourse: 'roadmapcourse',
-  userroadmap: 'userroadmap',
+  QuizSubmission: 'QuizSubmission',
+  Roadmap: 'Roadmap',
+  RoadmapCourse: 'RoadmapCourse',
+  UserRoadmap: 'UserRoadmap',
   Voucher: 'Voucher'
 };
 
