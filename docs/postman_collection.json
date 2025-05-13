@@ -1,0 +1,592 @@
+{
+  "info": {
+    "_postman_id": "05588d40-cf29-49ba-a99e-328e8af919aa",
+    "name": "Elevate API",
+    "description": "API untuk mengelola course, assessment, kategori, user, dan autentikasi.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"budi4@gmail.com\",\n  \"password\": \"rahasia123\",\n  \"phoneNumber\": \"081234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register user baru"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"budi4@gmail.com\",\n  \"password\": \"rahasia123\",\n  \"phoneNumber\": \"081234567\"\n}"
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Registrasi berhasil\",\n  \"data\": {\n    \"id\": 1,\n    \"email\": \"budi4@gmail.com\",\n    \"phoneNumber\": \"081234567\",\n    \"createdAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"budi2@gmail.com\",\n  \"password\": \"rahasia123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login user dan dapatkan token"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"budi2@gmail.com\",\n  \"password\": \"rahasia123\"\n}"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Login berhasil\",\n  \"data\": {\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"user\": {\n      \"id\": 1,\n      \"email\": \"budi2@gmail.com\",\n      \"role\": \"USER\"\n    }\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"budi@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "description": "Kirim OTP untuk reset password"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"OTP telah dikirim ke email Anda\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"budi9@gmail.com\",\n  \"otp\": \"405702\",\n  \"newPassword\": \"rahasia123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "reset-password"]
+            },
+            "description": "Reset password menggunakan OTP"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Password berhasil direset\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "item": [
+        {
+          "name": "Get All Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/courses",
+              "host": ["{{base_url}}"],
+              "path": ["courses"]
+            },
+            "description": "Mendapatkan daftar semua courses"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Belajar Flutter dari Dasar\",\n      \"description\": \"Kursus lengkap untuk pemula\",\n      \"price\": 199000,\n      \"category\": \"Mobile Development\",\n      \"thumbnail\": \"https://example.com/thumbnail.jpg\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Course By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/courses/1",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1"]
+            },
+            "description": "Mendapatkan detail course berdasarkan ID"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"id\": 1,\n    \"title\": \"Belajar Flutter dari Dasar\",\n    \"description\": \"Kursus lengkap untuk pemula\",\n    \"price\": 199000,\n    \"category\": \"Mobile Development\",\n    \"thumbnail\": \"https://example.com/thumbnail.jpg\",\n    \"lessons\": [\n      {\n        \"id\": 1,\n        \"title\": \"Pengenalan Flutter\",\n        \"duration\": \"15:00\",\n        \"type\": \"video\"\n      }\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Enroll in Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/1/enroll",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "enroll"]
+            },
+            "description": "Enroll ke course tertentu"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Berhasil enroll ke course\",\n  \"data\": {\n    \"enrollmentId\": 1,\n    \"courseId\": 1,\n    \"userId\": 1,\n    \"enrolledAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get My Courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/me",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "me"]
+            },
+            "description": "Mendapatkan daftar course yang di-enroll user"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Belajar Flutter dari Dasar\",\n      \"progress\": 25,\n      \"lastAccessed\": \"2024-03-10T10:00:00.000Z\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Course Progress",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isCompleted\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/courses/1/lessons/1/progress",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "lessons", "1", "progress"]
+            },
+            "description": "Update progress lesson dalam course"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Progress berhasil diupdate\",\n  \"data\": {\n    \"lessonId\": 1,\n    \"isCompleted\": true,\n    \"completedAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Course Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/1/progress",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "progress"]
+            },
+            "description": "Mendapatkan progress keseluruhan course"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"courseId\": 1,\n    \"totalLessons\": 10,\n    \"completedLessons\": 3,\n    \"progressPercentage\": 30,\n    \"lastAccessed\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Course Quizzes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/1/quizzes",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "quizzes"]
+            },
+            "description": "Mendapatkan daftar quiz untuk course"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Quiz Flutter Dasar\",\n      \"description\": \"Test pemahaman dasar Flutter\",\n      \"totalQuestions\": 10,\n      \"timeLimit\": 30,\n      \"isCompleted\": false\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Course Videos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/1/videos",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "videos"]
+            },
+            "description": "Mendapatkan daftar video untuk course"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"title\": \"Pengenalan Flutter\",\n      \"description\": \"Video pengenalan Flutter\",\n      \"duration\": \"15:00\",\n      \"url\": \"https://example.com/video.mp4\",\n      \"thumbnail\": \"https://example.com/thumb.jpg\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Submit Quiz Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": 1,\n      \"answer\": \"A\"\n    },\n    {\n      \"questionId\": 2,\n      \"answer\": \"B\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/courses/1/quizzes/1/submit",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "quizzes", "1", "submit"]
+            },
+            "description": "Submit jawaban quiz"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Jawaban quiz berhasil disimpan\",\n  \"data\": {\n    \"quizId\": 1,\n    \"score\": 80,\n    \"totalQuestions\": 10,\n    \"correctAnswers\": 8,\n    \"completedAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Quiz Result",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/courses/1/quizzes/1/results",
+              "host": ["{{base_url}}"],
+              "path": ["courses", "1", "quizzes", "1", "results"]
+            },
+            "description": "Mendapatkan hasil quiz yang sudah dikerjakan"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"quizId\": 1,\n    \"score\": 80,\n    \"totalQuestions\": 10,\n    \"correctAnswers\": 8,\n    \"questions\": [\n      {\n        \"id\": 1,\n        \"question\": \"Apa itu Flutter?\",\n        \"yourAnswer\": \"A\",\n        \"correctAnswer\": \"A\",\n        \"isCorrect\": true\n      }\n    ],\n    \"completedAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Assessment",
+      "item": [
+        {
+          "name": "Create Assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentStatus\": \"Mahasiswa Aktif\",\n  \"majorStudy\": \"Teknik Informatika\",\n  \"currentSemester\": \"5\",\n  \"currentField\": \"Backend Development\",\n  \"interestedField\": \"Data Science\",\n  \"dreamJob\": \"Full Stack Developer\",\n  \"mainGoal\": \"Membangun karir di industri teknologi\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/assessment",
+              "host": ["{{base_url}}"],
+              "path": ["assessment"]
+            },
+            "description": "Submit assessment awal user"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"status\": \"success\",\n  \"message\": \"Assessment berhasil dibuat\",\n  \"data\": {\n    \"id\": 1,\n    \"studentStatus\": \"Mahasiswa Aktif\",\n    \"majorStudy\": \"Teknik Informatika\",\n    \"currentSemester\": \"5\",\n    \"currentField\": \"Backend Development\",\n    \"interestedField\": \"Data Science\",\n    \"dreamJob\": \"Full Stack Developer\",\n    \"mainGoal\": \"Membangun karir di industri teknologi\",\n    \"createdAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Check Assessment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/assessment",
+              "host": ["{{base_url}}"],
+              "path": ["assessment"]
+            },
+            "description": "Cek status assessment user"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"id\": 1,\n    \"studentStatus\": \"Mahasiswa Aktif\",\n    \"majorStudy\": \"Teknik Informatika\",\n    \"currentSemester\": \"5\",\n    \"currentField\": \"Backend Development\",\n    \"interestedField\": \"Data Science\",\n    \"dreamJob\": \"Full Stack Developer\",\n    \"mainGoal\": \"Membangun karir di industri teknologi\",\n    \"createdAt\": \"2024-03-10T10:00:00.000Z\",\n    \"updatedAt\": \"2024-03-10T10:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories",
+              "host": ["{{base_url}}"],
+              "path": ["categories"]
+            },
+            "description": "Mendapatkan daftar semua kategori course"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"status\": \"success\",\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Mobile Development\",\n      \"description\": \"Kursus pengembangan aplikasi mobile\",\n      \"icon\": \"mobile-icon.png\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Web Development\",\n      \"description\": \"Kursus pengembangan aplikasi web\",\n      \"icon\": \"web-icon.png\"\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://test2.ciet.site",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+} 

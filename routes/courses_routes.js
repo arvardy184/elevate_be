@@ -57,25 +57,26 @@ router.post(
 
 // GET /api/courses/:courseId/progress
 router.get(
-  "/:id/courseId/progress",
+  "/:courseId/progress",
   verifyToken,
   courseController.getCourseProgress
 );
 
 // GET /api/courses/:courseId/quizzes
-// Mendapatkan quiz untuk kursus tertentu
 router.get(
   "/:courseId/quizzes",
   verifyToken,
-  courseController.getQuizzezForCourse
+  courseController.getQuizzesForCourse
 );
 
 // GET /api/courses/:courseId/videos
-// Mendapatkan video yang terkait dengan kursus tertentu
-router.get("/:courseId/videos", verifyToken, courseController.getCourseVideos);
+router.get(
+  "/:courseId/videos",
+  verifyToken,
+  courseController.getCourseVideos
+);
 
 // POST /api/courses/:courseId/quizzes/:quizId/submit
-// Mengirimkan jawaban untuk quiz yang dikerjakan oleh user
 router.post(
   "/:courseId/quizzes/:quizId/submit",
   verifyToken,
@@ -83,7 +84,6 @@ router.post(
 );
 
 // GET /api/courses/:courseId/quizzes/:quizId/results
-// Mendapatkan hasil quiz yang sudah dikerjakan oleh user
 router.get(
   "/:courseId/quizzes/:quizId/results",
   verifyToken,
@@ -176,3 +176,124 @@ module.exports = router;
 //     });
 //   }
 // });
+
+/**
+ * @swagger
+ * /courses/{courseId}/progress:
+ *   get:
+ *     summary: Dapatkan progress user dalam course
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Progress course berhasil diambil
+ */
+
+/**
+ * @swagger
+ * /courses/{courseId}/quizzes:
+ *   get:
+ *     summary: Dapatkan daftar quiz untuk course
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Daftar quiz berhasil diambil
+ */
+
+/**
+ * @swagger
+ * /courses/{courseId}/videos:
+ *   get:
+ *     summary: Dapatkan daftar video untuk course
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Daftar video berhasil diambil
+ */
+
+/**
+ * @swagger
+ * /courses/{courseId}/quizzes/{quizId}/submit:
+ *   post:
+ *     summary: Submit jawaban quiz
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: quizId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               answers:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     questionId:
+ *                       type: integer
+ *                     answer:
+ *                       type: string
+ *     responses:
+ *       200:
+ *         description: Jawaban quiz berhasil disimpan
+ */
+
+/**
+ * @swagger
+ * /courses/{courseId}/quizzes/{quizId}/results:
+ *   get:
+ *     summary: Dapatkan hasil quiz
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: quizId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Hasil quiz berhasil diambil
+ */

@@ -131,23 +131,23 @@ exports.chargePayment = async (req, res) => {
   }
 };
 
-// POST /payments/notification
+// GET /payments/notification
 exports.handlePaymentNotification = async (req, res) => {
-    try {
-      const notification = req.body;
-      
-      const result = await handleNotification(notification);
-      
-      return res.status(200).json(result);
-    } catch (error) {
-      console.error('Error handling notification:', error);
-      return res.status(500).json({
-        message: "Terjadi kesalahan server"
-      });
-    }
-  };
+  try {
+    const notification = req.body;
+    
+    const result = await handleNotification(notification);
+    
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error('Error handling notification:', error);
+    return res.status(500).json({
+      message: "Terjadi kesalahan server"
+    });
+  }
+};
 
-  / GET /payments/me
+// GET /payments/me - Mendapatkan riwayat pembayaran user
 exports.getMyPayments = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -167,32 +167,36 @@ exports.getMyPayments = async (req, res) => {
               title: true,
               thumbnail: true
             }
-        },
-        roadmap: {
-          select: {
-            id: true,
-            name: true,
-            description: true
+          },
+          roadmap: {
+            select: {
+              id: true,
+              name: true,
+              description: true
+            }
           }
         }
-      }
-    }),
-    prisma.payment.count({ where: { userId } })
-  ]);
+      }),
+      prisma.payment.count({ where: { userId } })
+    ]);
 
-  return res.status(200).json({
-    payments,
-    pagination: {
-      total,
-      page: Number(page),
-      limit: Number(limit),
-      totalPages: Math.ceil(total / Number(limit))
-    }
-});
-} catch (error) {
-console.error('Error getting payments:', error);
-return res.status(500).json({
-  message: "Terjadi kesalahan server"
-});
-}
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        payments,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          totalPages: Math.ceil(total / Number(limit))
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error getting payments:', error);
+    return res.status(500).json({
+      status: 'error',
+      message: "Terjadi kesalahan server"
+    });
+  }
 };

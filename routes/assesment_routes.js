@@ -1,11 +1,13 @@
-
 const express = require('express');
 const router = express.Router();
-const AssessmentController = require('../controllers/assesment_controller');
+const AssessmentController = require('../controllers/assessment_controller');
 const {verifyToken, checkRole} = require('../middleware/auth_middleware');
+
+// POST /api/assessment - submit assessment baru
 router.post('/', verifyToken, AssessmentController.createAssessment);
 
-router.get('/', verifyToken, AssessmentController.checkAssesment);
+// GET /api/assessment - cek status assessment user
+router.get('/', verifyToken, AssessmentController.checkAssessment);
 
 module.exports = router;
 /**
