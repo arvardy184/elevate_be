@@ -87,13 +87,15 @@ model Category {
 }
 
 model Certificate {
-  id       Int      @id @default(autoincrement())
-  userId   Int
-  courseId Int
-  filePath String
-  issuedAt DateTime
-  course   Course   @relation(fields: [courseId], references: [id], map: "Certificate_courseId_fkey")
-  users    User     @relation(fields: [userId], references: [id], map: "Certificate_userId_fkey")
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  courseId      Int
+  certificateId String   @unique
+  fileUrl       String
+  s3Key         String
+  issuedAt      DateTime
+  course        Course   @relation(fields: [courseId], references: [id], map: "Certificate_courseId_fkey")
+  users         User     @relation(fields: [userId], references: [id], map: "Certificate_userId_fkey")
 
   @@index([courseId], map: "Certificate_courseId_fkey")
   @@index([userId], map: "Certificate_userId_fkey")

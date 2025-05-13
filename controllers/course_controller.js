@@ -1,7 +1,10 @@
 const prisma = require("../prisma/client");
 const storageService = require("../utils/storage");
 const path = require("path");
-
+const PDFDocument = require('pdfkit');
+const moment = require('moment');
+const fs = require('fs');
+const path = require('path');
 // GET /api/courses
 exports.getCourses = async (req, res) => {
   const { categoryId, search, page = 1, limit = 10 } = req.query;
@@ -72,10 +75,10 @@ exports.getCourseById = async (req, res) => {
 // POST /api/courses/:id/enroll
 exports.enrollCourse = async (req, res) => {
   const userId = req.user.id;
-  const { courseId } = req.body;
+  const { courseId } = Number(req.params.id);
   try {
-    const course = await prisma.course.findMany({
-      where: { id: Number(courseId) },
+    const course = await prisma.course.findUnique({
+      where: { id: courseId, isActive: true },
     });
     if (!course) {
       return res.status(404).json({ message: "Course tidak ditemukan" });
@@ -146,6 +149,8 @@ exports.GetMyCourses = async (req, res) => {
     return res.status(500).json({ message: "Terjadi kesalahan server" });
   }
 };
+
+// POST /api/courses/:courseId/lessons/:lessonId/progress
 exports.updateLessonProgress = async (req, res) => {
   const { lessonId } = req.params;
   const userId = req.user.id;
@@ -187,18 +192,44 @@ exports.updateLessonProgress = async (req, res) => {
   }
 };
 
+// GET /api/courses/:courseId/progress
 exports.getCourseProgress = async (req, res) => {
-  const { courseId } = req.params;
+  const { courseId } = Number(req.params.id);
   const userId = req.user.id;
 
   try {
-    const course = await prisma.course.findUnique({
-      where: { id: Number(courseId) },
-      include: {
-        lesson: true,
-        quizzes: true,
+    const enrollment = await prisma.enrollment.findFirst({
+      where: {
+        userId,
+        courseId: Number(courseId),
       },
     });
+
+    if (!enrollment) {
+      return res
+        .status(403)
+        .json({ message: "Anda belum terdaftar di course ini" });
+    }
+
+    const [course, progress] = await Promise.all([
+      prisma.course.findUnique({
+        where: { id: Number(courseId) },
+        include: {
+          lesson: true,
+          quizzes: {
+            where: { isRequired: true },
+          },
+        },
+      }),
+      prisma.courseProgress.findUnique({
+        where: {
+          userId_courseId: {
+            userId,
+            courseId: Number(courseId),
+          },
+        },
+      }),
+    ]);
 
     if (!course) {
       return res.status(404).json({ message: "Course tidak ditemukan" });
@@ -257,6 +288,7 @@ exports.getCourseProgress = async (req, res) => {
   }
 };
 
+// GET /api/courses/:courseId/videos
 exports.getcourseVideos = async (req, res) => {
   const { courseId } = req.params;
 
@@ -281,27 +313,42 @@ exports.getcourseVideos = async (req, res) => {
 
 // POST /api/courses/:courseId/videos
 exports.addCourseVideo = async (req, res) => {
-  const { id } = req.params;
-  const { title, isLocked } = req.body;
+  const courseId = Number(req.params.id);
+  const userId = req.user.id;
 
   try {
-    // Pastikan ada data video
-    if (!title) {
-      return res.status(400).json({ message: "Title video diperlukan!" });
-    }
-
     // Pastikan course ada
     const course = await prisma.course.findUnique({
-      where: { id: Number(id) }
+      where: {
+        id: Number(courseId),
+        createdById: userId,
+        isActive: true,
+      },
     });
 
     if (!course) {
-      return res.status(404).json({ message: "Course tidak ditemukan" });
+      return res.status(403).json({
+        message: "Course tidak ditemukan atau Anda tidak memiliki akses",
+      });
+    }
+
+    if (
+      !req.file ||
+      !["video/mp4", "video/mov", "video/avi", "video/mkv"].includes(
+        req.file.mimetype
+      )
+    ) {
+      return res
+        .status(400)
+        .json({ message: "File video harus berupa MP4, MOV, AVI, atau MKV" });
     }
 
     // Pastikan user yang mengupload adalah creator course
     if (course.createdById !== req.user.id) {
-      return res.status(403).json({ message: "Anda tidak memiliki akses untuk mengupload video ke course ini" });
+      return res.status(403).json({
+        message:
+          "Anda tidak memiliki akses untuk mengupload video ke course ini",
+      });
     }
 
     let videoUrl = null;
@@ -311,7 +358,10 @@ exports.addCourseVideo = async (req, res) => {
     if (req.file) {
       try {
         // Upload ke B2
-        const cleanFileName = path.basename(req.file.originalname, path.extname(req.file.originalname));
+        const cleanFileName = path.basename(
+          req.file.originalname,
+          path.extname(req.file.originalname)
+        );
         const uploadResult = await storageService.uploadFile(
           req.file.path,
           storageService.FileCategory.COURSE_VIDEO,
@@ -322,7 +372,9 @@ exports.addCourseVideo = async (req, res) => {
         s3Key = uploadResult.fileName;
       } catch (uploadError) {
         console.error("Error uploading to B2:", uploadError);
-        return res.status(500).json({ message: "Gagal mengupload video ke storage" });
+        return res
+          .status(500)
+          .json({ message: "Gagal mengupload video ke storage" });
       }
     } else {
       return res.status(400).json({ message: "File video diperlukan!" });
@@ -331,9 +383,9 @@ exports.addCourseVideo = async (req, res) => {
     // Hitung order baru (urutan terakhir + 1)
     const lastVideo = await prisma.coursevideo.findFirst({
       where: { courseId: Number(id) },
-      orderBy: { order: 'desc' }
+      orderBy: { order: "desc" },
     });
-    
+
     const newOrder = lastVideo ? lastVideo.order + 1 : 1;
 
     // Tambahkan video baru ke dalam kursus
@@ -344,7 +396,7 @@ exports.addCourseVideo = async (req, res) => {
         isLocked: isLocked === "true" || isLocked === true,
         courseId: Number(id),
         order: newOrder,
-        s3Key
+        s3Key,
       },
     });
 
@@ -384,9 +436,54 @@ exports.getQuizzezForCourse = async (req, res) => {
 // POST /api/courses/:courseId/quizzes/:quizId/submit
 exports.submitQuizAnswer = async (req, res) => {
   const { courseId, quizId } = req.params;
+  const userId = req.user.id;
   const { answers } = req.body; // Jawaban dari user
 
   try {
+    cinst[(enrollment, quiz, existingSubmission)] = await Promise.all([
+      prisma.enrollment.findFirst({
+        where: {
+          userId,
+          courseId: Number(courseId),
+        },
+      }),
+      prisma.quiz.findUnique({
+        where: {
+          id: Number(quizId),
+        },
+      }),
+      prisma.quizSubmission.findFirst({
+        where: {
+          userId,
+          quizId: Number(quizId),
+        },
+      }),
+    ]);
+    if (!enrollment) {
+      return res
+        .status(403)
+        .json({ message: "Anda belum terdaftar di course ini" });
+    }
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz tidak ditemukan" });
+    }
+
+    if (existingSubmission) {
+      return res
+        .status(400)
+        .json({ message: "Anda sudah mengirim jawaban untuk quiz ini" });
+    }
+
+    const correctAnswers = quiz.correctAnswer?.split(",") || [];
+    let score = 0;
+
+    userAnswers.forEach((answer, index) => {
+      if (index < correctAnswers.length && correctAnswers[index] === answer) {
+        score++;
+      }
+    });
+
     // Menyimpan jawaban user untuk quiz ini
     const quiz = await prisma.quiz.findUnique({
       where: { id: Number(quizId) },
@@ -395,17 +492,6 @@ exports.submitQuizAnswer = async (req, res) => {
     if (!quiz) {
       return res.status(404).json({ message: "Quiz tidak ditemukan" });
     }
-
-    // Memeriksa jawaban yang benar
-    const correctAnswers = quiz.correctAnswer.split(","); // Misalnya jawaban benar disimpan sebagai string yang dipisah dengan koma
-
-    let score = 0;
-    // Bandingkan jawaban user dengan jawaban yang benar
-    answers.forEach((answer, index) => {
-      if (correctAnswers[index] === answer) {
-        score++;
-      }
-    });
 
     // Simpan hasil quiz ke database atau update progress
     const result = await prisma.quizSubmission.create({
@@ -459,6 +545,7 @@ exports.getQuizResult = async (req, res) => {
   }
 };
 
+// GET /api/courses/:courseId/videos
 exports.getCourseVideos = async (req, res) => {
   const { courseId } = req.params;
 
@@ -482,6 +569,7 @@ exports.getCourseVideos = async (req, res) => {
   }
 };
 
+// GET /api/courses/:courseId/quizzes
 exports.getCourseQuizzes = async (req, res) => {
   const { courseId } = req.params;
 
@@ -504,11 +592,37 @@ exports.getCourseQuizzes = async (req, res) => {
   }
 };
 
+// POST /api/courses/:courseId/bookmark
 exports.bookmarkCourse = async (req, res) => {
-  const { courseId } = req.params;
+  const { courseId } = Number(req.params.courseId);
   const userId = req.user.id;
 
   try {
+    const [course, bookmarkCount] = await Promise.all([
+      prisma.course.findUnique({
+        where: {
+          id: Number(courseId),
+          isActive: true,
+        },
+      }),
+      prisma.bookmarkCourse.count({
+        where: {
+          courseId: Number(userId),
+        },
+      }),
+    ]);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course tidak ditemukan" });
+    }
+
+    if (bookmarkCount >= 100) {
+      return res.status(400).json({
+        message:
+          "Anda sudah memiliki 100 bookmark, silakan hapus bookmark yang tidak perlu lagi untuk membuat bookmark baru",
+      });
+    }
+
     // Cek apakah bookmark sudah ada
     const existingBookmark = await prisma.bookmarkCourse.findFirst({
       where: {
@@ -516,16 +630,16 @@ exports.bookmarkCourse = async (req, res) => {
         courseId: Number(courseId),
       },
     });
-    
+
     if (existingBookmark) {
       // Hapus bookmark jika sudah ada (toggle)
       await prisma.bookmarkCourse.delete({
         where: { id: existingBookmark.id },
       });
-      
+
       return res.status(200).json({
         message: "Bookmark berhasil dihapus",
-        isBookmarked: false
+        isBookmarked: false,
       });
     } else {
       // Buat bookmark baru jika belum ada
@@ -535,17 +649,17 @@ exports.bookmarkCourse = async (req, res) => {
           courseId: Number(courseId),
         },
       });
-      
+
       return res.status(201).json({
         message: "Course berhasil di-bookmark",
-        isBookmarked: true
+        isBookmarked: true,
       });
     }
   } catch (e) {
     console.error("Error bookmarking course:", e);
-    return res.status(500).json({message: "Terjadi kesalahan server"});
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
   }
-}
+};
 
 // GET /api/courses/bookmarks
 exports.getBookmarkedCourses = async (req, res) => {
@@ -558,32 +672,32 @@ exports.getBookmarkedCourses = async (req, res) => {
       include: {
         course: {
           include: {
-            category: true
-          }
-        }
-      }
+            category: true,
+          },
+        },
+      },
     });
-    
+
     if (!bookmarks || bookmarks.length === 0) {
       return res.status(200).json({
         message: "Belum ada course yang di-bookmark",
-        courses: []
+        courses: [],
       });
     }
-    
+
     // Transform response untuk struktur yang lebih clean
-    const courses = bookmarks.map(bookmark => bookmark.course);
+    const courses = bookmarks.map((bookmark) => bookmark.course);
 
     return res.status(200).json({
       message: "Berhasil mengambil daftar course yang di-bookmark",
       count: courses.length,
-      courses
+      courses,
     });
   } catch (e) {
     console.error("Error getting bookmarked courses:", e);
     return res.status(500).json({ message: "Terjadi kesalahan server" });
   }
-}
+};
 
 // GET /api/courses/:courseId/is-bookmarked
 exports.isBookmarked = async (req, res) => {
@@ -592,18 +706,154 @@ exports.isBookmarked = async (req, res) => {
 
   try {
     const bookmark = await prisma.bookmarkCourse.findFirst({
-      where: { 
+      where: {
         userId,
-        courseId: Number(courseId)
-      }
+        courseId: Number(courseId),
+      },
     });
-    
+
     return res.status(200).json({
-      isBookmarked: !!bookmark
+      isBookmarked: !!bookmark,
     });
   } catch (e) {
     console.error("Error checking bookmark status:", e);
     return res.status(500).json({ message: "Terjadi kesalahan server" });
   }
-}
+};
 
+//GET /api/courses/:courseId/certificate
+exports.generateCertificate = async (req, res) => {
+  const { courseId } = req.params;
+  const userId = req.user.id;
+
+  try{
+
+    //cek apakah user sudah menyelesaikan course
+    const [course, courseProgress, user] = await Promise.all([
+      prisma.course.findUnique({
+        where: {
+          id: Number(courseId),
+          
+        },
+        include:{
+          category: true,
+        }
+      }),
+      prisma.courseProgress.findUnique({
+        where: {
+          userId_courseId:{
+            userId,
+            courseId: Number(courseId)
+          }
+        }
+      }),
+      prisma.user.findUnique({
+        where:{
+          id: userId,
+        }
+      })
+    ]);
+
+    if(!course){
+      return res.status(404).json({message: "Course tidak ditemukan"})
+    }
+
+    if(!courseProgress || !courseProgress.isCompleted){
+      return res.status(400).json({message: "Anda belum menyelesaikan course ini"});
+    }
+
+    //generate nama file sertif
+    const certificateId = `CERT-${courseId}-${userId}-${Date.now()}`;
+    const fileName = `${certificateId}.pdf`;
+    const filePath = path.join(__dirname, '../temp', fileName);
+
+    //buat pdf
+    const doc = new PDFDocument({
+      layout: 'landscape',
+      size: 'A4'
+    });
+
+    //stream pdf ke file
+    const writeStream = fs.createWriteStream(filePath);
+    doc.pipe(writeStream);
+
+
+    //design sertif
+    doc
+      .font('Helvetica-Bold')
+      .fontSize(40)
+      .text('Certificate of Completion', { align: 'center' })
+      .moveDown()
+      .fontSize(25)
+      .text(course.title, { align: 'center' })
+      .moveDown()
+      .fontSize(20)
+      .text('This is to certify that', { align: 'center' })
+      .moveDown()
+      .fontSize(30)
+      .text(user.fullName, { align: 'center' })
+      .moveDown()
+      .fontSize(20)
+      .text('has successfully completed the course', { align: 'center' })
+      .moveDown()
+      .fontSize(15)
+      .text(`Category: ${course.category.name}`, { align: 'center' })
+      .moveDown()
+      .fontSize(15)
+      .text(`Completion Date: ${moment(courseProgress.updatedAt).format('MMMM Do YYYY')}`, { align: 'center' })
+      .moveDown()
+      .fontSize(15)
+      .text(`Certificate ID: ${certificateId}`, { align: 'center' });
+   // Tambah border
+   doc.rect(50, 50, 700, 500).stroke();
+
+   // Finalize PDF
+   doc.end();
+
+    // Tunggu file selesai ditulis
+    writeStream.on('finish', async () => {
+      try {
+        // Upload ke storage
+        const uploadResult = await storageService.uploadFile(
+          filePath,
+          storageService.FileCategory.CERTIFICATE,
+          certificateId
+        );
+
+        // Simpan info sertifikat ke database
+        await prisma.certificate.create({
+          data: {
+            userId,
+            courseId: Number(courseId),
+            certificateId,
+            fileUrl: uploadResult.fileUrl,
+            s3Key: uploadResult.fileName,
+            issuedAt: new Date()
+          }
+        });
+
+         // Hapus file temporary
+         fs.unlinkSync(filePath);
+
+         // Return URL sertifikat
+         return res.status(200).json({
+           message: "Sertifikat berhasil dibuat",
+           certificateUrl: uploadResult.fileUrl,
+           certificateId
+         });
+ 
+       } catch (uploadError) {
+         console.error("Error uploading certificate:", uploadError);
+         return res.status(500).json({ 
+           message: "Gagal mengupload sertifikat" 
+         });
+       }
+     });
+
+    } catch (error) {
+      console.error("Error generating certificate:", error);
+      return res.status(500).json({ 
+        message: "Terjadi kesalahan server" 
+      });
+    }
+  };

@@ -173,7 +173,9 @@ exports.Prisma.CertificateScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   courseId: 'courseId',
-  filePath: 'filePath',
+  certificateId: 'certificateId',
+  fileUrl: 'fileUrl',
+  s3Key: 's3Key',
   issuedAt: 'issuedAt'
 };
 
@@ -403,7 +405,9 @@ exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.CertificateOrderByRelevanceFieldEnum = {
-  filePath: 'filePath'
+  certificateId: 'certificateId',
+  fileUrl: 'fileUrl',
+  s3Key: 's3Key'
 };
 
 exports.Prisma.ChatMessageOrderByRelevanceFieldEnum = {

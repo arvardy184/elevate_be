@@ -8704,7 +8704,9 @@ export namespace Prisma {
     id: number | null
     userId: number | null
     courseId: number | null
-    filePath: string | null
+    certificateId: string | null
+    fileUrl: string | null
+    s3Key: string | null
     issuedAt: Date | null
   }
 
@@ -8712,7 +8714,9 @@ export namespace Prisma {
     id: number | null
     userId: number | null
     courseId: number | null
-    filePath: string | null
+    certificateId: string | null
+    fileUrl: string | null
+    s3Key: string | null
     issuedAt: Date | null
   }
 
@@ -8720,7 +8724,9 @@ export namespace Prisma {
     id: number
     userId: number
     courseId: number
-    filePath: number
+    certificateId: number
+    fileUrl: number
+    s3Key: number
     issuedAt: number
     _all: number
   }
@@ -8742,7 +8748,9 @@ export namespace Prisma {
     id?: true
     userId?: true
     courseId?: true
-    filePath?: true
+    certificateId?: true
+    fileUrl?: true
+    s3Key?: true
     issuedAt?: true
   }
 
@@ -8750,7 +8758,9 @@ export namespace Prisma {
     id?: true
     userId?: true
     courseId?: true
-    filePath?: true
+    certificateId?: true
+    fileUrl?: true
+    s3Key?: true
     issuedAt?: true
   }
 
@@ -8758,7 +8768,9 @@ export namespace Prisma {
     id?: true
     userId?: true
     courseId?: true
-    filePath?: true
+    certificateId?: true
+    fileUrl?: true
+    s3Key?: true
     issuedAt?: true
     _all?: true
   }
@@ -8853,7 +8865,9 @@ export namespace Prisma {
     id: number
     userId: number
     courseId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date
     _count: CertificateCountAggregateOutputType | null
     _avg: CertificateAvgAggregateOutputType | null
@@ -8880,7 +8894,9 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     courseId?: boolean
-    filePath?: boolean
+    certificateId?: boolean
+    fileUrl?: boolean
+    s3Key?: boolean
     issuedAt?: boolean
     course?: boolean | CourseDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
@@ -8892,11 +8908,13 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     courseId?: boolean
-    filePath?: boolean
+    certificateId?: boolean
+    fileUrl?: boolean
+    s3Key?: boolean
     issuedAt?: boolean
   }
 
-  export type CertificateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "filePath" | "issuedAt", ExtArgs["result"]["certificate"]>
+  export type CertificateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "certificateId" | "fileUrl" | "s3Key" | "issuedAt", ExtArgs["result"]["certificate"]>
   export type CertificateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     course?: boolean | CourseDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
@@ -8912,7 +8930,9 @@ export namespace Prisma {
       id: number
       userId: number
       courseId: number
-      filePath: string
+      certificateId: string
+      fileUrl: string
+      s3Key: string
       issuedAt: Date
     }, ExtArgs["result"]["certificate"]>
     composites: {}
@@ -9288,7 +9308,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Certificate", 'Int'>
     readonly userId: FieldRef<"Certificate", 'Int'>
     readonly courseId: FieldRef<"Certificate", 'Int'>
-    readonly filePath: FieldRef<"Certificate", 'String'>
+    readonly certificateId: FieldRef<"Certificate", 'String'>
+    readonly fileUrl: FieldRef<"Certificate", 'String'>
+    readonly s3Key: FieldRef<"Certificate", 'String'>
     readonly issuedAt: FieldRef<"Certificate", 'DateTime'>
   }
     
@@ -29152,7 +29174,9 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     courseId: 'courseId',
-    filePath: 'filePath',
+    certificateId: 'certificateId',
+    fileUrl: 'fileUrl',
+    s3Key: 's3Key',
     issuedAt: 'issuedAt'
   };
 
@@ -29463,7 +29487,9 @@ export namespace Prisma {
 
 
   export const CertificateOrderByRelevanceFieldEnum: {
-    filePath: 'filePath'
+    certificateId: 'certificateId',
+    fileUrl: 'fileUrl',
+    s3Key: 's3Key'
   };
 
   export type CertificateOrderByRelevanceFieldEnum = (typeof CertificateOrderByRelevanceFieldEnum)[keyof typeof CertificateOrderByRelevanceFieldEnum]
@@ -30041,7 +30067,9 @@ export namespace Prisma {
     id?: IntFilter<"Certificate"> | number
     userId?: IntFilter<"Certificate"> | number
     courseId?: IntFilter<"Certificate"> | number
-    filePath?: StringFilter<"Certificate"> | string
+    certificateId?: StringFilter<"Certificate"> | string
+    fileUrl?: StringFilter<"Certificate"> | string
+    s3Key?: StringFilter<"Certificate"> | string
     issuedAt?: DateTimeFilter<"Certificate"> | Date | string
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -30051,7 +30079,9 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     courseId?: SortOrder
-    filePath?: SortOrder
+    certificateId?: SortOrder
+    fileUrl?: SortOrder
+    s3Key?: SortOrder
     issuedAt?: SortOrder
     course?: CourseOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
@@ -30060,22 +30090,26 @@ export namespace Prisma {
 
   export type CertificateWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    certificateId?: string
     AND?: CertificateWhereInput | CertificateWhereInput[]
     OR?: CertificateWhereInput[]
     NOT?: CertificateWhereInput | CertificateWhereInput[]
     userId?: IntFilter<"Certificate"> | number
     courseId?: IntFilter<"Certificate"> | number
-    filePath?: StringFilter<"Certificate"> | string
+    fileUrl?: StringFilter<"Certificate"> | string
+    s3Key?: StringFilter<"Certificate"> | string
     issuedAt?: DateTimeFilter<"Certificate"> | Date | string
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "certificateId">
 
   export type CertificateOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     courseId?: SortOrder
-    filePath?: SortOrder
+    certificateId?: SortOrder
+    fileUrl?: SortOrder
+    s3Key?: SortOrder
     issuedAt?: SortOrder
     _count?: CertificateCountOrderByAggregateInput
     _avg?: CertificateAvgOrderByAggregateInput
@@ -30091,7 +30125,9 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Certificate"> | number
     userId?: IntWithAggregatesFilter<"Certificate"> | number
     courseId?: IntWithAggregatesFilter<"Certificate"> | number
-    filePath?: StringWithAggregatesFilter<"Certificate"> | string
+    certificateId?: StringWithAggregatesFilter<"Certificate"> | string
+    fileUrl?: StringWithAggregatesFilter<"Certificate"> | string
+    s3Key?: StringWithAggregatesFilter<"Certificate"> | string
     issuedAt?: DateTimeWithAggregatesFilter<"Certificate"> | Date | string
   }
 
@@ -31821,7 +31857,9 @@ export namespace Prisma {
   }
 
   export type CertificateCreateInput = {
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
     course: CourseCreateNestedOneWithoutCertificateInput
     users: UserCreateNestedOneWithoutCertificateInput
@@ -31831,12 +31869,16 @@ export namespace Prisma {
     id?: number
     userId: number
     courseId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
   }
 
   export type CertificateUpdateInput = {
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneRequiredWithoutCertificateNestedInput
     users?: UserUpdateOneRequiredWithoutCertificateNestedInput
@@ -31846,7 +31888,9 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: IntFieldUpdateOperationsInput | number
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31854,12 +31898,16 @@ export namespace Prisma {
     id?: number
     userId: number
     courseId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
   }
 
   export type CertificateUpdateManyMutationInput = {
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31867,7 +31915,9 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: IntFieldUpdateOperationsInput | number
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -33678,7 +33728,9 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     courseId?: SortOrder
-    filePath?: SortOrder
+    certificateId?: SortOrder
+    fileUrl?: SortOrder
+    s3Key?: SortOrder
     issuedAt?: SortOrder
   }
 
@@ -33692,7 +33744,9 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     courseId?: SortOrder
-    filePath?: SortOrder
+    certificateId?: SortOrder
+    fileUrl?: SortOrder
+    s3Key?: SortOrder
     issuedAt?: SortOrder
   }
 
@@ -33700,7 +33754,9 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     courseId?: SortOrder
-    filePath?: SortOrder
+    certificateId?: SortOrder
+    fileUrl?: SortOrder
+    s3Key?: SortOrder
     issuedAt?: SortOrder
   }
 
@@ -37020,7 +37076,9 @@ export namespace Prisma {
   }
 
   export type CertificateCreateWithoutUsersInput = {
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
     course: CourseCreateNestedOneWithoutCertificateInput
   }
@@ -37028,7 +37086,9 @@ export namespace Prisma {
   export type CertificateUncheckedCreateWithoutUsersInput = {
     id?: number
     courseId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
   }
 
@@ -37494,7 +37554,9 @@ export namespace Prisma {
     id?: IntFilter<"Certificate"> | number
     userId?: IntFilter<"Certificate"> | number
     courseId?: IntFilter<"Certificate"> | number
-    filePath?: StringFilter<"Certificate"> | string
+    certificateId?: StringFilter<"Certificate"> | string
+    fileUrl?: StringFilter<"Certificate"> | string
+    s3Key?: StringFilter<"Certificate"> | string
     issuedAt?: DateTimeFilter<"Certificate"> | Date | string
   }
 
@@ -38974,7 +39036,9 @@ export namespace Prisma {
   }
 
   export type CertificateCreateWithoutCourseInput = {
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
     users: UserCreateNestedOneWithoutCertificateInput
   }
@@ -38982,7 +39046,9 @@ export namespace Prisma {
   export type CertificateUncheckedCreateWithoutCourseInput = {
     id?: number
     userId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
   }
 
@@ -42464,7 +42530,9 @@ export namespace Prisma {
   export type CertificateCreateManyUsersInput = {
     id?: number
     courseId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
   }
 
@@ -42622,7 +42690,9 @@ export namespace Prisma {
   }
 
   export type CertificateUpdateWithoutUsersInput = {
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     course?: CourseUpdateOneRequiredWithoutCertificateNestedInput
   }
@@ -42630,14 +42700,18 @@ export namespace Prisma {
   export type CertificateUncheckedUpdateWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     courseId?: IntFieldUpdateOperationsInput | number
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CertificateUncheckedUpdateManyWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     courseId?: IntFieldUpdateOperationsInput | number
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -43146,7 +43220,9 @@ export namespace Prisma {
   export type CertificateCreateManyCourseInput = {
     id?: number
     userId: number
-    filePath: string
+    certificateId: string
+    fileUrl: string
+    s3Key: string
     issuedAt: Date | string
   }
 
@@ -43221,7 +43297,9 @@ export namespace Prisma {
   }
 
   export type CertificateUpdateWithoutCourseInput = {
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateOneRequiredWithoutCertificateNestedInput
   }
@@ -43229,14 +43307,18 @@ export namespace Prisma {
   export type CertificateUncheckedUpdateWithoutCourseInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CertificateUncheckedUpdateManyWithoutCourseInput = {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
-    filePath?: StringFieldUpdateOperationsInput | string
+    certificateId?: StringFieldUpdateOperationsInput | string
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    s3Key?: StringFieldUpdateOperationsInput | string
     issuedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

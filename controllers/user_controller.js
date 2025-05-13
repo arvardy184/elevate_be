@@ -1,4 +1,4 @@
-const uploadProfileImage = require("../utils/fileUploader");
+const { uploadMiddleware, uploadToStorage, FileCategory } = require("../utils/fileUploader");
 const prisma = require('../prisma/client');
 
 exports.getProfile = async (req, res) => {
@@ -46,39 +46,46 @@ return res.status(500).json({message: "Terjadi kesalahan server."});
 
 
 exports.updateProfile = async (req, res) => {
-  try{
+  try {
     const userId = req.user.id;
     const { firstName, lastName, address, phoneNumber, gender, birthDate } = req.body;
 
     const existing = await prisma.user.findUnique({
       where: { id: userId },
     });
-    if(!existing){
+    
+    if(!existing) {
       return res.status(404).json({
         message: 'User tidak ditemukan!',
       });
-    }// end if
-
-    
-
-    //handle foto
-    let profilePicture = existing.profilePicture;
-    if(req.file){
-      profilePicture = await uploadProfileImage(req.file);
     }
+
+    // Handle foto profile
+    let profilePicture = existing.profilePicture;
+    if(req.file) {
+      try {
+        const uploadResult = await uploadToStorage(req.file, FileCategory.PROFILE_PICTURE);
+        profilePicture = uploadResult.data.fileUrl;
+      } catch (error) {
+        console.error('Error uploading profile picture:', error);
+        return res.status(400).json({
+          message: 'Gagal upload foto profile. ' + error.message
+        });
+      }
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
         firstName,
         lastName,
-        email,
         address,
         phoneNumber,
         gender,
         birthDate,
         profilePicture 
       },
-      select:{
+      select: {
         id: true, 
         firstName: true,
         lastName: true,
@@ -91,15 +98,16 @@ exports.updateProfile = async (req, res) => {
         createdAt: true
       }
     });
+
     return res.status(200).json({
       message: 'Profile user berhasil diupdate!',
       updatedUser
     });
-  } catch(e){
+  } catch(e) {
     console.error(e);
     return res.status(500).json({
       message: 'Terjadi kesalahan server.',
-    })
+    });
   }
 }
 // exports.updateProfile =async (req, res) => {
