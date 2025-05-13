@@ -1,10 +1,10 @@
 const prisma = require("../prisma/client");
 const storageService = require("../utils/storage");
 const path = require("path");
-const PDFDocument = require('pdfkit');
-const moment = require('moment');
-const fs = require('fs');
-const path = require('path');
+const PDFDocument = require("pdfkit");
+const moment = require("moment");
+const fs = require("fs");
+const path = require("path");
 // GET /api/courses
 exports.getCourses = async (req, res) => {
   const { categoryId, search, page = 1, limit = 10 } = req.query;
@@ -726,92 +726,96 @@ exports.generateCertificate = async (req, res) => {
   const { courseId } = req.params;
   const userId = req.user.id;
 
-  try{
-
+  try {
     //cek apakah user sudah menyelesaikan course
     const [course, courseProgress, user] = await Promise.all([
       prisma.course.findUnique({
         where: {
           id: Number(courseId),
-          
         },
-        include:{
+        include: {
           category: true,
-        }
+        },
       }),
       prisma.courseProgress.findUnique({
         where: {
-          userId_courseId:{
+          userId_courseId: {
             userId,
-            courseId: Number(courseId)
-          }
-        }
+            courseId: Number(courseId),
+          },
+        },
       }),
       prisma.user.findUnique({
-        where:{
+        where: {
           id: userId,
-        }
-      })
+        },
+      }),
     ]);
 
-    if(!course){
-      return res.status(404).json({message: "Course tidak ditemukan"})
+    if (!course) {
+      return res.status(404).json({ message: "Course tidak ditemukan" });
     }
 
-    if(!courseProgress || !courseProgress.isCompleted){
-      return res.status(400).json({message: "Anda belum menyelesaikan course ini"});
+    if (!courseProgress || !courseProgress.isCompleted) {
+      return res
+        .status(400)
+        .json({ message: "Anda belum menyelesaikan course ini" });
     }
 
     //generate nama file sertif
     const certificateId = `CERT-${courseId}-${userId}-${Date.now()}`;
     const fileName = `${certificateId}.pdf`;
-    const filePath = path.join(__dirname, '../temp', fileName);
+    const filePath = path.join(__dirname, "../temp", fileName);
 
     //buat pdf
     const doc = new PDFDocument({
-      layout: 'landscape',
-      size: 'A4'
+      layout: "landscape",
+      size: "A4",
     });
 
     //stream pdf ke file
     const writeStream = fs.createWriteStream(filePath);
     doc.pipe(writeStream);
 
-
     //design sertif
     doc
-      .font('Helvetica-Bold')
+      .font("Helvetica-Bold")
       .fontSize(40)
-      .text('Certificate of Completion', { align: 'center' })
+      .text("Certificate of Completion", { align: "center" })
       .moveDown()
       .fontSize(25)
-      .text(course.title, { align: 'center' })
+      .text(course.title, { align: "center" })
       .moveDown()
       .fontSize(20)
-      .text('This is to certify that', { align: 'center' })
+      .text("This is to certify that", { align: "center" })
       .moveDown()
       .fontSize(30)
-      .text(user.fullName, { align: 'center' })
+      .text(user.fullName, { align: "center" })
       .moveDown()
       .fontSize(20)
-      .text('has successfully completed the course', { align: 'center' })
+      .text("has successfully completed the course", { align: "center" })
       .moveDown()
       .fontSize(15)
-      .text(`Category: ${course.category.name}`, { align: 'center' })
+      .text(`Category: ${course.category.name}`, { align: "center" })
       .moveDown()
       .fontSize(15)
-      .text(`Completion Date: ${moment(courseProgress.updatedAt).format('MMMM Do YYYY')}`, { align: 'center' })
+      .text(
+        `Completion Date: ${moment(courseProgress.updatedAt).format(
+          "MMMM Do YYYY"
+        )}`,
+        { align: "center" }
+      )
       .moveDown()
       .fontSize(15)
-      .text(`Certificate ID: ${certificateId}`, { align: 'center' });
-   // Tambah border
-   doc.rect(50, 50, 700, 500).stroke();
+      .text(`Certificate ID: ${certificateId}`, { align: "center" });
+    // Tambah border
+    doc.rect(50, 50, 700, 500).stroke();
 
-   // Finalize PDF
-   doc.end();
+    // Finalize PDF
+    doc.end();
 
     // Tunggu file selesai ditulis
-    writeStream.on('finish', async () => {
+    writeStream.on("finish", async () => {
       try {
         // Upload ke storage
         const uploadResult = await storageService.uploadFile(
@@ -828,32 +832,30 @@ exports.generateCertificate = async (req, res) => {
             certificateId,
             fileUrl: uploadResult.fileUrl,
             s3Key: uploadResult.fileName,
-            issuedAt: new Date()
-          }
+            issuedAt: new Date(),
+          },
         });
 
-         // Hapus file temporary
-         fs.unlinkSync(filePath);
+        // Hapus file temporary
+        fs.unlinkSync(filePath);
 
-         // Return URL sertifikat
-         return res.status(200).json({
-           message: "Sertifikat berhasil dibuat",
-           certificateUrl: uploadResult.fileUrl,
-           certificateId
-         });
- 
-       } catch (uploadError) {
-         console.error("Error uploading certificate:", uploadError);
-         return res.status(500).json({ 
-           message: "Gagal mengupload sertifikat" 
-         });
-       }
-     });
-
-    } catch (error) {
-      console.error("Error generating certificate:", error);
-      return res.status(500).json({ 
-        message: "Terjadi kesalahan server" 
-      });
-    }
-  };
+        // Return URL sertifikat
+        return res.status(200).json({
+          message: "Sertifikat berhasil dibuat",
+          certificateUrl: uploadResult.fileUrl,
+          certificateId,
+        });
+      } catch (uploadError) {
+        console.error("Error uploading certificate:", uploadError);
+        return res.status(500).json({
+          message: "Gagal mengupload sertifikat",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error generating certificate:", error);
+    return res.status(500).json({
+      message: "Terjadi kesalahan server",
+    });
+  }
+};

@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken, checkRole } = require("../middleware/auth_middleware");
-const { handleUploadError, uploadCourseVideo } = require("../middleware/upload_middleware");
+const {
+  handleUploadError,
+  uploadCourseVideo,
+} = require("../middleware/upload_middleware");
 
 /**
  * @swagger
@@ -31,11 +34,19 @@ router.get("/:id", courseController.getCourseById);
 // POST /api/courses/:id/enroll
 router.post("/:id/enroll", verifyToken, courseController.enrollCourse);
 
-// POST /api/courses/:courseId/bookmark 
-router.post("/:courseId/bookmark", verifyToken, courseController.bookmarkCourse);
+// POST /api/courses/:courseId/bookmark
+router.post(
+  "/:courseId/bookmark",
+  verifyToken,
+  courseController.bookmarkCourse
+);
 
 // GET /api/courses/:courseId/is-bookmarked
-router.get("/:courseId/is-bookmarked", verifyToken, courseController.isBookmarked);
+router.get(
+  "/:courseId/is-bookmarked",
+  verifyToken,
+  courseController.isBookmarked
+);
 
 //post /api/:lessonId/progress
 router.post(
@@ -45,11 +56,19 @@ router.post(
 );
 
 // GET /api/courses/:courseId/progress
-router.get("/:id/courseId/progress", verifyToken, courseController.getCourseProgress);
+router.get(
+  "/:id/courseId/progress",
+  verifyToken,
+  courseController.getCourseProgress
+);
 
 // GET /api/courses/:courseId/quizzes
 // Mendapatkan quiz untuk kursus tertentu
-router.get("/:courseId/quizzes", verifyToken, courseController.getQuizzezForCourse);
+router.get(
+  "/:courseId/quizzes",
+  verifyToken,
+  courseController.getQuizzezForCourse
+);
 
 // GET /api/courses/:courseId/videos
 // Mendapatkan video yang terkait dengan kursus tertentu
@@ -57,18 +76,26 @@ router.get("/:courseId/videos", verifyToken, courseController.getCourseVideos);
 
 // POST /api/courses/:courseId/quizzes/:quizId/submit
 // Mengirimkan jawaban untuk quiz yang dikerjakan oleh user
-router.post("/:courseId/quizzes/:quizId/submit", verifyToken, courseController.submitQuizAnswer);
+router.post(
+  "/:courseId/quizzes/:quizId/submit",
+  verifyToken,
+  courseController.submitQuizAnswer
+);
 
 // GET /api/courses/:courseId/quizzes/:quizId/results
 // Mendapatkan hasil quiz yang sudah dikerjakan oleh user
-router.get("/:courseId/quizzes/:quizId/results", verifyToken, courseController.getQuizResult);
+router.get(
+  "/:courseId/quizzes/:quizId/results",
+  verifyToken,
+  courseController.getQuizResult
+);
 
 // POST /api/courses/:courseId/videos
 // Admin/Creator: Menambah video ke kursus
 router.post(
-  "/:courseId/videos", 
-  verifyToken, 
-  checkRole, 
+  "/:courseId/videos",
+  verifyToken,
+  checkRole,
   handleUploadError(uploadCourseVideo),
   courseController.addCourseVideo
 );
