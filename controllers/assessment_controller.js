@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require("../prisma/client");
 const { mapAssessmentToRoadmap } = require("../services/roadmap_service");
 
 class AssessmentController {
