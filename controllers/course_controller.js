@@ -4,7 +4,6 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 const moment = require("moment");
 const fs = require("fs");
-const path = require("path");
 // GET /api/courses
 exports.getCourses = async (req, res) => {
   const { categoryId, search, page = 1, limit = 10 } = req.query;
