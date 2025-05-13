@@ -23,7 +23,7 @@ const courseController = require("../controllers/course_controller");
 router.get("/", courseController.getCourses);
 
 // GET /api/courses/me - harus sebelum /:id
-router.get("/me", verifyToken, courseController.GetMyCourses);
+router.get("/me", verifyToken, courseController.getMyCourses);
 
 // GET /api/courses/bookmarks - harus sebelum /:id
 router.get("/bookmarks", verifyToken, courseController.getBookmarkedCourses);
@@ -66,7 +66,7 @@ router.get(
 router.get(
   "/:courseId/quizzes",
   verifyToken,
-  courseController.getQuizzesForCourse
+  courseController.getQuizzezForCourse
 );
 
 // GET /api/courses/:courseId/videos
