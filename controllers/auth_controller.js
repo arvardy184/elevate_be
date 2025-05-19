@@ -7,11 +7,11 @@ const prisma = require("../prisma/client");
 
 exports.register = async (req, res) => {
   try {
-    const {  email,phoneNumber, password,  } = req.body;
-    if (!email || !password || !phoneNumber) {
+    const { firstName, lastName, email, phoneNumber, password } = req.body;
+    if (!email || !password || !phoneNumber || !firstName || !lastName) {
       return res.status(400).json({ message: "Harap isi semua field!" });
     }
-    console.log(email,phoneNumber, password);
+    console.log(firstName, lastName, email, phoneNumber, password);
 
     const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
@@ -20,6 +20,8 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await UserModel.createUser({
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
       phoneNumber,

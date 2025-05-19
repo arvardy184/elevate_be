@@ -17,14 +17,23 @@ const {verifyToken, checkRole} = require('../middleware/auth_middleware');
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name, email, password]
+ *             required: [firstName, lastName, email, phoneNumber, password]
  *             properties:
- *               name:
+ *               firstName:
  *                 type: string
+ *                 description: Nama depan user
+ *               lastName:
+ *                 type: string
+ *                 description: Nama belakang user
  *               email:
  *                 type: string
+ *                 description: Email user
+ *               phoneNumber:
+ *                 type: string
+ *                 description: Nomor telepon user
  *               password:
  *                 type: string
+ *                 description: Password user
  *     responses:
  *       201:
  *         description: Registrasi berhasil

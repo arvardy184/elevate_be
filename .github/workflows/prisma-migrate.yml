@@ -1,0 +1,34 @@
+name: Prisma Migrate
+
+on:
+  push:
+    branches:
+      - main  # atau branch yang kamu pake
+    paths:
+      - 'prisma/**'  # trigger kalo ada perubahan di folder prisma
+  workflow_dispatch:  # biar bisa jalanin manual dari GitHub UI
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # sesuaikan dengan versi Node.js yang dipake
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Setup environment variables
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          
+      - name: Run Prisma Migrate
+        run: npx prisma migrate deploy
+        
+      - name: Generate Prisma Client
+        run: npx prisma generate 
