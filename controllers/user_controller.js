@@ -1,6 +1,104 @@
 const { uploadMiddleware, uploadToStorage, FileCategory } = require("../utils/fileUploader");
 const prisma = require('../prisma/client');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserProfile:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID unik user
+ *         firstName:
+ *           type: string
+ *           description: Nama depan user
+ *         lastName:
+ *           type: string
+ *           description: Nama belakang user
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email user
+ *         address:
+ *           type: string
+ *           description: Alamat user
+ *         phoneNumber:
+ *           type: string
+ *           description: Nomor telepon user
+ *         gender:
+ *           type: string
+ *           enum: [male, female, other]
+ *           description: Jenis kelamin user
+ *         birthDate:
+ *           type: string
+ *           format: date
+ *           description: Tanggal lahir user
+ *         profilePicture:
+ *           type: string
+ *           description: URL foto profil user
+ *         role:
+ *           type: string
+ *           enum: [user, admin]
+ *           description: Role user
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           description: Waktu pembuatan akun
+ *     UpdateProfileRequest:
+ *       type: object
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: Nama depan user
+ *         lastName:
+ *           type: string
+ *           description: Nama belakang user
+ *         address:
+ *           type: string
+ *           description: Alamat user
+ *         phoneNumber:
+ *           type: string
+ *           description: Nomor telepon user
+ *         gender:
+ *           type: string
+ *           enum: [male, female, other]
+ *           description: Jenis kelamin user
+ *         birthDate:
+ *           type: string
+ *           format: date
+ *           description: Tanggal lahir user
+ */
+
+/**
+ * @swagger
+ * /api/users/profile:
+ *   get:
+ *     summary: Ambil profil user yang sedang login
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Profil user berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Profile user berhasil diakses!
+ *                 user:
+ *                   $ref: '#/components/schemas/UserProfile'
+ *       401:
+ *         description: Unauthorized - Token tidak valid
+ *       404:
+ *         description: User tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.getProfile = async (req, res) => {
   try{
     const userId = req.user.id;
@@ -45,6 +143,60 @@ return res.status(500).json({message: "Terjadi kesalahan server."});
 //   };
 
 
+/**
+ * @swagger
+ * /api/users/profile:
+ *   put:
+ *     summary: Update profil user yang sedang login
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               phoneNumber:
+ *                 type: string
+ *               gender:
+ *                 type: string
+ *                 enum: [male, female, other]
+ *               birthDate:
+ *                 type: string
+ *                 format: date
+ *               profilePicture:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Profil user berhasil diupdate
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Profile user berhasil diupdate!
+ *                 updatedUser:
+ *                   $ref: '#/components/schemas/UserProfile'
+ *       400:
+ *         description: Bad request - Gagal upload foto profil
+ *       401:
+ *         description: Unauthorized - Token tidak valid
+ *       404:
+ *         description: User tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;

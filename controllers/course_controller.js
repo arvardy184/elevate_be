@@ -4,7 +4,149 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 const moment = require("moment");
 const fs = require("fs");
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Course:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID unik course
+ *         title:
+ *           type: string
+ *           description: Judul course
+ *         description:
+ *           type: string
+ *           description: Deskripsi course
+ *         thumbnail:
+ *           type: string
+ *           description: URL thumbnail course
+ *         price:
+ *           type: number
+ *           description: Harga course (0 untuk course gratis)
+ *         isPaid:
+ *           type: boolean
+ *           description: Status apakah course berbayar
+ *         isActive:
+ *           type: boolean
+ *           description: Status apakah course aktif
+ *         category:
+ *           $ref: '#/components/schemas/Category'
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *     Category:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *     CourseProgress:
+ *       type: object
+ *       properties:
+ *         userId:
+ *           type: string
+ *         courseId:
+ *           type: integer
+ *         progress:
+ *           type: number
+ *           description: Persentase progress (0-100)
+ *         isCompleted:
+ *           type: boolean
+ *         lastAccessedAt:
+ *           type: string
+ *           format: date-time
+ *     LessonProgress:
+ *       type: object
+ *       properties:
+ *         userId:
+ *           type: string
+ *         lessonId:
+ *           type: integer
+ *         isCompleted:
+ *           type: boolean
+ *         lastAccessedAt:
+ *           type: string
+ *           format: date-time
+ *     Enrollment:
+ *       type: object
+ *       properties:
+ *         userId:
+ *           type: string
+ *         courseId:
+ *           type: integer
+ *         isPaid:
+ *           type: boolean
+ *         enrolledAt:
+ *           type: string
+ *           format: date-time
+ */
+
 // GET /api/courses
+/**
+ * @swagger
+ * /api/courses:
+ *   get:
+ *     summary: Ambil daftar course dengan filter dan pagination
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: query
+ *         name: categoryId
+ *         schema:
+ *           type: integer
+ *         description: Filter berdasarkan kategori
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Pencarian berdasarkan judul atau deskripsi
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Halaman yang ingin diakses
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Jumlah item per halaman
+ *     responses:
+ *       200:
+ *         description: Daftar course berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 courses:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Course'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *       500:
+ *         description: Server error
+ */
 exports.getCourses = async (req, res) => {
   const { categoryId, search, page = 1, limit = 10 } = req.query;
   const take = Number(limit);
@@ -52,6 +194,34 @@ exports.getCourses = async (req, res) => {
 };
 
 // GET /api/courses/:id
+/**
+ * @swagger
+ * /api/courses/{id}:
+ *   get:
+ *     summary: Ambil detail course berdasarkan ID
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID course
+ *     responses:
+ *       200:
+ *         description: Detail course berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 course:
+ *                   $ref: '#/components/schemas/Course'
+ *       404:
+ *         description: Course tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.getCourseById = async (req, res) => {
   const { id } = req.params;
   try {
@@ -72,6 +242,33 @@ exports.getCourseById = async (req, res) => {
 };
 
 // POST /api/courses/:id/enroll
+/**
+ * @swagger
+ * /api/courses/{id}/enroll:
+ *   post:
+ *     summary: Mendaftar ke course
+ *     tags: [Courses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID course
+ *     responses:
+ *       201:
+ *         description: Berhasil mendaftar course
+ *       400:
+ *         description: Sudah terdaftar di course ini
+ *       402:
+ *         description: Course berbayar, perlu pembayaran
+ *       404:
+ *         description: Course tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.enrollCourse = async (req, res) => {
   const userId = req.user.id;
   const { courseId } = Number(req.params.id);
@@ -120,6 +317,43 @@ exports.enrollCourse = async (req, res) => {
 };
 
 // GET /api/course/me
+/**
+ * @swagger
+ * /api/courses/me:
+ *   get:
+ *     summary: Ambil daftar course yang diikuti user
+ *     tags: [Courses]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Daftar course berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 courses:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       thumbnail:
+ *                         type: string
+ *                       enrolledAt:
+ *                         type: string
+ *                         format: date-time
+ *       500:
+ *         description: Server error
+ */
 exports.GetMyCourses = async (req, res) => {
   const userId = req.user.id;
   try {
@@ -150,6 +384,53 @@ exports.GetMyCourses = async (req, res) => {
 };
 
 // POST /api/courses/:courseId/lessons/:lessonId/progress
+/**
+ * @swagger
+ * /api/courses/{courseId}/lessons/{lessonId}/progress:
+ *   post:
+ *     summary: Update progress lesson
+ *     tags: [Courses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: lessonId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - isCompleted
+ *             properties:
+ *               isCompleted:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Progress berhasil disimpan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 progress:
+ *                   $ref: '#/components/schemas/LessonProgress'
+ *       404:
+ *         description: Lesson tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.updateLessonProgress = async (req, res) => {
   const { lessonId } = req.params;
   const userId = req.user.id;
@@ -192,6 +473,43 @@ exports.updateLessonProgress = async (req, res) => {
 };
 
 // GET /api/courses/:courseId/progress
+/**
+ * @swagger
+ * /api/courses/{courseId}/progress:
+ *   get:
+ *     summary: Ambil progress course user
+ *     tags: [Courses]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Progress course berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalLessons:
+ *                   type: integer
+ *                 totalQuizzes:
+ *                   type: integer
+ *                 completedLessons:
+ *                   type: integer
+ *                 progress:
+ *                   $ref: '#/components/schemas/CourseProgress'
+ *       403:
+ *         description: Belum terdaftar di course ini
+ *       404:
+ *         description: Course tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.getCourseProgress = async (req, res) => {
   const { courseId } = Number(req.params.id);
   const userId = req.user.id;

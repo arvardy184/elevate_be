@@ -165,6 +165,128 @@ const mapFieldToTags = (field) => {
   return fieldToTags[field] || [];
 };
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Roadmap:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID unik roadmap
+ *         name:
+ *           type: string
+ *           description: Nama roadmap
+ *         description:
+ *           type: string
+ *           description: Deskripsi roadmap
+ *         field:
+ *           type: string
+ *           enum: [Web Development, Mobile Development, Data Science, UI/UX Design, Game Development, Cyber Security, Cloud Computing, Digital Marketing]
+ *           description: Bidang roadmap
+ *         level:
+ *           type: string
+ *           enum: [beginner, intermediate, advanced]
+ *           description: Level roadmap
+ *         price:
+ *           type: number
+ *           description: Harga roadmap (0 untuk roadmap gratis)
+ *         isPaid:
+ *           type: boolean
+ *           description: Status apakah roadmap berbayar
+ *         isActive:
+ *           type: boolean
+ *           description: Status apakah roadmap aktif
+ *         roadmapCourses:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               course:
+ *                 $ref: '#/components/schemas/Course'
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *     UserRoadmap:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID unik user roadmap
+ *         userId:
+ *           type: string
+ *           description: ID user
+ *         roadmapId:
+ *           type: integer
+ *           description: ID roadmap
+ *         isUnlocked:
+ *           type: boolean
+ *           description: Status apakah roadmap sudah di-unlock
+ *         unlockedAt:
+ *           type: string
+ *           format: date-time
+ *           description: Waktu roadmap di-unlock
+ *         roadmap:
+ *           $ref: '#/components/schemas/Roadmap'
+ *     RecommendedRoadmap:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         field:
+ *           type: string
+ *         level:
+ *           type: string
+ *         matchScore:
+ *           type: number
+ *           description: Skor kecocokan dengan assessment user (0-100)
+ *         isUnlocked:
+ *           type: boolean
+ *         roadmapCourses:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               course:
+ *                 $ref: '#/components/schemas/Course'
+ */
+
+/**
+ * @swagger
+ * /api/roadmaps/recommend:
+ *   get:
+ *     summary: Dapatkan rekomendasi roadmap berdasarkan assessment user
+ *     tags: [Roadmaps]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Rekomendasi roadmap berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Roadmap rekomendasi berhasil diambil
+ *                 roadmaps:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/RecommendedRoadmap'
+ *       404:
+ *         description: Assessment tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.recommendRoadmaps = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -220,6 +342,27 @@ exports.recommendRoadmaps = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/roadmaps:
+ *   get:
+ *     summary: Ambil semua roadmap yang tersedia
+ *     tags: [Roadmaps]
+ *     responses:
+ *       200:
+ *         description: Daftar roadmap berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 roadmap:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Roadmap'
+ *       500:
+ *         description: Server error
+ */
 exports.getRoadmaps = async (req, res) => {
   try {
     const roadmap = await prisma.roadmap.findMany({
@@ -238,7 +381,29 @@ exports.getRoadmaps = async (req, res) => {
   }
 };
 
-//getUserRoadmaps
+/**
+ * @swagger
+ * /api/roadmaps/me:
+ *   get:
+ *     summary: Ambil roadmap yang di-unlock oleh user
+ *     tags: [Roadmaps]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Daftar roadmap user berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 roadmaps:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/UserRoadmap'
+ *       500:
+ *         description: Server error
+ */
 exports.getUserRoadmaps = async (req, res) => {
   try {
     const userId = req.user.id;

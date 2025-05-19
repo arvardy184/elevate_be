@@ -1,6 +1,100 @@
 const prisma = require('../prisma/client');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     VoucherApplyRequest:
+ *       type: object
+ *       required:
+ *         - code
+ *       properties:
+ *         code:
+ *           type: string
+ *           description: Kode voucher yang akan digunakan
+ *         courseId:
+ *           type: integer
+ *           description: ID course yang akan dibeli (opsional jika roadmapId ada)
+ *         roadmapId:
+ *           type: integer
+ *           description: ID roadmap yang akan dibeli (opsional jika courseId ada)
+ *     VoucherApplyResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           example: Voucher berhasil diterapkan
+ *         originalPrice:
+ *           type: number
+ *           description: Harga sebelum diskon
+ *         discountedPrice:
+ *           type: number
+ *           description: Harga setelah diskon
+ *         discount:
+ *           type: number
+ *           description: Persentase diskon
+ *         voucherId:
+ *           type: string
+ *           description: ID voucher yang digunakan
+ *     Voucher:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID unik voucher
+ *         code:
+ *           type: string
+ *           description: Kode voucher
+ *         userId:
+ *           type: string
+ *           description: ID user pemilik voucher
+ *         discount:
+ *           type: number
+ *           description: Persentase diskon
+ *         isUsed:
+ *           type: boolean
+ *           description: Status penggunaan voucher
+ *         expiresAt:
+ *           type: string
+ *           format: date-time
+ *           description: Tanggal kadaluarsa voucher
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
 // POST /vouchers/apply
+/**
+ * @swagger
+ * /api/vouchers/apply:
+ *   post:
+ *     summary: Terapkan voucher untuk pembelian course atau roadmap
+ *     tags: [Vouchers]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VoucherApplyRequest'
+ *     responses:
+ *       200:
+ *         description: Voucher berhasil diterapkan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/VoucherApplyResponse'
+ *       400:
+ *         description: Bad request - Kode voucher tidak valid atau sudah digunakan
+ *       404:
+ *         description: Course atau roadmap tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.applyVoucher = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -77,6 +171,53 @@ exports.applyVoucher = async (req, res) => {
 };
 
 // GET /vouchers/me
+/**
+ * @swagger
+ * /api/vouchers/me:
+ *   get:
+ *     summary: Ambil daftar voucher yang dimiliki user
+ *     tags: [Vouchers]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Halaman yang ingin diakses
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Jumlah item per halaman
+ *     responses:
+ *       200:
+ *         description: Daftar voucher berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 vouchers:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Voucher'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
+ *       500:
+ *         description: Server error
+ */
 exports.getMyVouchers = async (req, res) => {
   try {
     const userId = req.user.id;

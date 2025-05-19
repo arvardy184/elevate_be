@@ -5,6 +5,86 @@ const UserModel = require("../models/user_model");
 const { sendOtpEmail } = require("../utils/mailer");
 const prisma = require("../prisma/client");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserRegister:
+ *       type: object
+ *       required:
+ *         - firstName
+ *         - lastName
+ *         - email
+ *         - phoneNumber
+ *         - password
+ *       properties:
+ *         firstName:
+ *           type: string
+ *           description: Nama depan user
+ *         lastName:
+ *           type: string
+ *           description: Nama belakang user
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email user (harus unik)
+ *         phoneNumber:
+ *           type: string
+ *           description: Nomor telepon user
+ *         password:
+ *           type: string
+ *           format: password
+ *           description: Password user (minimal 6 karakter)
+ *     UserLogin:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           format: password
+ *     ChangePassword:
+ *       type: object
+ *       required:
+ *         - oldPassword
+ *         - newPassword
+ *       properties:
+ *         oldPassword:
+ *           type: string
+ *           format: password
+ *         newPassword:
+ *           type: string
+ *           format: password
+ *     ForgotPassword:
+ *       type: object
+ *       required:
+ *         - email
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *     ResetPassword:
+ *       type: object
+ *       required:
+ *         - email
+ *         - otp
+ *         - newPassword
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         otp:
+ *           type: string
+ *           description: Kode OTP 6 digit yang dikirim ke email
+ *         newPassword:
+ *           type: string
+ *           format: password
+ */
+
 exports.register = async (req, res) => {
   try {
     const { firstName, lastName, email, phoneNumber, password } = req.body;
@@ -34,6 +114,34 @@ exports.register = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register user baru
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserRegister'
+ *     responses:
+ *       201:
+ *         description: Registrasi berhasil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Registrasi berhasil!
+ *       400:
+ *         description: Bad request - Email sudah terdaftar atau field tidak lengkap
+ *       500:
+ *         description: Server error
+ */
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -80,10 +188,91 @@ exports.login = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserLogin'
+ *     responses:
+ *       200:
+ *         description: Login berhasil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Login berhasil!
+ *                 token:
+ *                   type: string
+ *                   description: JWT token untuk autentikasi
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *                     firstName:
+ *                       type: string
+ *                     lastName:
+ *                       type: string
+ *                     isAssessmentCompleted:
+ *                       type: boolean
+ *       400:
+ *         description: Bad request - User tidak ditemukan
+ *       401:
+ *         description: Unauthorized - Password salah
+ *       500:
+ *         description: Server error
+ */
+
 //check token
 exports.checkToken = (req, res) => {
   res.json({ valid: true, user: req.user });
 }
+
+/**
+ * @swagger
+ * /api/auth/check-token:
+ *   get:
+ *     summary: Cek validitas token
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Token valid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 valid:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     role:
+ *                       type: string
+ *       401:
+ *         description: Unauthorized - Token tidak valid
+ */
 
 exports.changePassword = async (req, res) => {
   try{
@@ -116,6 +305,32 @@ console.error(e);
 return res.status(500).json({message: "Terjadi kesalahan server."});
   }
 }
+
+/**
+ * @swagger
+ * /api/auth/change-password:
+ *   post:
+ *     summary: Ubah password user
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ChangePassword'
+ *     responses:
+ *       200:
+ *         description: Password berhasil diubah
+ *       400:
+ *         description: Bad request - Password lama salah atau field tidak lengkap
+ *       401:
+ *         description: Unauthorized - Token tidak valid
+ *       500:
+ *         description: Server error
+ */
+
 //kirim otp
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -158,6 +373,27 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/auth/forgot-password:
+ *   post:
+ *     summary: Kirim OTP untuk reset password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ForgotPassword'
+ *     responses:
+ *       200:
+ *         description: OTP berhasil dikirim ke email
+ *       404:
+ *         description: User tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
+
 //reset password
 exports.resetPassword = async (req, res) => {
   const { email, otp, newPassword } = req.body;
@@ -198,3 +434,24 @@ exports.resetPassword = async (req, res) => {
     });
   }
 };
+
+/**
+ * @swagger
+ * /api/auth/reset-password:
+ *   post:
+ *     summary: Reset password dengan OTP
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ResetPassword'
+ *     responses:
+ *       200:
+ *         description: Password berhasil direset
+ *       400:
+ *         description: Bad request - OTP tidak valid atau expired
+ *       500:
+ *         description: Server error
+ */

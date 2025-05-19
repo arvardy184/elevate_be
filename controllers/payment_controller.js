@@ -4,7 +4,117 @@ const {
   handlePaymentNotification,
 } = require("../services/payment_service");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     PaymentRequest:
+ *       type: object
+ *       properties:
+ *         courseId:
+ *           type: integer
+ *           description: ID course yang akan dibeli (opsional jika roadmapId ada)
+ *         roadmapId:
+ *           type: integer
+ *           description: ID roadmap yang akan dibeli (opsional jika courseId ada)
+ *         voucherCode:
+ *           type: string
+ *           description: Kode voucher untuk diskon (opsional)
+ *     Payment:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID unik pembayaran
+ *         userId:
+ *           type: string
+ *           description: ID user yang melakukan pembayaran
+ *         courseId:
+ *           type: integer
+ *           description: ID course yang dibeli (null jika membeli roadmap)
+ *         roadmapId:
+ *           type: integer
+ *           description: ID roadmap yang dibeli (null jika membeli course)
+ *         amount:
+ *           type: number
+ *           description: Jumlah pembayaran
+ *         status:
+ *           type: string
+ *           enum: [PENDING, SUCCESS, FAILED]
+ *           description: Status pembayaran
+ *         paymentStatus:
+ *           type: string
+ *           enum: [PENDING, PAID, EXPIRED, FAILED]
+ *           description: Status pembayaran dari payment gateway
+ *         orderId:
+ *           type: string
+ *           description: ID order dari payment gateway
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *         course:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *             title:
+ *               type: string
+ *             thumbnail:
+ *               type: string
+ *         roadmap:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: integer
+ *             name:
+ *               type: string
+ *             description:
+ *               type: string
+ *     PaymentResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *         snapToken:
+ *           type: string
+ *           description: Token untuk redirect ke halaman pembayaran Midtrans
+ *         redirectUrl:
+ *           type: string
+ *           description: URL untuk redirect ke halaman pembayaran
+ */
+
 //POST /payment/charge
+/**
+ * @swagger
+ * /api/payments/charge:
+ *   post:
+ *     summary: Inisiasi pembayaran untuk course atau roadmap
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PaymentRequest'
+ *     responses:
+ *       200:
+ *         description: Pembayaran berhasil diinisiasi
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PaymentResponse'
+ *       400:
+ *         description: Bad request - Input tidak valid atau voucher tidak valid
+ *       404:
+ *         description: Course atau roadmap tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 exports.chargePayment = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -132,6 +242,42 @@ exports.chargePayment = async (req, res) => {
 };
 
 // GET /payments/notification
+/**
+ * @swagger
+ * /api/payments/notification:
+ *   post:
+ *     summary: Handle notifikasi pembayaran dari Midtrans
+ *     tags: [Payments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             description: Notifikasi dari Midtrans
+ *     responses:
+ *       200:
+ *         description: Notifikasi berhasil diproses
+ *       500:
+ *         description: Server error
+ *     x-codeSamples:
+ *       - lang: JSON
+ *         source: |
+ *           {
+ *             "transaction_time": "2024-01-01 12:00:00",
+ *             "transaction_status": "capture",
+ *             "transaction_id": "123456",
+ *             "status_message": "Success",
+ *             "status_code": "200",
+ *             "signature_key": "abc123",
+ *             "payment_type": "bank_transfer",
+ *             "order_id": "ORDER-123",
+ *             "merchant_id": "M123",
+ *             "gross_amount": "100000.00",
+ *             "fraud_status": "accept",
+ *             "currency": "IDR"
+ *           }
+ */
 exports.handlePaymentNotification = async (req, res) => {
   try {
     const notification = req.body;
@@ -148,6 +294,59 @@ exports.handlePaymentNotification = async (req, res) => {
 };
 
 // GET /payments/me - Mendapatkan riwayat pembayaran user
+/**
+ * @swagger
+ * /api/payments/me:
+ *   get:
+ *     summary: Ambil riwayat pembayaran user
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Halaman yang ingin diakses
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Jumlah item per halaman
+ *     responses:
+ *       200:
+ *         description: Riwayat pembayaran berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     payments:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Payment'
+ *                     pagination:
+ *                       type: object
+ *                       properties:
+ *                         total:
+ *                           type: integer
+ *                         page:
+ *                           type: integer
+ *                         limit:
+ *                           type: integer
+ *                         totalPages:
+ *                           type: integer
+ *       500:
+ *         description: Server error
+ */
 exports.getMyPayments = async (req, res) => {
   try {
     const userId = req.user.id;

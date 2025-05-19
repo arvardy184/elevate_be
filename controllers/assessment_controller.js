@@ -1,11 +1,114 @@
 const prisma = require("../prisma/client");
 const { mapAssessmentToRoadmap } = require("../services/roadmap_service");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     AssessmentRequest:
+ *       type: object
+ *       required:
+ *         - studentStatus
+ *         - majorStudy
+ *         - currentSemester
+ *         - currentField
+ *         - interestedField
+ *         - dreamJob
+ *         - mainGoal
+ *       properties:
+ *         studentStatus:
+ *           type: string
+ *           enum: [high_school, college, graduate, working]
+ *           description: Status pendidikan/karier user
+ *         majorStudy:
+ *           type: string
+ *           description: Jurusan kuliah (jika mahasiswa)
+ *         currentSemester:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 14
+ *           description: Semester saat ini (jika mahasiswa)
+ *         currentField:
+ *           type: string
+ *           enum: [Web Development, Mobile Development, Data Science, UI/UX Design, Game Development, Cyber Security, Cloud Computing, Digital Marketing, Other]
+ *           description: Bidang yang sedang dipelajari
+ *         interestedField:
+ *           type: string
+ *           enum: [Web Development, Mobile Development, Data Science, UI/UX Design, Game Development, Cyber Security, Cloud Computing, Digital Marketing]
+ *           description: Bidang yang diminati
+ *         dreamJob:
+ *           type: string
+ *           description: Pekerjaan impian
+ *         mainGoal:
+ *           type: string
+ *           description: Tujuan utama belajar
+ *     Assessment:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: ID unik assessment
+ *         userId:
+ *           type: string
+ *           description: ID user
+ *         studentStatus:
+ *           type: string
+ *           enum: [high_school, college, graduate, working]
+ *         majorStudy:
+ *           type: string
+ *         currentSemester:
+ *           type: integer
+ *         currentField:
+ *           type: string
+ *         interestedField:
+ *           type: string
+ *         dreamJob:
+ *           type: string
+ *         mainGoal:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
+
 class AssessmentController {
   /**
-   * Membuat assessment baru untuk user
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
+   * @swagger
+   * /api/assessment:
+   *   post:
+   *     summary: Buat assessment baru untuk user
+   *     tags: [Assessment]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/AssessmentRequest'
+   *     responses:
+   *       201:
+   *         description: Assessment berhasil dibuat
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: success
+   *                 message:
+   *                   type: string
+   *                   example: Assessment berhasil dibuat
+   *                 data:
+   *                   $ref: '#/components/schemas/Assessment'
+   *       400:
+   *         description: User sudah memiliki assessment
+   *       500:
+   *         description: Server error
    */
   static async createAssessment(req, res) {
     try {
@@ -64,9 +167,30 @@ class AssessmentController {
   }
 
   /**
-   * Mengecek status assessment user
-   * @param {Object} req - Request object
-   * @param {Object} res - Response object
+   * @swagger
+   * /api/assessment/check:
+   *   get:
+   *     summary: Cek status assessment user
+   *     tags: [Assessment]
+   *     security:
+   *       - bearerAuth: []
+   *     responses:
+   *       200:
+   *         description: Status assessment berhasil diambil
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: success
+   *                 data:
+   *                   $ref: '#/components/schemas/Assessment'
+   *       404:
+   *         description: Assessment tidak ditemukan
+   *       500:
+   *         description: Server error
    */
   static async checkAssessment(req, res) {
     try {
