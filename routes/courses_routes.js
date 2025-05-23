@@ -91,7 +91,6 @@ router.get(
 router.post(
   "/:courseId/videos",
   verifyToken,
-  checkRole,
   handleUploadError(uploadCourseVideo),
   courseController.addCourseVideo
 );

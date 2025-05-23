@@ -271,10 +271,12 @@ exports.getCourseById = async (req, res) => {
  */
 exports.enrollCourse = async (req, res) => {
   const userId = req.user.id;
-  const { courseId } = Number(req.params.id);
+  const courseId = Number(req.params.id);
   try {
     const course = await prisma.course.findUnique({
-      where: { id: courseId, isActive: true },
+      where: { id: courseId, 
+        // isActive: true 
+      },
     });
     if (!course) {
       return res.status(404).json({ message: "Course tidak ditemukan" });
@@ -605,56 +607,43 @@ exports.getCourseProgress = async (req, res) => {
   }
 };
 
-// GET /api/courses/:courseId/videos
-exports.getcourseVideos = async (req, res) => {
-  const { courseId } = req.params;
-
-  try {
-    const course = await prisma.course.findUnique({
-      where: { id: Number(courseId) },
-      include: {
-        lesson: true,
-      },
-    });
-
-    if (!course) {
-      return res.status(404).json({ message: "Course tidak ditemukan" });
-    }
-
-    return res.status(200).json({ videos: course.videos });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: "Terjadi kesalahan server" });
-  }
-};
 
 // POST /api/courses/:courseId/videos
 exports.addCourseVideo = async (req, res) => {
-  const courseId = Number(req.params.id);
+  console.log('[addCourseVideo] masuk controller');
+  const courseId = Number(req.params.courseId);
   const userId = req.user.id;
-
+  const { title, isLocked } = req.body;
+  console.log('--- [addCourseVideo] Mulai upload video ---');
+  console.log('courseId:', courseId);
+  console.log('userId:', userId);
+  console.log('req.body:', req.body);
   try {
     // Pastikan course ada
-    const course = await prisma.course.findUnique({
+    const course = await prisma.course.findFirst({
       where: {
         id: Number(courseId),
         createdById: userId,
-        isActive: true,
+        // isActive: true,
       },
     });
+    console.log('[addCourseVideo] course:', course);
 
     if (!course) {
+      console.error('[addCourseVideo] Course tidak ditemukan atau akses ditolak');
       return res.status(403).json({
         message: "Course tidak ditemukan atau Anda tidak memiliki akses",
       });
     }
-
+    console.log('[addCourseVideo] req.file:', req.file);
     if (
       !req.file ||
       !["video/mp4", "video/mov", "video/avi", "video/mkv"].includes(
         req.file.mimetype
       )
+      
     ) {
+      console.error('[addCourseVideo] File tidak valid atau tidak ada');
       return res
         .status(400)
         .json({ message: "File video harus berupa MP4, MOV, AVI, atau MKV" });
@@ -662,47 +651,52 @@ exports.addCourseVideo = async (req, res) => {
 
     // Pastikan user yang mengupload adalah creator course
     if (course.createdById !== req.user.id) {
+      console.error('[addCourseVideo] User bukan creator course');
       return res.status(403).json({
         message:
           "Anda tidak memiliki akses untuk mengupload video ke course ini",
       });
     }
 
-    let videoUrl = null;
+    let videoUrl =null ;
     let s3Key = null;
 
     // Upload file ke storage jika ada
     if (req.file) {
+      
       try {
+        console.log('[addCourseVideo] Mulai upload ke B2...');
         // Upload ke B2
         const cleanFileName = path.basename(
           req.file.originalname,
           path.extname(req.file.originalname)
         );
+        console.log('[addCourseVideo] Memulai upload ke B2...');
         const uploadResult = await storageService.uploadFile(
           req.file.path,
           storageService.FileCategory.COURSE_VIDEO,
           `${course.id}-${cleanFileName}`
         );
-
+        console.log('[addCourseVideo] Upload ke B2 berhasil');
         videoUrl = uploadResult.fileUrl;
         s3Key = uploadResult.fileName;
       } catch (uploadError) {
-        console.error("Error uploading to B2:", uploadError);
+        console.error('[addCourseVideo] Error uploading to B2:', uploadError);
         return res
           .status(500)
           .json({ message: "Gagal mengupload video ke storage" });
       }
     } else {
+      console.error('[addCourseVideo] File video diperlukan!');
       return res.status(400).json({ message: "File video diperlukan!" });
     }
 
     // Hitung order baru (urutan terakhir + 1)
     const lastVideo = await prisma.coursevideo.findFirst({
-      where: { courseId: Number(id) },
+      where: { courseId: Number(courseId) },
       orderBy: { order: "desc" },
     });
-
+    console.log('[addCourseVideo] lastVideo:', lastVideo);      
     const newOrder = lastVideo ? lastVideo.order + 1 : 1;
 
     // Tambahkan video baru ke dalam kursus
@@ -711,11 +705,12 @@ exports.addCourseVideo = async (req, res) => {
         title,
         videoUrl,
         isLocked: isLocked === "true" || isLocked === true,
-        courseId: Number(id),
+        courseId: Number(courseId),
         order: newOrder,
         s3Key,
       },
     });
+    console.log('[addCourseVideo] newVideo:', newVideo);
 
     return res
       .status(201)
@@ -864,10 +859,11 @@ exports.getQuizResult = async (req, res) => {
 
 // GET /api/courses/:courseId/videos
 exports.getCourseVideos = async (req, res) => {
+  console.log('[getCourseVideos] masuk controller');
   const { courseId } = req.params;
 
   try {
-    const courseVideos = await prisma.courseVideo.findMany({
+    const courseVideos = await prisma.coursevideo.findMany({
       where: {
         courseId: Number(courseId),
       },

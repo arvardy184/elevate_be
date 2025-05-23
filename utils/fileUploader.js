@@ -64,6 +64,7 @@ const upload = multer({
  */
 const uploadMiddleware = (category) => {
   return (req, res, next) => {
+    console.log('[uploadMiddleware] Mulai upload file...');
     // Set category untuk validasi
     req.fileCategory = category;
     
@@ -95,10 +96,10 @@ const uploadToStorage = async (file, category) => {
     if (!file) {
       throw new Error('No file provided');
     }
-
+    console.time('uploadB2');
     // Upload ke B2 storage
     const result = await uploadFile(file.path, category, file.originalname);
-    
+    console.timeEnd('uploadB2');
     return {
       success: true,
       data: result

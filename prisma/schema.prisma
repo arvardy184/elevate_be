@@ -116,19 +116,22 @@ model ChatMessage {
 }
 
 model CounselingSession {
-  id          Int           @id @default(autoincrement())
-  userId      Int
-  counselorId Int
-  topic       String
-  question    String
-  response    String?
-  status      String
-  createdAt   DateTime      @default(now())
-  rating      Int?
-  feedback    String?
-  chatmessage ChatMessage[]
-  counselor   Counselor     @relation(fields: [counselorId], references: [id], map: "CounselingSession_counselorId_fkey")
-  users       User          @relation(fields: [userId], references: [id], map: "CounselingSession_userId_fkey")
+  id                 Int           @id @default(autoincrement())
+  userId             Int
+  counselorId        Int
+  topic              String
+  question           String
+  response           String?
+  status             String
+  isPaymentRequired  Boolean       @default(false)
+  price              Int?
+  createdAt          DateTime      @default(now())
+  rating             Int?
+  feedback           String?
+  chatmessage        ChatMessage[]
+  payment            Payment[]
+  counselor          Counselor     @relation(fields: [counselorId], references: [id], map: "CounselingSession_counselorId_fkey")
+  users              User          @relation(fields: [userId], references: [id], map: "CounselingSession_userId_fkey")
 
   @@index([counselorId], map: "CounselingSession_counselorId_fkey")
   @@index([userId], map: "CounselingSession_userId_fkey")
@@ -287,25 +290,28 @@ model Notification {
 }
 
 model Payment {
-  id            Int           @id @default(autoincrement())
-  userId        Int
-  courseId      Int?
-  roadmapId     Int?
-  amount        Int
-  paymentStatus String
-  status        String
-  paidAt        DateTime
-  createdAt     DateTime      @default(now())
-  orderId       String?       @unique(map: "Payment_orderId_key")
-  snapToken     String?
-  enrollment    Enrollment[]
-  course        Course?       @relation(fields: [courseId], references: [id], map: "Payment_courseId_fkey")
-  roadmap       Roadmap?      @relation(fields: [roadmapId], references: [id], map: "Payment_roadmapId_fkey")
-  users         User          @relation(fields: [userId], references: [id], map: "Payment_userId_fkey")
-  userroadmap   UserRoadmap[]
+  id                   Int                @id @default(autoincrement())
+  userId               Int
+  courseId             Int?
+  roadmapId            Int?
+  counselingSessionId  Int?
+  amount               Int
+  paymentStatus        String
+  status               String
+  paidAt               DateTime?
+  createdAt            DateTime           @default(now())
+  orderId              String?            @unique(map: "Payment_orderId_key")
+  snapToken            String?
+  enrollment           Enrollment[]
+  course               Course?            @relation(fields: [courseId], references: [id], map: "Payment_courseId_fkey")
+  roadmap              Roadmap?           @relation(fields: [roadmapId], references: [id], map: "Payment_roadmapId_fkey")
+  counselingSession    CounselingSession? @relation(fields: [counselingSessionId], references: [id], map: "Payment_counselingSessionId_fkey")
+  users                User               @relation(fields: [userId], references: [id], map: "Payment_userId_fkey")
+  userroadmap          UserRoadmap[]
 
   @@index([courseId], map: "Payment_courseId_fkey")
   @@index([roadmapId], map: "Payment_roadmapId_fkey")
+  @@index([counselingSessionId], map: "Payment_counselingSessionId_fkey")
   @@index([userId], map: "Payment_userId_fkey")
   @@map("payment")
 }

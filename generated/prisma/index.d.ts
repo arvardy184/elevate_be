@@ -3059,10 +3059,12 @@ export namespace Prisma {
 
   export type CounselingSessionCountOutputType = {
     chatmessage: number
+    payment: number
   }
 
   export type CounselingSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     chatmessage?: boolean | CounselingSessionCountOutputTypeCountChatmessageArgs
+    payment?: boolean | CounselingSessionCountOutputTypeCountPaymentArgs
   }
 
   // Custom InputTypes
@@ -3081,6 +3083,13 @@ export namespace Prisma {
    */
   export type CounselingSessionCountOutputTypeCountChatmessageArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ChatMessageWhereInput
+  }
+
+  /**
+   * CounselingSessionCountOutputType without action
+   */
+  export type CounselingSessionCountOutputTypeCountPaymentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
   }
 
 
@@ -10664,6 +10673,7 @@ export namespace Prisma {
     id: number | null
     userId: number | null
     counselorId: number | null
+    price: number | null
     rating: number | null
   }
 
@@ -10671,6 +10681,7 @@ export namespace Prisma {
     id: number | null
     userId: number | null
     counselorId: number | null
+    price: number | null
     rating: number | null
   }
 
@@ -10682,6 +10693,8 @@ export namespace Prisma {
     question: string | null
     response: string | null
     status: string | null
+    isPaymentRequired: boolean | null
+    price: number | null
     createdAt: Date | null
     rating: number | null
     feedback: string | null
@@ -10695,6 +10708,8 @@ export namespace Prisma {
     question: string | null
     response: string | null
     status: string | null
+    isPaymentRequired: boolean | null
+    price: number | null
     createdAt: Date | null
     rating: number | null
     feedback: string | null
@@ -10708,6 +10723,8 @@ export namespace Prisma {
     question: number
     response: number
     status: number
+    isPaymentRequired: number
+    price: number
     createdAt: number
     rating: number
     feedback: number
@@ -10719,6 +10736,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     counselorId?: true
+    price?: true
     rating?: true
   }
 
@@ -10726,6 +10744,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     counselorId?: true
+    price?: true
     rating?: true
   }
 
@@ -10737,6 +10756,8 @@ export namespace Prisma {
     question?: true
     response?: true
     status?: true
+    isPaymentRequired?: true
+    price?: true
     createdAt?: true
     rating?: true
     feedback?: true
@@ -10750,6 +10771,8 @@ export namespace Prisma {
     question?: true
     response?: true
     status?: true
+    isPaymentRequired?: true
+    price?: true
     createdAt?: true
     rating?: true
     feedback?: true
@@ -10763,6 +10786,8 @@ export namespace Prisma {
     question?: true
     response?: true
     status?: true
+    isPaymentRequired?: true
+    price?: true
     createdAt?: true
     rating?: true
     feedback?: true
@@ -10863,6 +10888,8 @@ export namespace Prisma {
     question: string
     response: string | null
     status: string
+    isPaymentRequired: boolean
+    price: number | null
     createdAt: Date
     rating: number | null
     feedback: string | null
@@ -10895,10 +10922,13 @@ export namespace Prisma {
     question?: boolean
     response?: boolean
     status?: boolean
+    isPaymentRequired?: boolean
+    price?: boolean
     createdAt?: boolean
     rating?: boolean
     feedback?: boolean
     chatmessage?: boolean | CounselingSession$chatmessageArgs<ExtArgs>
+    payment?: boolean | CounselingSession$paymentArgs<ExtArgs>
     counselor?: boolean | CounselorDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | CounselingSessionCountOutputTypeDefaultArgs<ExtArgs>
@@ -10914,14 +10944,17 @@ export namespace Prisma {
     question?: boolean
     response?: boolean
     status?: boolean
+    isPaymentRequired?: boolean
+    price?: boolean
     createdAt?: boolean
     rating?: boolean
     feedback?: boolean
   }
 
-  export type CounselingSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "counselorId" | "topic" | "question" | "response" | "status" | "createdAt" | "rating" | "feedback", ExtArgs["result"]["counselingSession"]>
+  export type CounselingSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "counselorId" | "topic" | "question" | "response" | "status" | "isPaymentRequired" | "price" | "createdAt" | "rating" | "feedback", ExtArgs["result"]["counselingSession"]>
   export type CounselingSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     chatmessage?: boolean | CounselingSession$chatmessageArgs<ExtArgs>
+    payment?: boolean | CounselingSession$paymentArgs<ExtArgs>
     counselor?: boolean | CounselorDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | CounselingSessionCountOutputTypeDefaultArgs<ExtArgs>
@@ -10931,6 +10964,7 @@ export namespace Prisma {
     name: "CounselingSession"
     objects: {
       chatmessage: Prisma.$ChatMessagePayload<ExtArgs>[]
+      payment: Prisma.$PaymentPayload<ExtArgs>[]
       counselor: Prisma.$CounselorPayload<ExtArgs>
       users: Prisma.$UserPayload<ExtArgs>
     }
@@ -10942,6 +10976,8 @@ export namespace Prisma {
       question: string
       response: string | null
       status: string
+      isPaymentRequired: boolean
+      price: number | null
       createdAt: Date
       rating: number | null
       feedback: string | null
@@ -11286,6 +11322,7 @@ export namespace Prisma {
   export interface Prisma__CounselingSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     chatmessage<T extends CounselingSession$chatmessageArgs<ExtArgs> = {}>(args?: Subset<T, CounselingSession$chatmessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payment<T extends CounselingSession$paymentArgs<ExtArgs> = {}>(args?: Subset<T, CounselingSession$paymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     counselor<T extends CounselorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CounselorDefaultArgs<ExtArgs>>): Prisma__CounselorClient<$Result.GetResult<Prisma.$CounselorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -11324,6 +11361,8 @@ export namespace Prisma {
     readonly question: FieldRef<"CounselingSession", 'String'>
     readonly response: FieldRef<"CounselingSession", 'String'>
     readonly status: FieldRef<"CounselingSession", 'String'>
+    readonly isPaymentRequired: FieldRef<"CounselingSession", 'Boolean'>
+    readonly price: FieldRef<"CounselingSession", 'Int'>
     readonly createdAt: FieldRef<"CounselingSession", 'DateTime'>
     readonly rating: FieldRef<"CounselingSession", 'Int'>
     readonly feedback: FieldRef<"CounselingSession", 'String'>
@@ -11691,6 +11730,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ChatMessageScalarFieldEnum | ChatMessageScalarFieldEnum[]
+  }
+
+  /**
+   * CounselingSession.payment
+   */
+  export type CounselingSession$paymentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
   }
 
   /**
@@ -21928,6 +21991,7 @@ export namespace Prisma {
     userId: number | null
     courseId: number | null
     roadmapId: number | null
+    counselingSessionId: number | null
     amount: number | null
   }
 
@@ -21936,6 +22000,7 @@ export namespace Prisma {
     userId: number | null
     courseId: number | null
     roadmapId: number | null
+    counselingSessionId: number | null
     amount: number | null
   }
 
@@ -21944,6 +22009,7 @@ export namespace Prisma {
     userId: number | null
     courseId: number | null
     roadmapId: number | null
+    counselingSessionId: number | null
     amount: number | null
     paymentStatus: string | null
     status: string | null
@@ -21958,6 +22024,7 @@ export namespace Prisma {
     userId: number | null
     courseId: number | null
     roadmapId: number | null
+    counselingSessionId: number | null
     amount: number | null
     paymentStatus: string | null
     status: string | null
@@ -21972,6 +22039,7 @@ export namespace Prisma {
     userId: number
     courseId: number
     roadmapId: number
+    counselingSessionId: number
     amount: number
     paymentStatus: number
     status: number
@@ -21988,6 +22056,7 @@ export namespace Prisma {
     userId?: true
     courseId?: true
     roadmapId?: true
+    counselingSessionId?: true
     amount?: true
   }
 
@@ -21996,6 +22065,7 @@ export namespace Prisma {
     userId?: true
     courseId?: true
     roadmapId?: true
+    counselingSessionId?: true
     amount?: true
   }
 
@@ -22004,6 +22074,7 @@ export namespace Prisma {
     userId?: true
     courseId?: true
     roadmapId?: true
+    counselingSessionId?: true
     amount?: true
     paymentStatus?: true
     status?: true
@@ -22018,6 +22089,7 @@ export namespace Prisma {
     userId?: true
     courseId?: true
     roadmapId?: true
+    counselingSessionId?: true
     amount?: true
     paymentStatus?: true
     status?: true
@@ -22032,6 +22104,7 @@ export namespace Prisma {
     userId?: true
     courseId?: true
     roadmapId?: true
+    counselingSessionId?: true
     amount?: true
     paymentStatus?: true
     status?: true
@@ -22133,10 +22206,11 @@ export namespace Prisma {
     userId: number
     courseId: number | null
     roadmapId: number | null
+    counselingSessionId: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date
+    paidAt: Date | null
     createdAt: Date
     orderId: string | null
     snapToken: string | null
@@ -22166,6 +22240,7 @@ export namespace Prisma {
     userId?: boolean
     courseId?: boolean
     roadmapId?: boolean
+    counselingSessionId?: boolean
     amount?: boolean
     paymentStatus?: boolean
     status?: boolean
@@ -22176,6 +22251,7 @@ export namespace Prisma {
     enrollment?: boolean | Payment$enrollmentArgs<ExtArgs>
     course?: boolean | Payment$courseArgs<ExtArgs>
     roadmap?: boolean | Payment$roadmapArgs<ExtArgs>
+    counselingSession?: boolean | Payment$counselingSessionArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     userroadmap?: boolean | Payment$userroadmapArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
@@ -22188,6 +22264,7 @@ export namespace Prisma {
     userId?: boolean
     courseId?: boolean
     roadmapId?: boolean
+    counselingSessionId?: boolean
     amount?: boolean
     paymentStatus?: boolean
     status?: boolean
@@ -22197,11 +22274,12 @@ export namespace Prisma {
     snapToken?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "roadmapId" | "amount" | "paymentStatus" | "status" | "paidAt" | "createdAt" | "orderId" | "snapToken", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "roadmapId" | "counselingSessionId" | "amount" | "paymentStatus" | "status" | "paidAt" | "createdAt" | "orderId" | "snapToken", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enrollment?: boolean | Payment$enrollmentArgs<ExtArgs>
     course?: boolean | Payment$courseArgs<ExtArgs>
     roadmap?: boolean | Payment$roadmapArgs<ExtArgs>
+    counselingSession?: boolean | Payment$counselingSessionArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     userroadmap?: boolean | Payment$userroadmapArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
@@ -22213,6 +22291,7 @@ export namespace Prisma {
       enrollment: Prisma.$EnrollmentPayload<ExtArgs>[]
       course: Prisma.$CoursePayload<ExtArgs> | null
       roadmap: Prisma.$RoadmapPayload<ExtArgs> | null
+      counselingSession: Prisma.$CounselingSessionPayload<ExtArgs> | null
       users: Prisma.$UserPayload<ExtArgs>
       userroadmap: Prisma.$UserRoadmapPayload<ExtArgs>[]
     }
@@ -22221,10 +22300,11 @@ export namespace Prisma {
       userId: number
       courseId: number | null
       roadmapId: number | null
+      counselingSessionId: number | null
       amount: number
       paymentStatus: string
       status: string
-      paidAt: Date
+      paidAt: Date | null
       createdAt: Date
       orderId: string | null
       snapToken: string | null
@@ -22571,6 +22651,7 @@ export namespace Prisma {
     enrollment<T extends Payment$enrollmentArgs<ExtArgs> = {}>(args?: Subset<T, Payment$enrollmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     course<T extends Payment$courseArgs<ExtArgs> = {}>(args?: Subset<T, Payment$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     roadmap<T extends Payment$roadmapArgs<ExtArgs> = {}>(args?: Subset<T, Payment$roadmapArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    counselingSession<T extends Payment$counselingSessionArgs<ExtArgs> = {}>(args?: Subset<T, Payment$counselingSessionArgs<ExtArgs>>): Prisma__CounselingSessionClient<$Result.GetResult<Prisma.$CounselingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     userroadmap<T extends Payment$userroadmapArgs<ExtArgs> = {}>(args?: Subset<T, Payment$userroadmapArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -22606,6 +22687,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"Payment", 'Int'>
     readonly courseId: FieldRef<"Payment", 'Int'>
     readonly roadmapId: FieldRef<"Payment", 'Int'>
+    readonly counselingSessionId: FieldRef<"Payment", 'Int'>
     readonly amount: FieldRef<"Payment", 'Int'>
     readonly paymentStatus: FieldRef<"Payment", 'String'>
     readonly status: FieldRef<"Payment", 'String'>
@@ -23015,6 +23097,25 @@ export namespace Prisma {
      */
     include?: RoadmapInclude<ExtArgs> | null
     where?: RoadmapWhereInput
+  }
+
+  /**
+   * Payment.counselingSession
+   */
+  export type Payment$counselingSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CounselingSession
+     */
+    select?: CounselingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CounselingSession
+     */
+    omit?: CounselingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CounselingSessionInclude<ExtArgs> | null
+    where?: CounselingSessionWhereInput
   }
 
   /**
@@ -29202,6 +29303,8 @@ export namespace Prisma {
     question: 'question',
     response: 'response',
     status: 'status',
+    isPaymentRequired: 'isPaymentRequired',
+    price: 'price',
     createdAt: 'createdAt',
     rating: 'rating',
     feedback: 'feedback'
@@ -29337,6 +29440,7 @@ export namespace Prisma {
     userId: 'userId',
     courseId: 'courseId',
     roadmapId: 'roadmapId',
+    counselingSessionId: 'counselingSessionId',
     amount: 'amount',
     paymentStatus: 'paymentStatus',
     status: 'status',
@@ -30203,10 +30307,13 @@ export namespace Prisma {
     question?: StringFilter<"CounselingSession"> | string
     response?: StringNullableFilter<"CounselingSession"> | string | null
     status?: StringFilter<"CounselingSession"> | string
+    isPaymentRequired?: BoolFilter<"CounselingSession"> | boolean
+    price?: IntNullableFilter<"CounselingSession"> | number | null
     createdAt?: DateTimeFilter<"CounselingSession"> | Date | string
     rating?: IntNullableFilter<"CounselingSession"> | number | null
     feedback?: StringNullableFilter<"CounselingSession"> | string | null
     chatmessage?: ChatMessageListRelationFilter
+    payment?: PaymentListRelationFilter
     counselor?: XOR<CounselorScalarRelationFilter, CounselorWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -30219,10 +30326,13 @@ export namespace Prisma {
     question?: SortOrder
     response?: SortOrderInput | SortOrder
     status?: SortOrder
+    isPaymentRequired?: SortOrder
+    price?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     rating?: SortOrderInput | SortOrder
     feedback?: SortOrderInput | SortOrder
     chatmessage?: ChatMessageOrderByRelationAggregateInput
+    payment?: PaymentOrderByRelationAggregateInput
     counselor?: CounselorOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
     _relevance?: CounselingSessionOrderByRelevanceInput
@@ -30239,10 +30349,13 @@ export namespace Prisma {
     question?: StringFilter<"CounselingSession"> | string
     response?: StringNullableFilter<"CounselingSession"> | string | null
     status?: StringFilter<"CounselingSession"> | string
+    isPaymentRequired?: BoolFilter<"CounselingSession"> | boolean
+    price?: IntNullableFilter<"CounselingSession"> | number | null
     createdAt?: DateTimeFilter<"CounselingSession"> | Date | string
     rating?: IntNullableFilter<"CounselingSession"> | number | null
     feedback?: StringNullableFilter<"CounselingSession"> | string | null
     chatmessage?: ChatMessageListRelationFilter
+    payment?: PaymentListRelationFilter
     counselor?: XOR<CounselorScalarRelationFilter, CounselorWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -30255,6 +30368,8 @@ export namespace Prisma {
     question?: SortOrder
     response?: SortOrderInput | SortOrder
     status?: SortOrder
+    isPaymentRequired?: SortOrder
+    price?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     rating?: SortOrderInput | SortOrder
     feedback?: SortOrderInput | SortOrder
@@ -30276,6 +30391,8 @@ export namespace Prisma {
     question?: StringWithAggregatesFilter<"CounselingSession"> | string
     response?: StringNullableWithAggregatesFilter<"CounselingSession"> | string | null
     status?: StringWithAggregatesFilter<"CounselingSession"> | string
+    isPaymentRequired?: BoolWithAggregatesFilter<"CounselingSession"> | boolean
+    price?: IntNullableWithAggregatesFilter<"CounselingSession"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"CounselingSession"> | Date | string
     rating?: IntNullableWithAggregatesFilter<"CounselingSession"> | number | null
     feedback?: StringNullableWithAggregatesFilter<"CounselingSession"> | string | null
@@ -30975,16 +31092,18 @@ export namespace Prisma {
     userId?: IntFilter<"Payment"> | number
     courseId?: IntNullableFilter<"Payment"> | number | null
     roadmapId?: IntNullableFilter<"Payment"> | number | null
+    counselingSessionId?: IntNullableFilter<"Payment"> | number | null
     amount?: IntFilter<"Payment"> | number
     paymentStatus?: StringFilter<"Payment"> | string
     status?: StringFilter<"Payment"> | string
-    paidAt?: DateTimeFilter<"Payment"> | Date | string
+    paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     orderId?: StringNullableFilter<"Payment"> | string | null
     snapToken?: StringNullableFilter<"Payment"> | string | null
     enrollment?: EnrollmentListRelationFilter
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
     roadmap?: XOR<RoadmapNullableScalarRelationFilter, RoadmapWhereInput> | null
+    counselingSession?: XOR<CounselingSessionNullableScalarRelationFilter, CounselingSessionWhereInput> | null
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
     userroadmap?: UserRoadmapListRelationFilter
   }
@@ -30994,16 +31113,18 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrderInput | SortOrder
     roadmapId?: SortOrderInput | SortOrder
+    counselingSessionId?: SortOrderInput | SortOrder
     amount?: SortOrder
     paymentStatus?: SortOrder
     status?: SortOrder
-    paidAt?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     orderId?: SortOrderInput | SortOrder
     snapToken?: SortOrderInput | SortOrder
     enrollment?: EnrollmentOrderByRelationAggregateInput
     course?: CourseOrderByWithRelationInput
     roadmap?: RoadmapOrderByWithRelationInput
+    counselingSession?: CounselingSessionOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
     userroadmap?: UserRoadmapOrderByRelationAggregateInput
     _relevance?: PaymentOrderByRelevanceInput
@@ -31018,15 +31139,17 @@ export namespace Prisma {
     userId?: IntFilter<"Payment"> | number
     courseId?: IntNullableFilter<"Payment"> | number | null
     roadmapId?: IntNullableFilter<"Payment"> | number | null
+    counselingSessionId?: IntNullableFilter<"Payment"> | number | null
     amount?: IntFilter<"Payment"> | number
     paymentStatus?: StringFilter<"Payment"> | string
     status?: StringFilter<"Payment"> | string
-    paidAt?: DateTimeFilter<"Payment"> | Date | string
+    paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     snapToken?: StringNullableFilter<"Payment"> | string | null
     enrollment?: EnrollmentListRelationFilter
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
     roadmap?: XOR<RoadmapNullableScalarRelationFilter, RoadmapWhereInput> | null
+    counselingSession?: XOR<CounselingSessionNullableScalarRelationFilter, CounselingSessionWhereInput> | null
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
     userroadmap?: UserRoadmapListRelationFilter
   }, "id" | "orderId">
@@ -31036,10 +31159,11 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrderInput | SortOrder
     roadmapId?: SortOrderInput | SortOrder
+    counselingSessionId?: SortOrderInput | SortOrder
     amount?: SortOrder
     paymentStatus?: SortOrder
     status?: SortOrder
-    paidAt?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     orderId?: SortOrderInput | SortOrder
     snapToken?: SortOrderInput | SortOrder
@@ -31058,10 +31182,11 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"Payment"> | number
     courseId?: IntNullableWithAggregatesFilter<"Payment"> | number | null
     roadmapId?: IntNullableWithAggregatesFilter<"Payment"> | number | null
+    counselingSessionId?: IntNullableWithAggregatesFilter<"Payment"> | number | null
     amount?: IntWithAggregatesFilter<"Payment"> | number
     paymentStatus?: StringWithAggregatesFilter<"Payment"> | string
     status?: StringWithAggregatesFilter<"Payment"> | string
-    paidAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
+    paidAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
     orderId?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     snapToken?: StringNullableWithAggregatesFilter<"Payment"> | string | null
@@ -31977,10 +32102,13 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
     users: UserCreateNestedOneWithoutCounselingsessionInput
   }
@@ -31993,10 +32121,13 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutCounselingsessionInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionUpdateInput = {
@@ -32004,10 +32135,13 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
     users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
   }
@@ -32020,10 +32154,13 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUncheckedUpdateManyWithoutCounselingsessionNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionCreateManyInput = {
@@ -32034,6 +32171,8 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
@@ -32044,6 +32183,8 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32057,6 +32198,8 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32709,13 +32852,14 @@ export namespace Prisma {
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -32725,10 +32869,11 @@ export namespace Prisma {
     userId: number
     courseId?: number | null
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -32740,13 +32885,14 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -32756,10 +32902,11 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32772,10 +32919,11 @@ export namespace Prisma {
     userId: number
     courseId?: number | null
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -32785,7 +32933,7 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32796,10 +32944,11 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33813,6 +33962,11 @@ export namespace Prisma {
     senderId?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -33843,6 +33997,8 @@ export namespace Prisma {
     question?: SortOrder
     response?: SortOrder
     status?: SortOrder
+    isPaymentRequired?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     rating?: SortOrder
     feedback?: SortOrder
@@ -33852,6 +34008,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     counselorId?: SortOrder
+    price?: SortOrder
     rating?: SortOrder
   }
 
@@ -33863,6 +34020,8 @@ export namespace Prisma {
     question?: SortOrder
     response?: SortOrder
     status?: SortOrder
+    isPaymentRequired?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     rating?: SortOrder
     feedback?: SortOrder
@@ -33876,6 +34035,8 @@ export namespace Prisma {
     question?: SortOrder
     response?: SortOrder
     status?: SortOrder
+    isPaymentRequired?: SortOrder
+    price?: SortOrder
     createdAt?: SortOrder
     rating?: SortOrder
     feedback?: SortOrder
@@ -33885,7 +34046,16 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     counselorId?: SortOrder
+    price?: SortOrder
     rating?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -33902,11 +34072,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type CounselorOrderByRelevanceInput = {
@@ -33947,14 +34112,6 @@ export namespace Prisma {
   export type CounselorSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type CategoryScalarRelationFilter = {
@@ -34476,6 +34633,11 @@ export namespace Prisma {
     isNot?: RoadmapWhereInput | null
   }
 
+  export type CounselingSessionNullableScalarRelationFilter = {
+    is?: CounselingSessionWhereInput | null
+    isNot?: CounselingSessionWhereInput | null
+  }
+
   export type PaymentOrderByRelevanceInput = {
     fields: PaymentOrderByRelevanceFieldEnum | PaymentOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -34487,6 +34649,7 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrder
     roadmapId?: SortOrder
+    counselingSessionId?: SortOrder
     amount?: SortOrder
     paymentStatus?: SortOrder
     status?: SortOrder
@@ -34501,6 +34664,7 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrder
     roadmapId?: SortOrder
+    counselingSessionId?: SortOrder
     amount?: SortOrder
   }
 
@@ -34509,6 +34673,7 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrder
     roadmapId?: SortOrder
+    counselingSessionId?: SortOrder
     amount?: SortOrder
     paymentStatus?: SortOrder
     status?: SortOrder
@@ -34523,6 +34688,7 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrder
     roadmapId?: SortOrder
+    counselingSessionId?: SortOrder
     amount?: SortOrder
     paymentStatus?: SortOrder
     status?: SortOrder
@@ -34537,6 +34703,7 @@ export namespace Prisma {
     userId?: SortOrder
     courseId?: SortOrder
     roadmapId?: SortOrder
+    counselingSessionId?: SortOrder
     amount?: SortOrder
   }
 
@@ -35608,6 +35775,13 @@ export namespace Prisma {
     connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
+  export type PaymentCreateNestedManyWithoutCounselingSessionInput = {
+    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
+    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
   export type CounselorCreateNestedOneWithoutCounselingsessionInput = {
     create?: XOR<CounselorCreateWithoutCounselingsessionInput, CounselorUncheckedCreateWithoutCounselingsessionInput>
     connectOrCreate?: CounselorCreateOrConnectWithoutCounselingsessionInput
@@ -35625,6 +35799,17 @@ export namespace Prisma {
     connectOrCreate?: ChatMessageCreateOrConnectWithoutCounselingsessionInput | ChatMessageCreateOrConnectWithoutCounselingsessionInput[]
     createMany?: ChatMessageCreateManyCounselingsessionInputEnvelope
     connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
+  }
+
+  export type PaymentUncheckedCreateNestedManyWithoutCounselingSessionInput = {
+    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
+    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -35647,6 +35832,20 @@ export namespace Prisma {
     update?: ChatMessageUpdateWithWhereUniqueWithoutCounselingsessionInput | ChatMessageUpdateWithWhereUniqueWithoutCounselingsessionInput[]
     updateMany?: ChatMessageUpdateManyWithWhereWithoutCounselingsessionInput | ChatMessageUpdateManyWithWhereWithoutCounselingsessionInput[]
     deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
+  }
+
+  export type PaymentUpdateManyWithoutCounselingSessionNestedInput = {
+    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput | PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput[]
+    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput | PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutCounselingSessionInput | PaymentUpdateManyWithWhereWithoutCounselingSessionInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
   export type CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput = {
@@ -35679,6 +35878,20 @@ export namespace Prisma {
     deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
+  export type PaymentUncheckedUpdateManyWithoutCounselingSessionNestedInput = {
+    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput | PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput[]
+    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput | PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutCounselingSessionInput | PaymentUpdateManyWithWhereWithoutCounselingSessionInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
   export type CounselingSessionCreateNestedManyWithoutCounselorInput = {
     create?: XOR<CounselingSessionCreateWithoutCounselorInput, CounselingSessionUncheckedCreateWithoutCounselorInput> | CounselingSessionCreateWithoutCounselorInput[] | CounselingSessionUncheckedCreateWithoutCounselorInput[]
     connectOrCreate?: CounselingSessionCreateOrConnectWithoutCounselorInput | CounselingSessionCreateOrConnectWithoutCounselorInput[]
@@ -35697,10 +35910,6 @@ export namespace Prisma {
     connectOrCreate?: CounselingSessionCreateOrConnectWithoutCounselorInput | CounselingSessionCreateOrConnectWithoutCounselorInput[]
     createMany?: CounselingSessionCreateManyCounselorInputEnvelope
     connect?: CounselingSessionWhereUniqueInput | CounselingSessionWhereUniqueInput[]
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type CounselingSessionUpdateManyWithoutCounselorNestedInput = {
@@ -36376,6 +36585,12 @@ export namespace Prisma {
     connect?: RoadmapWhereUniqueInput
   }
 
+  export type CounselingSessionCreateNestedOneWithoutPaymentInput = {
+    create?: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
+    connectOrCreate?: CounselingSessionCreateOrConnectWithoutPaymentInput
+    connect?: CounselingSessionWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutPaymentInput = {
     create?: XOR<UserCreateWithoutPaymentInput, UserUncheckedCreateWithoutPaymentInput>
     connectOrCreate?: UserCreateOrConnectWithoutPaymentInput
@@ -36435,6 +36650,16 @@ export namespace Prisma {
     delete?: RoadmapWhereInput | boolean
     connect?: RoadmapWhereUniqueInput
     update?: XOR<XOR<RoadmapUpdateToOneWithWhereWithoutPaymentInput, RoadmapUpdateWithoutPaymentInput>, RoadmapUncheckedUpdateWithoutPaymentInput>
+  }
+
+  export type CounselingSessionUpdateOneWithoutPaymentNestedInput = {
+    create?: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
+    connectOrCreate?: CounselingSessionCreateOrConnectWithoutPaymentInput
+    upsert?: CounselingSessionUpsertWithoutPaymentInput
+    disconnect?: CounselingSessionWhereInput | boolean
+    delete?: CounselingSessionWhereInput | boolean
+    connect?: CounselingSessionWhereUniqueInput
+    update?: XOR<XOR<CounselingSessionUpdateToOneWithWhereWithoutPaymentInput, CounselingSessionUpdateWithoutPaymentInput>, CounselingSessionUncheckedUpdateWithoutPaymentInput>
   }
 
   export type UserUpdateOneRequiredWithoutPaymentNestedInput = {
@@ -36979,6 +37204,19 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | null
@@ -37004,19 +37242,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -37130,10 +37355,13 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
   }
 
@@ -37144,10 +37372,13 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutCounselingsessionInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionCreateOrConnectWithoutUsersInput = {
@@ -37383,13 +37614,14 @@ export namespace Prisma {
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
 
@@ -37397,10 +37629,11 @@ export namespace Prisma {
     id?: number
     courseId?: number | null
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -37614,6 +37847,8 @@ export namespace Prisma {
     question?: StringFilter<"CounselingSession"> | string
     response?: StringNullableFilter<"CounselingSession"> | string | null
     status?: StringFilter<"CounselingSession"> | string
+    isPaymentRequired?: BoolFilter<"CounselingSession"> | boolean
+    price?: IntNullableFilter<"CounselingSession"> | number | null
     createdAt?: DateTimeFilter<"CounselingSession"> | Date | string
     rating?: IntNullableFilter<"CounselingSession"> | number | null
     feedback?: StringNullableFilter<"CounselingSession"> | string | null
@@ -37868,10 +38103,11 @@ export namespace Prisma {
     userId?: IntFilter<"Payment"> | number
     courseId?: IntNullableFilter<"Payment"> | number | null
     roadmapId?: IntNullableFilter<"Payment"> | number | null
+    counselingSessionId?: IntNullableFilter<"Payment"> | number | null
     amount?: IntFilter<"Payment"> | number
     paymentStatus?: StringFilter<"Payment"> | string
     status?: StringFilter<"Payment"> | string
-    paidAt?: DateTimeFilter<"Payment"> | Date | string
+    paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     orderId?: StringNullableFilter<"Payment"> | string | null
     snapToken?: StringNullableFilter<"Payment"> | string | null
@@ -38480,9 +38716,12 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
     users: UserCreateNestedOneWithoutCounselingsessionInput
   }
@@ -38495,9 +38734,12 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
+    payment?: PaymentUncheckedCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionCreateOrConnectWithoutChatmessageInput = {
@@ -38595,9 +38837,12 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
     users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
   }
@@ -38610,9 +38855,12 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    payment?: PaymentUncheckedUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type ChatMessageCreateWithoutCounselingsessionInput = {
@@ -38635,6 +38883,47 @@ export namespace Prisma {
 
   export type ChatMessageCreateManyCounselingsessionInputEnvelope = {
     data: ChatMessageCreateManyCounselingsessionInput | ChatMessageCreateManyCounselingsessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentCreateWithoutCounselingSessionInput = {
+    amount: number
+    paymentStatus: string
+    status: string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    orderId?: string | null
+    snapToken?: string | null
+    enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
+    course?: CourseCreateNestedOneWithoutPaymentInput
+    roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    users: UserCreateNestedOneWithoutPaymentInput
+    userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateWithoutCounselingSessionInput = {
+    id?: number
+    userId: number
+    courseId?: number | null
+    roadmapId?: number | null
+    amount: number
+    paymentStatus: string
+    status: string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    orderId?: string | null
+    snapToken?: string | null
+    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutPaymentInput
+    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentCreateOrConnectWithoutCounselingSessionInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput>
+  }
+
+  export type PaymentCreateManyCounselingSessionInputEnvelope = {
+    data: PaymentCreateManyCounselingSessionInput | PaymentCreateManyCounselingSessionInput[]
     skipDuplicates?: boolean
   }
 
@@ -38742,6 +39031,22 @@ export namespace Prisma {
     data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutCounselingsessionInput>
   }
 
+  export type PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutCounselingSessionInput, PaymentUncheckedUpdateWithoutCounselingSessionInput>
+    create: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput>
+  }
+
+  export type PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutCounselingSessionInput, PaymentUncheckedUpdateWithoutCounselingSessionInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutCounselingSessionInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutCounselingSessionInput>
+  }
+
   export type CounselorUpsertWithoutCounselingsessionInput = {
     update: XOR<CounselorUpdateWithoutCounselingsessionInput, CounselorUncheckedUpdateWithoutCounselingsessionInput>
     create: XOR<CounselorCreateWithoutCounselingsessionInput, CounselorUncheckedCreateWithoutCounselingsessionInput>
@@ -38847,10 +39152,13 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     users: UserCreateNestedOneWithoutCounselingsessionInput
   }
 
@@ -38861,10 +39169,13 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutCounselingsessionInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionCreateOrConnectWithoutCounselorInput = {
@@ -39250,12 +39561,13 @@ export namespace Prisma {
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -39264,10 +39576,11 @@ export namespace Prisma {
     id?: number
     userId: number
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -40168,12 +40481,13 @@ export namespace Prisma {
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -40183,10 +40497,11 @@ export namespace Prisma {
     userId: number
     courseId?: number | null
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -40331,12 +40646,13 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -40346,10 +40662,11 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41126,6 +41443,42 @@ export namespace Prisma {
     create: XOR<RoadmapCreateWithoutPaymentInput, RoadmapUncheckedCreateWithoutPaymentInput>
   }
 
+  export type CounselingSessionCreateWithoutPaymentInput = {
+    topic: string
+    question: string
+    response?: string | null
+    status: string
+    isPaymentRequired?: boolean
+    price?: number | null
+    createdAt?: Date | string
+    rating?: number | null
+    feedback?: string | null
+    chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
+    counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
+    users: UserCreateNestedOneWithoutCounselingsessionInput
+  }
+
+  export type CounselingSessionUncheckedCreateWithoutPaymentInput = {
+    id?: number
+    userId: number
+    counselorId: number
+    topic: string
+    question: string
+    response?: string | null
+    status: string
+    isPaymentRequired?: boolean
+    price?: number | null
+    createdAt?: Date | string
+    rating?: number | null
+    feedback?: string | null
+    chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutCounselingsessionInput
+  }
+
+  export type CounselingSessionCreateOrConnectWithoutPaymentInput = {
+    where: CounselingSessionWhereUniqueInput
+    create: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
+  }
+
   export type UserCreateWithoutPaymentInput = {
     firstName?: string | null
     lastName?: string | null
@@ -41311,6 +41664,48 @@ export namespace Prisma {
     rewardVoucher?: StringFieldUpdateOperationsInput | string
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutRoadmapNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutRoadmapNestedInput
+  }
+
+  export type CounselingSessionUpsertWithoutPaymentInput = {
+    update: XOR<CounselingSessionUpdateWithoutPaymentInput, CounselingSessionUncheckedUpdateWithoutPaymentInput>
+    create: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
+    where?: CounselingSessionWhereInput
+  }
+
+  export type CounselingSessionUpdateToOneWithWhereWithoutPaymentInput = {
+    where?: CounselingSessionWhereInput
+    data: XOR<CounselingSessionUpdateWithoutPaymentInput, CounselingSessionUncheckedUpdateWithoutPaymentInput>
+  }
+
+  export type CounselingSessionUpdateWithoutPaymentInput = {
+    topic?: StringFieldUpdateOperationsInput | string
+    question?: StringFieldUpdateOperationsInput | string
+    response?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
+    counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
+    users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
+  }
+
+  export type CounselingSessionUncheckedUpdateWithoutPaymentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    counselorId?: IntFieldUpdateOperationsInput | number
+    topic?: StringFieldUpdateOperationsInput | string
+    question?: StringFieldUpdateOperationsInput | string
+    response?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rating?: NullableIntFieldUpdateOperationsInput | number | null
+    feedback?: NullableStringFieldUpdateOperationsInput | string | null
+    chatmessage?: ChatMessageUncheckedUpdateManyWithoutCounselingsessionNestedInput
   }
 
   export type UserUpsertWithoutPaymentInput = {
@@ -41834,12 +42229,13 @@ export namespace Prisma {
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -41848,10 +42244,11 @@ export namespace Prisma {
     id?: number
     userId: number
     courseId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -42133,13 +42530,14 @@ export namespace Prisma {
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
   }
 
@@ -42148,10 +42546,11 @@ export namespace Prisma {
     userId: number
     courseId?: number | null
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -42274,13 +42673,14 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
   }
 
@@ -42289,10 +42689,11 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42550,6 +42951,8 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
@@ -42618,10 +43021,11 @@ export namespace Prisma {
     id?: number
     courseId?: number | null
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -42740,10 +43144,13 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
   }
 
@@ -42754,10 +43161,13 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUncheckedUpdateManyWithoutCounselingsessionNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionUncheckedUpdateManyWithoutUsersInput = {
@@ -42767,6 +43177,8 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42964,13 +43376,14 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
 
@@ -42978,10 +43391,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42993,10 +43407,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43148,6 +43563,20 @@ export namespace Prisma {
     sentAt?: Date | string
   }
 
+  export type PaymentCreateManyCounselingSessionInput = {
+    id?: number
+    userId: number
+    courseId?: number | null
+    roadmapId?: number | null
+    amount: number
+    paymentStatus: string
+    status: string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    orderId?: string | null
+    snapToken?: string | null
+  }
+
   export type ChatMessageUpdateWithoutCounselingsessionInput = {
     message?: StringFieldUpdateOperationsInput | string
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -43168,6 +43597,51 @@ export namespace Prisma {
     sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PaymentUpdateWithoutCounselingSessionInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
+    course?: CourseUpdateOneWithoutPaymentNestedInput
+    roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    users?: UserUpdateOneRequiredWithoutPaymentNestedInput
+    userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutCounselingSessionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    courseId?: NullableIntFieldUpdateOperationsInput | number | null
+    roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollment?: EnrollmentUncheckedUpdateManyWithoutPaymentNestedInput
+    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutCounselingSessionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    courseId?: NullableIntFieldUpdateOperationsInput | number | null
+    roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type CounselingSessionCreateManyCounselorInput = {
     id?: number
     userId: number
@@ -43175,6 +43649,8 @@ export namespace Prisma {
     question: string
     response?: string | null
     status: string
+    isPaymentRequired?: boolean
+    price?: number | null
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
@@ -43185,10 +43661,13 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
   }
 
@@ -43199,10 +43678,13 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUncheckedUpdateManyWithoutCounselingsessionNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionUncheckedUpdateManyWithoutCounselorInput = {
@@ -43212,6 +43694,8 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     response?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
+    isPaymentRequired?: BoolFieldUpdateOperationsInput | boolean
+    price?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43262,10 +43746,11 @@ export namespace Prisma {
     id?: number
     userId: number
     roadmapId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -43420,12 +43905,13 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -43434,10 +43920,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43449,10 +43936,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43668,10 +44156,11 @@ export namespace Prisma {
     id?: number
     userId: number
     courseId?: number | null
+    counselingSessionId?: number | null
     amount: number
     paymentStatus: string
     status: string
-    paidAt: Date | string
+    paidAt?: Date | string | null
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
@@ -43695,12 +44184,13 @@ export namespace Prisma {
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -43709,10 +44199,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43724,10 +44215,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     courseId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
     amount?: IntFieldUpdateOperationsInput | number
     paymentStatus?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
-    paidAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null

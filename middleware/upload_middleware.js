@@ -99,6 +99,7 @@ const uploadCertificate = multer({
 
 // Middleware untuk handle error upload
 const handleUploadError = (uploadFunction) => {
+  console.log('[handleUploadError] masuk middleware');
   return (req, res, next) => {
     uploadFunction(req, res, (err) => {
       if (err instanceof multer.MulterError) {

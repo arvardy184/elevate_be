@@ -24,14 +24,13 @@ const generateOrderId = () => {
 //create transaction
 const createTransaction = async (paymentData) => {
     try{
-        const {userId, amount, itemDetails, customerDetails} = paymentData;
+        const {userId, courseId, roadmapId, counselingSessionId, amount, itemDetails, customerDetails} = paymentData;
 
         const orderId = generateOrderId();
 
         const transactionDetails = {
             order_id: orderId,
-            amount: amount,
-            currency: 'IDR',
+            gross_amount: amount,
         };
 
         const transactionData = {
@@ -45,18 +44,30 @@ const createTransaction = async (paymentData) => {
 
         //create transaction via snap
     
-
+        console.log('transactionData:', JSON.stringify(transactionData, null, 2));
         const transaction = await snap.createTransaction(transactionData);
         
-        
+        // Simpan ke database
+        const payment = await prisma.payment.create({
+            data: {
+                userId,
+                courseId: courseId || null,
+                roadmapId: roadmapId || null,
+                counselingSessionId: counselingSessionId || null,
+                amount,
+                status: 'PENDING',
+                paymentStatus: 'pending',
+                orderId,
+                snapToken: transaction.token
+            }
+        });
+
         return {
             orderId,
-            token: transaction.token,
+            snapToken: transaction.token,
             redirectUrl: transaction.redirect_url,
+            paymentId: payment.id
         };
-
-
-        
         
     } catch (error) {
         console.error('Error creating transaction:', error);
@@ -81,9 +92,7 @@ const handlePaymentNotification = async (notification) => {
         
 
         if(!payment){
-            throw new Error('Payment not found')
-            
-            ;
+            throw new Error('Payment not found');
         }
         
         let paymentStatus = 'pending';
@@ -136,6 +145,17 @@ const handlePaymentNotification = async (notification) => {
                 isUnlocked: true,
                 unlockedAt: new Date(),
                 paymentId: payment.id
+              }
+            });
+          }
+        if (payment.counselingSessionId) {
+            // Activate counseling session
+            await prisma.counselingSession.update({
+              where: {
+                id: payment.counselingSessionId
+              },
+              data: {
+                status: 'ACTIVE'
               }
             });
           }

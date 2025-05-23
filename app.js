@@ -1,7 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
 const { swaggerUi, swaggerSpec } = require("./docs/swagger");
+const chatService = require("./services/chat_service");
 console.log("🔥 swaggerUi:", swaggerUi);
 
 // Routes
@@ -12,10 +15,23 @@ const categoryRoutes = require("./routes/category_routes");
 const courseRoutes = require("./routes/courses_routes");
 const roadmapRoutes = require("./routes/roadmap_routes");
 const paymentRoutes = require("./routes/payment_routes");
+const counselingRoutes = require("./routes/counseling_routes");
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 3009;
-// test
+
+// Setup Socket.IO
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Initialize chat service with Socket.IO
+chatService.init(io);
+
 // Middleware
 app.use(
   cors({
@@ -30,8 +46,9 @@ app.use("/api/user", userRoutes);
 app.use("/api/assesment", assesmentRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/courses", courseRoutes);
-app.use("api/roadmaps", roadmapRoutes);
+app.use("/api/roadmaps", roadmapRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api", counselingRoutes); // Counseling routes
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 console.log("Swagger UI test:", swaggerUi);
@@ -41,7 +58,23 @@ app.get("/", (req, res) => {
   res.send("Selamat datang di API dengan Node.js, Express.js, MySQL, dan JWT!");
 });
 
-// Jalankan server
-app.listen(PORT, "0.0.0.0", () => {
+// WebSocket endpoint info
+app.get("/api/chat/info", (req, res) => {
+  res.json({
+    message: "WebSocket endpoint untuk chat",
+    endpoint: `/chat`,
+    events: {
+      authenticate: "Autentikasi dengan token dan sessionId",
+      send_message: "Mengirim pesan",
+      typing_start: "Mulai mengetik",
+      typing_stop: "Berhenti mengetik",
+      complete_session: "Selesaikan session (khusus counselor)"
+    }
+  });
+});
+
+// Jalankan server dengan Socket.IO
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`Server berjalan di port ${PORT}`);
+  console.log(`WebSocket ready untuk chat counseling`);
 });

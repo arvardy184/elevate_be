@@ -195,6 +195,8 @@ exports.Prisma.CounselingSessionScalarFieldEnum = {
   question: 'question',
   response: 'response',
   status: 'status',
+  isPaymentRequired: 'isPaymentRequired',
+  price: 'price',
   createdAt: 'createdAt',
   rating: 'rating',
   feedback: 'feedback'
@@ -297,6 +299,7 @@ exports.Prisma.PaymentScalarFieldEnum = {
   userId: 'userId',
   courseId: 'courseId',
   roadmapId: 'roadmapId',
+  counselingSessionId: 'counselingSessionId',
   amount: 'amount',
   paymentStatus: 'paymentStatus',
   status: 'status',

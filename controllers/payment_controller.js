@@ -130,18 +130,10 @@ exports.chargePayment = async (req, res) => {
     //get item details;
     let item, amount;
     if (courseId) {
-      item = await prisma.course.findUnique({
-        where: {
-          id: courseId,
-        },
-      });
+      item = await prisma.course.findUnique({ where: { id: courseId } });
       amount = item.price;
     } else {
-      item = await prisma.roadmap.findUnique({
-        where: {
-          id: roadmapId,
-        },
-      });
+      item = await prisma.roadmap.findUnique({ where: { id: roadmapId } });
       amount = item.price || 0;
     }
 
@@ -156,25 +148,9 @@ exports.chargePayment = async (req, res) => {
           code: voucherCode,
           userId,
           isUsed: false,
-          expiresAt: {
-            gt: new Date(),
-          },
+          expiresAt: { gt: new Date() },
         },
       });
-
-      if (voucher) {
-        amount = amount - (amount * voucher.discount) / 100;
-
-        //update voucher usage
-        await prisma.voucher.update({
-          where: {
-            id: voucher.id,
-          },
-          data: {
-            isUsed: true,
-          },
-        });
-      }
 
       if (!voucher) {
         return res
@@ -182,57 +158,57 @@ exports.chargePayment = async (req, res) => {
           .json({ error: "Invalid or expired voucher code" });
       }
 
-      const user = await prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-      });
+      amount = amount - (amount * voucher.discount) / 100;
 
-      const payment = await prisma.payment.create({
-        data: {
-          userId,
-          courseId: courseId ? Number(courseId) : null,
-          roadmapId: roadmapId ? Number(roadmapId) : null,
-          amount,
-          status: "PENDING",
-          paymentStatus: "PENDING",
-        },
-      });
-
-      const transaction = await createTransaction({
-        userId,
-        amount,
-        itemDetails: [
-          {
-            id: item.id,
-            price: amount,
-            quantity: 1,
-            name: item.title || item.name,
-          },
-        ],
-        customerDetails: {
-          first_name: user.firstName,
-          last_name: user.lastName,
-          email: user.email,
-          phone: user.phone,
-        },
-      });
-
-      await prisma.payment.update({
-        where: {
-          id: payment.id,
-        },
-        data: {
-          orderId: transaction.orderId,
-        },
-      });
-
-      return res.status(200).json({
-        message: "Payment initiated",
-        snapToken: transaction.token,
-        redirectUrl: transaction.redirectUrl,
+      //update voucher usage
+      await prisma.voucher.update({
+        where: { id: voucher.id },
+        data: { isUsed: true },
       });
     }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+
+    const payment = await prisma.payment.create({
+      data: {
+        userId,
+        courseId: courseId ? Number(courseId) : null,
+        roadmapId: roadmapId ? Number(roadmapId) : null,
+        amount,
+        status: "PENDING",
+        paymentStatus: "PENDING",
+      },
+    });
+
+    const transaction = await createTransaction({
+      userId,
+      amount,
+      itemDetails: [
+        {
+          id: item.id,
+          price: amount,
+          quantity: 1,
+          name: item.title || item.name,
+        },
+      ],
+      customerDetails: {
+        first_name: user.firstName,
+        last_name: user.lastName,
+        email: user.email,
+        phone: user.phone,
+      },
+    });
+
+    await prisma.payment.update({
+      where: { id: payment.id },
+      data: { orderId: transaction.orderId },
+    });
+
+    return res.status(200).json({
+      message: "Payment initiated",
+      snapToken: transaction.token,
+      redirectUrl: transaction.redirectUrl,
+    });
   } catch (error) {
     console.error("Error charging payment:", error);
     return res.status(500).json({
