@@ -233,6 +233,166 @@ class AssessmentController {
       });
     }
   }
+
+  /**
+   * @swagger
+   * /api/assessment/history:
+   *   get:
+   *     summary: Get assessment history/results untuk user
+   *     tags: [Assessment]
+   *     security:
+   *       - bearerAuth: []
+   *     responses:
+   *       200:
+   *         description: Assessment history berhasil diambil
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: success
+   *                 data:
+   *                   type: array
+   *                   items:
+   *                     $ref: '#/components/schemas/Assessment'
+   *       404:
+   *         description: Assessment tidak ditemukan
+   *       500:
+   *         description: Server error
+   */
+  static async getAssessmentHistory(req, res) {
+    try {
+      const userId = req.user.id;
+
+      const assessments = await prisma.assessment.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          studentStatus: true,
+          majorStudy: true,
+          currentSemester: true,
+          currentField: true,
+          interestedField: true,
+          dreamJob: true,
+          mainGoal: true,
+          createdAt: true
+        }
+      });
+
+      if (assessments.length === 0) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Belum ada assessment yang dibuat'
+        });
+      }
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Assessment history berhasil diambil',
+        data: assessments,
+        total: assessments.length
+      });
+
+    } catch (error) {
+      console.error('Error in getAssessmentHistory:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan server',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/assessment/result/{id}:
+   *   get:
+   *     summary: Get detail assessment result by ID
+   *     tags: [Assessment]
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: integer
+   *         description: Assessment ID
+   *     responses:
+   *       200:
+   *         description: Detail assessment berhasil diambil
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: success
+   *                 data:
+   *                   $ref: '#/components/schemas/Assessment'
+   *       404:
+   *         description: Assessment tidak ditemukan
+   *       403:
+   *         description: Tidak memiliki akses ke assessment ini
+   *       500:
+   *         description: Server error
+   */
+  static async getAssessmentResult(req, res) {
+    try {
+      const userId = req.user.id;
+      const assessmentId = parseInt(req.params.id);
+
+      const assessment = await prisma.assessment.findFirst({
+        where: { 
+          id: assessmentId,
+          userId // Pastikan user hanya bisa akses assessment miliknya
+        },
+        select: {
+          id: true,
+          studentStatus: true,
+          majorStudy: true,
+          currentSemester: true,
+          currentField: true,
+          interestedField: true,
+          dreamJob: true,
+          mainGoal: true,
+          createdAt: true,
+          users: {
+            select: {
+              firstName: true,
+              lastName: true,
+              email: true
+            }
+          }
+        }
+      });
+
+      if (!assessment) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Assessment tidak ditemukan atau Anda tidak memiliki akses'
+        });
+      }
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Detail assessment berhasil diambil',
+        data: assessment
+      });
+
+    } catch (error) {
+      console.error('Error in getAssessmentResult:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan server',
+        error: error.message
+      });
+    }
+  }
 }
 
 module.exports = AssessmentController;

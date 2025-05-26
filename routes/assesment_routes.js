@@ -9,6 +9,12 @@ router.post('/', verifyToken, AssessmentController.createAssessment);
 // GET /api/assessment - cek status assessment user
 router.get('/', verifyToken, AssessmentController.checkAssessment);
 
+// GET /api/assessment/history - get assessment history
+router.get('/history', verifyToken, AssessmentController.getAssessmentHistory);
+
+// GET /api/assessment/result/:id - get detail assessment result
+router.get('/result/:id', verifyToken, AssessmentController.getAssessmentResult);
+
 module.exports = router;
 /**
  * @swagger
