@@ -16,11 +16,11 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3006',
+        url: 'http://localhost:3009/api',
         description: 'Development Server'
       },
       {
-        url: 'http://test2.ciet.site/api',
+        url: 'http://test2.ciet.site:3009/api',
         description: 'Production Server'
       }
     ],
@@ -37,9 +37,9 @@ const options = {
   },
   // Sesuaikan path dengan struktur project kamu
   apis: [
-    './src/controllers/*.js',  // Jika controllers ada di folder src
-    './routes/*.js',           // Jika ada di folder routes
-    './app.js'                 // Jika ada di root file
+    './controllers/*.js',     // Controllers directory
+    './routes/*.js',          // Routes directory  
+    './app.js'                // Root file
   ],
 };
 

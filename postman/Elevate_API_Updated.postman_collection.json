@@ -1,0 +1,726 @@
+{
+	"info": {
+		"_postman_id": "05588d40-cf29-49ba-a99e-328e8af919aa",
+		"name": "Elevate API - Complete",
+		"description": "API lengkap untuk mengelola course, assessment, kategori, user, notifications, job matching, counseling, dan autentikasi.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26408304"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"phoneNumber\": \"081234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "forgot-password"]
+						}
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/reset-password",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "reset-password"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Assessment",
+			"item": [
+				{
+					"name": "Create Assessment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentStatus\": \"active\",\n  \"majorStudy\": \"Teknik Informatika\",\n  \"currentSemester\": \"6\",\n  \"currentField\": \"Web Development\",\n  \"interestedField\": \"Frontend Development\",\n  \"dreamJob\": \"Full Stack Developer\",\n  \"mainGoal\": \"Menjadi expert di React.js dan Node.js\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/assessment",
+							"host": ["{{base_url}}"],
+							"path": ["assessment"]
+						}
+					}
+				},
+				{
+					"name": "Check Assessment",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/assessment",
+							"host": ["{{base_url}}"],
+							"path": ["assessment"]
+						}
+					}
+				},
+				{
+					"name": "Get Assessment History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/assessment/history",
+							"host": ["{{base_url}}"],
+							"path": ["assessment", "history"]
+						}
+					}
+				},
+				{
+					"name": "Get Assessment Result by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/assessment/result/:id",
+							"host": ["{{base_url}}"],
+							"path": ["assessment", "result", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get All Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications?limit=20&offset=0&unread_only=false",
+							"host": ["{{base_url}}"],
+							"path": ["notifications"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "unread_only",
+									"value": "false"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Unread Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/unread-count",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "unread-count"]
+						}
+					}
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/:id/read",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", ":id", "read"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark All as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/read-all",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "read-all"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Job Matching",
+			"item": [
+				{
+					"name": "Get All Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/job-matching/jobs?category=Web Development&location=Jakarta&search=developer&limit=10&offset=0",
+							"host": ["{{base_url}}"],
+							"path": ["job-matching", "jobs"],
+							"query": [
+								{
+									"key": "category",
+									"value": "Web Development"
+								},
+								{
+									"key": "location",
+									"value": "Jakarta"
+								},
+								{
+									"key": "search",
+									"value": "developer"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Job Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/job-matching/jobs/:id",
+							"host": ["{{base_url}}"],
+							"path": ["job-matching", "jobs", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "job_id_here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Job Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/job-matching/categories",
+							"host": ["{{base_url}}"],
+							"path": ["job-matching", "categories"]
+						}
+					}
+				},
+				{
+					"name": "Get Job Matching History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/job-matching/history",
+							"host": ["{{base_url}}"],
+							"path": ["job-matching", "history"]
+						}
+					}
+				},
+				{
+					"name": "CV Job Matching (Placeholder)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dreamJob\": \"Full Stack Developer\",\n  \"cvReviewId\": \"cv_review_id_optional\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/job-matching/match",
+							"host": ["{{base_url}}"],
+							"path": ["job-matching", "match"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "Get All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/courses",
+							"host": ["{{base_url}}"],
+							"path": ["courses"]
+						}
+					}
+				},
+				{
+					"name": "Get Course By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/courses/:id",
+							"host": ["{{base_url}}"],
+							"path": ["courses", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Enroll in Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/courses/:id/enroll",
+							"host": ["{{base_url}}"],
+							"path": ["courses", ":id", "enroll"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/courses/me",
+							"host": ["{{base_url}}"],
+							"path": ["courses", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Counseling",
+			"item": [
+				{
+					"name": "Get All Counselors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/counseling/counselors",
+							"host": ["{{base_url}}"],
+							"path": ["counseling", "counselors"]
+						}
+					}
+				},
+				{
+					"name": "Get Counselor Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/counseling/counselors/:id",
+							"host": ["{{base_url}}"],
+							"path": ["counseling", "counselors", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Counseling Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"counselorId\": 1,\n  \"topic\": \"Career Guidance\",\n  \"question\": \"I need help choosing the right career path\",\n  \"isPaymentRequired\": true,\n  \"price\": 100000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/counseling/sessions",
+							"host": ["{{base_url}}"],
+							"path": ["counseling", "sessions"]
+						}
+					}
+				},
+				{
+					"name": "Get My Counseling Sessions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/counseling/sessions/me",
+							"host": ["{{base_url}}"],
+							"path": ["counseling", "sessions", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Create Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseId\": 1,\n  \"amount\": 299000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/charge",
+							"host": ["{{base_url}}"],
+							"path": ["payment", "charge"]
+						}
+					}
+				},
+				{
+					"name": "Payment Notification (Webhook)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"order_id\": \"ORDER-123\",\n  \"status_code\": \"200\",\n  \"transaction_status\": \"settlement\",\n  \"gross_amount\": \"299000.00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment/notification",
+							"host": ["{{base_url}}"],
+							"path": ["payment", "notification"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Roadmap",
+			"item": [
+				{
+					"name": "Get All Roadmaps",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/roadmap",
+							"host": ["{{base_url}}"],
+							"path": ["roadmap"]
+						}
+					}
+				},
+				{
+					"name": "Get User Roadmaps",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/roadmap/me",
+							"host": ["{{base_url}}"],
+							"path": ["roadmap", "me"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/profile",
+							"host": ["{{base_url}}"],
+							"path": ["user", "profile"]
+						}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John Updated\",\n  \"lastName\": \"Doe Updated\",\n  \"phoneNumber\": \"081234567890\",\n  \"address\": \"Jakarta, Indonesia\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/profile",
+							"host": ["{{base_url}}"],
+							"path": ["user", "profile"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": ["{{base_url}}"],
+							"path": ["categories"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3009/api",
+			"type": "default"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 

@@ -265,8 +265,8 @@ exports.updateProfile = async (req, res) => {
 
 /**
  * @swagger
- * /api/users/notifications
- * get:
+ * /api/users/notifications:
+ *   get:
  *   summary: Ambil semua notifikasi user
  *   tags: [Users]
  *   security:
@@ -317,8 +317,8 @@ exports.getUserNotifications = async(req,res) => {
 
 /**
  * @swagger
- * /api/users/notifications/{id}
- * put:
+ * /api/users/notifications/{id}:
+ *   put:
  *   summary: Update status notifikasi
  *   tags: [Users]
  *   security:  
@@ -361,8 +361,8 @@ exports.updateNotificationStatus = async(req,res) => {
 
 /**
  * @swagger
- * /api/users/notifications/{id}
- * get:
+ * /api/users/notifications/{id}:
+ *   get:
  *   summary: Ambil detail notifikasi
  *   tags: [Users]
  *   security:
@@ -375,7 +375,7 @@ exports.updateNotificationStatus = async(req,res) => {
  *   responses:
  *     200:
  *       description: Notifikasi berhasil diambil
- * *       content:
+ *       content:
  *         application/json:
  *           schema:
  *             type: object
