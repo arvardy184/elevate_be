@@ -1,4 +1,5 @@
-const prisma = require("../prisma/client");
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const storageService = require("../utils/storage");
 const path = require("path");
 const PDFDocument = require("pdfkit");

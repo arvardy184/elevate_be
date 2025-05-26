@@ -1,7 +1,8 @@
-const { PrismaClient } = require('@prisma/client');
 const { createTransaction } = require('../services/payment_service');
 
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+
 
 /**
  * @swagger

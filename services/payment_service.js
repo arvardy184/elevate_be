@@ -1,6 +1,6 @@
 const midtransClient = require('midtrans-client');
-
-const prisma = require('../prisma/client');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 //instance snap API
 const snap = new midtransClient.Snap({

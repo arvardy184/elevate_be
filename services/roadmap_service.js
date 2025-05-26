@@ -1,5 +1,5 @@
-const prisma = require('../prisma/client');
-
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const fieldToTags = {
     "Web Development": ["html", "css", "javascript", "react", "nodejs", "express", "mongodb", "mysql", "postgresql", "docker", "kubernetes", "aws", "azure", "google cloud", "devops", "cicd", "jenkins", "gitlab", "github", "gitlab ci", "github actions"],

@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user_model");
 const { sendOtpEmail } = require("../utils/mailer");
-const prisma = require("../prisma/client");
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 /**
  * @swagger
