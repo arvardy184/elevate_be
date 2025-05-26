@@ -1,6 +1,6 @@
 const db = require('../config/database');
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../prisma/client');
 exports.findByEmail = async (email) => {
   return await prisma.user.findUnique({
     where: { email },

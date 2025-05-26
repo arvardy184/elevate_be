@@ -1,6 +1,5 @@
 const { uploadMiddleware, uploadToStorage, FileCategory } = require("../utils/fileUploader");
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../prisma/client');
 
 /**
  * @swagger

@@ -1,7 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs');
 
-const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
+const prisma = require('../prisma/client');
 
 async function seedCounselors() {
   try {
