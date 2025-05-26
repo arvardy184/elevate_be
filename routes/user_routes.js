@@ -16,6 +16,10 @@ router.put('/profile',
   UserController.updateProfile
 );
 
+router.get('/notifications', verifyToken, UserController.getUserNotifications);
+router.put('/notifications/:id', verifyToken, UserController.updateNotificationStatus);
+router.get('/notifications/:id', verifyToken, UserController.getNotificationDetail);
+
 // router.get('/special-consult',verifyToken, checkRole('CONSULTANT'),UserController.specialStuff);
 
 module.exports = router;

@@ -95,6 +95,27 @@ router.post(
   courseController.addCourseVideo
 );
 
+// GET /api/courses/:courseId/certificate
+router.get(
+  "/:courseId/certificate",
+  verifyToken,
+  courseController.getCourseCertificate
+);
+
+// GET /api/courses/:courseId/certificate/download  
+router.get(
+  "/:courseId/certificate/download",
+  verifyToken,
+  courseController.downloadCertificate
+);
+
+// Review routes
+router.get('/:id/reviews', courseController.getCourseReviews);
+router.post('/:id/reviews', verifyToken, courseController.createCourseReview);
+router.put('/:id/reviews', verifyToken, courseController.updateCourseReview);
+router.delete('/:id/reviews', verifyToken, courseController.deleteCourseReview);
+router.get('/:id/reviews/me', verifyToken, courseController.getMyReview);
+
 module.exports = router;
 
 /**

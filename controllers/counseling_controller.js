@@ -69,9 +69,15 @@ exports.getAllCounselors = async (req, res) => {
     const { page = 1, limit = 10, specialization } = req.query;
     const skip = (page - 1) * limit;
 
+    // Build where condition for MySQL compatibility
     const where = {
       verified: true,
-      ...(specialization && { specialization: { contains: specialization, mode: 'insensitive' } })
+      ...(specialization && { 
+        specialization: { 
+          contains: specialization
+          // Note: MySQL is case-insensitive by default for LIKE operations
+        } 
+      })
     };
 
     const [counselors, total] = await Promise.all([
@@ -80,7 +86,7 @@ exports.getAllCounselors = async (req, res) => {
         skip: parseInt(skip),
         take: parseInt(limit),
         include: {
-          users: {
+          user: {
             select: {
               id: true,
               firstName: true,
@@ -91,7 +97,7 @@ exports.getAllCounselors = async (req, res) => {
           },
           _count: {
             select: {
-              counselingsession: {
+              sessions: {
                 where: { status: 'COMPLETED' }
               }
             }
@@ -121,7 +127,7 @@ exports.getAllCounselors = async (req, res) => {
         return {
           ...counselor,
           averageRating: Math.round(averageRating * 10) / 10,
-          totalSessions: counselor._count.counselingsession
+          totalSessions: counselor._count.sessions
         };
       })
     );
@@ -155,12 +161,9 @@ exports.getCounselorById = async (req, res) => {
     const { id } = req.params;
 
     const counselor = await prisma.counselor.findUnique({
-      where: { 
-        id: parseInt(id),
-        verified: true 
-      },
+      where: { id: parseInt(id) },
       include: {
-        users: {
+        user: {
           select: {
             id: true,
             firstName: true,
@@ -169,17 +172,12 @@ exports.getCounselorById = async (req, res) => {
             profilePicture: true
           }
         },
-        counselingsession: {
-          where: { status: 'COMPLETED' },
+        _count: {
           select: {
-            rating: true,
-            feedback: true,
-            users: {
-              select: { name: true }
+            sessions: {
+              where: { status: 'COMPLETED' }
             }
-          },
-          orderBy: { createdAt: 'desc' },
-          take: 5
+          }
         }
       }
     });
@@ -191,35 +189,33 @@ exports.getCounselorById = async (req, res) => {
       });
     }
 
-    // Hitung statistik
-    const sessions = counselor.counselingsession;
-    const averageRating = sessions.length > 0 
-      ? sessions.reduce((sum, session) => sum + (session.rating || 0), 0) / sessions.length 
-      : 0;
-
-    const totalSessions = await prisma.counselingSession.count({
-      where: { 
+    // Hitung rating rata-rata
+    const sessions = await prisma.counselingSession.findMany({
+      where: {
         counselorId: counselor.id,
-        status: 'COMPLETED'
-      }
+        status: 'COMPLETED',
+        rating: { not: null }
+      },
+      select: { rating: true }
     });
 
-    const response = {
-      ...counselor,
-      averageRating: Math.round(averageRating * 10) / 10,
-      totalSessions,
-      recentReviews: sessions.filter(s => s.feedback).slice(0, 3)
-    };
+    const averageRating = sessions.length > 0 
+      ? sessions.reduce((sum, session) => sum + session.rating, 0) / sessions.length 
+      : 0;
 
     res.status(200).json({
       success: true,
-      data: response
+      data: {
+        ...counselor,
+        averageRating: Math.round(averageRating * 10) / 10,
+        totalSessions: counselor._count.sessions
+      }
     });
   } catch (error) {
-    console.error('Error getting counselor by ID:', error);
+    console.error('Error getting counselor:', error);
     res.status(500).json({
       success: false,
-      message: 'Gagal mengambil detail counselor',
+      message: 'Gagal mengambil data counselor',
       error: error.message
     });
   }

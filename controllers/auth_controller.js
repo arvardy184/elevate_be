@@ -162,7 +162,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.SECRET_KEY || "mysecret123",
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
 
    
@@ -274,62 +274,8 @@ exports.checkToken = (req, res) => {
  *         description: Unauthorized - Token tidak valid
  */
 
-exports.changePassword = async (req, res) => {
-  try{
-    const userId = req.user.id;
-    const {oldPassword, newPassword} = req.body;
 
-    if(!oldPassword || !newPassword){
-      return res.status(400).json({message: "Harap isi semua field!"});
-    }
 
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-    const ok = await bcrypt.compare(oldPassword, user.password);
-    if(!ok){
-      return res.status(400).json({message: "Password lama salah!"});
-    }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        password: hashedPassword,
-      },
-    
-    });
-    res.status(200).json({message: "Password berhasil diubah!"});
-  } catch(e){
-console.error(e);
-return res.status(500).json({message: "Terjadi kesalahan server."});
-  }
-}
-
-/**
- * @swagger
- * /api/auth/change-password:
- *   post:
- *     summary: Ubah password user
- *     tags: [Auth]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ChangePassword'
- *     responses:
- *       200:
- *         description: Password berhasil diubah
- *       400:
- *         description: Bad request - Password lama salah atau field tidak lengkap
- *       401:
- *         description: Unauthorized - Token tidak valid
- *       500:
- *         description: Server error
- */
 
 //kirim otp
 exports.forgotPassword = async (req, res) => {
@@ -455,3 +401,62 @@ exports.resetPassword = async (req, res) => {
  *       500:
  *         description: Server error
  */
+
+  //change-password
+/**
+ * @swagger
+ * /api/auth/change-password:
+ *   post:
+ *     summary: Ubah password user
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ChangePassword'
+ *     responses:
+ *       200:
+ *         description: Password berhasil diubah
+ *       400:
+ *         description: Bad request - Password lama salah atau field tidak lengkap
+ *       401:
+ *         description: Unauthorized - Token tidak valid
+ *       500:
+ *         description: Server error
+ */       
+exports.changePassword = async (req, res) => {
+  try{
+    const userId = req.user.id;
+    const {oldPassword, newPassword} = req.body;
+
+    if(!oldPassword || !newPassword){
+      return res.status(400).json({ success: false, message: 'Password lama & baru wajib diisi' });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if(!user){
+      return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if(!isMatch){
+      return res.status(400).json({ success: false, message: 'Password lama salah' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    return res.status(200).json({ success: true, message: 'Password berhasil diubah' });
+  } catch(e){
+    console.error(e);
+    return res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
+  }
+}

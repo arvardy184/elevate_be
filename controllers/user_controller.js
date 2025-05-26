@@ -262,6 +262,164 @@ exports.updateProfile = async (req, res) => {
     });
   }
 }
+
+/**
+ * @swagger
+ * /api/users/notifications
+ * get:
+ *   summary: Ambil semua notifikasi user
+ *   tags: [Users]
+ *   security:
+ *     - bearerAuth: []
+ *   responses:
+ *     200:
+ *       description: Notifikasi berhasil diambil
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:    
+ *               message:
+ *                 type: string
+ *                 example: Notifikasi berhasil diambil!
+ *               notifications:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Notification'
+ *     401:
+ *       description: Unauthorized - Token tidak valid
+ *     404:
+ *       description: User tidak ditemukan
+ *     500:
+ */ 
+exports.getUserNotifications = async(req,res) => {
+  try{
+    const userId = req.user.id;
+    const notifications = await prisma.notification.findMany({
+      where: {
+        userId
+      },
+      orderBy:{
+        createdAt: 'desc'
+      }
+    });
+    return res.status(200).json({
+      message: 'Notifikasi berhasil diambil!',
+      notifications
+    });
+  } catch(e){
+    console.error(e);
+    return res.status(500).json({
+      message: 'Terjadi kesalahan server.',
+    });
+  }
+}
+
+/**
+ * @swagger
+ * /api/users/notifications/{id}
+ * put:
+ *   summary: Update status notifikasi
+ *   tags: [Users]
+ *   security:  
+ *     - bearerAuth: []
+ *   parameters:
+ *     - name: id
+ *       in: path
+ *       required: true
+ *       type: string
+ *   responses:
+ *     200:
+ *       description: Notifikasi berhasil diupdate
+ *     401:
+ *       description: Unauthorized - Token tidak valid
+ *     404:
+ *       description: Notifikasi tidak ditemukan  
+ *     500:
+ */
+exports.updateNotificationStatus = async(req,res) => {
+  try{
+    const {id} = req.params;
+    const {isRead} = req.body;
+
+    const updatedNotification = await prisma.notification.update({
+      where: {id},
+      data: {isRead}
+    });
+    
+    return res.status(200).json({
+      message: 'Notifikasi berhasil diupdate!',
+      updatedNotification
+    });
+  } catch(e){
+    console.error(e);
+    return res.status(500).json({
+      message: 'Terjadi kesalahan server.', 
+    });
+  }
+}
+
+/**
+ * @swagger
+ * /api/users/notifications/{id}
+ * get:
+ *   summary: Ambil detail notifikasi
+ *   tags: [Users]
+ *   security:
+ *     - bearerAuth: []
+ *   parameters:
+ *     - name: id   
+ *       in: path
+ *       required: true
+ *       type: string
+ *   responses:
+ *     200:
+ *       description: Notifikasi berhasil diambil
+ * *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: Notifikasi berhasil diambil!
+ *               notification:
+ *                 $ref: '#/components/schemas/Notification'
+ */
+exports.getNotificationDetail = async(req,res) => {
+  try{
+    const userId = req.user.id;
+    const notifId = parseInt(req.params.id);
+
+    const notif = await prisma.notification.findUnique({
+      where: {
+        id: notifId,
+        
+      }
+    });
+
+    
+    if(!notif || notif.userId !== userId    ){
+      return res.status(404).json({
+        success: false,
+        message: 'Notifikasi tidak ditemukan!',
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Notifikasi berhasil diambil!',
+      notif
+    });
+  } catch(e){
+    console.error(e);
+    return res.status(500).json({
+      message: 'Terjadi kesalahan server.',
+    });
+  }
+} 
+
+
+
 // exports.updateProfile =async (req, res) => {
 //   const { firstName, lastName, email, address, phoneNumber, gender, birthDate } = req.body;
 //   const userId = req.user.id;

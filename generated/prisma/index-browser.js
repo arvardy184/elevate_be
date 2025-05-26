@@ -164,6 +164,16 @@ exports.Prisma.BookmarkCourseScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CourseReviewScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  courseId: 'courseId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name'
@@ -244,12 +254,22 @@ exports.Prisma.CoursevideoScalarFieldEnum = {
 exports.Prisma.CVReviewScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  cvFilePath: 'cvFilePath',
-  cvVersion: 'cvVersion',
-  reviewResult: 'reviewResult',
-  relevanceScore: 'relevanceScore',
-  feedback: 'feedback',
-  createdAt: 'createdAt'
+  fileName: 'fileName',
+  filePath: 'filePath',
+  fileSize: 'fileSize',
+  extractedText: 'extractedText',
+  careerField: 'careerField',
+  relevancyRate: 'relevancyRate',
+  targetedJobRate: 'targetedJobRate',
+  overallScore: 'overallScore',
+  relevantSkill: 'relevantSkill',
+  workExperience: 'workExperience',
+  consistency: 'consistency',
+  writingQuality: 'writingQuality',
+  aiAnalysis: 'aiAnalysis',
+  suggestions: 'suggestions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.EnrollmentScalarFieldEnum = {
@@ -288,10 +308,11 @@ exports.Prisma.LessonProgressScalarFieldEnum = {
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  message: 'message',
+  title: 'title',
+  body: 'body',
+  type: 'type',
   isRead: 'isRead',
-  createdAt: 'createdAt',
-  type: 'type'
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.PaymentScalarFieldEnum = {
@@ -362,6 +383,32 @@ exports.Prisma.VoucherScalarFieldEnum = {
   isUsed: 'isUsed'
 };
 
+exports.Prisma.JobMatchingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cvReviewId: 'cvReviewId',
+  dreamJob: 'dreamJob',
+  matches: 'matches',
+  aiAnalysis: 'aiAnalysis',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JobScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  company: 'company',
+  description: 'description',
+  requirements: 'requirements',
+  location: 'location',
+  salaryRange: 'salaryRange',
+  jobType: 'jobType',
+  category: 'category',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -403,6 +450,10 @@ exports.Prisma.AssessmentOrderByRelevanceFieldEnum = {
   mainGoal: 'mainGoal'
 };
 
+exports.Prisma.CourseReviewOrderByRelevanceFieldEnum = {
+  comment: 'comment'
+};
+
 exports.Prisma.CategoryOrderByRelevanceFieldEnum = {
   name: 'name'
 };
@@ -442,12 +493,6 @@ exports.Prisma.coursevideoOrderByRelevanceFieldEnum = {
   s3Key: 's3Key'
 };
 
-exports.Prisma.CVReviewOrderByRelevanceFieldEnum = {
-  cvFilePath: 'cvFilePath',
-  reviewResult: 'reviewResult',
-  feedback: 'feedback'
-};
-
 exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
@@ -457,6 +502,14 @@ exports.Prisma.JsonNullValueFilter = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.CVReviewOrderByRelevanceFieldEnum = {
+  id: 'id',
+  fileName: 'fileName',
+  filePath: 'filePath',
+  extractedText: 'extractedText',
+  careerField: 'careerField'
 };
 
 exports.Prisma.JobMatchOrderByRelevanceFieldEnum = {
@@ -469,7 +522,8 @@ exports.Prisma.lessonOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
-  message: 'message',
+  title: 'title',
+  body: 'body',
   type: 'type'
 };
 
@@ -494,6 +548,23 @@ exports.Prisma.RoadmapOrderByRelevanceFieldEnum = {
 exports.Prisma.VoucherOrderByRelevanceFieldEnum = {
   code: 'code'
 };
+
+exports.Prisma.JobMatchingOrderByRelevanceFieldEnum = {
+  id: 'id',
+  cvReviewId: 'cvReviewId',
+  dreamJob: 'dreamJob'
+};
+
+exports.Prisma.JobOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  company: 'company',
+  description: 'description',
+  location: 'location',
+  salaryRange: 'salaryRange',
+  jobType: 'jobType',
+  category: 'category'
+};
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
   CONSULTANT: 'CONSULTANT'
@@ -504,6 +575,7 @@ exports.Prisma.ModelName = {
   RoadmapMatcher: 'RoadmapMatcher',
   Assessment: 'Assessment',
   BookmarkCourse: 'BookmarkCourse',
+  CourseReview: 'CourseReview',
   Category: 'Category',
   Certificate: 'Certificate',
   ChatMessage: 'ChatMessage',
@@ -524,7 +596,9 @@ exports.Prisma.ModelName = {
   Roadmap: 'Roadmap',
   RoadmapCourse: 'RoadmapCourse',
   UserRoadmap: 'UserRoadmap',
-  Voucher: 'Voucher'
+  Voucher: 'Voucher',
+  JobMatching: 'JobMatching',
+  Job: 'Job'
 };
 
 /**

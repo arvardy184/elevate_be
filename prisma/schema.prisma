@@ -31,6 +31,7 @@ model User {
   course            Course[]
   courseprogress    CourseProgress[]
   cvreview          CVReview[]
+  jobmatching       JobMatching[]
   enrollment        Enrollment[]
   jobmatch          JobMatch[]
   lessonprogress    LessonProgress[]
@@ -39,6 +40,7 @@ model User {
   quizsubmission    QuizSubmission[]
   userroadmap       UserRoadmap[]
   voucher           Voucher[]
+  coursereview      CourseReview[]
 
   @@map("users")
 }
@@ -76,6 +78,22 @@ model BookmarkCourse {
 
   @@unique([userId, courseId], map: "BookmarkCourse_userId_courseId_key")
   @@map("bookmarkcourse")
+}
+
+model CourseReview {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  courseId  Int
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  
+  @@unique([userId, courseId]) // User cuma bisa review sekali per course
+  @@map("coursereview")
 }
 
 model Category {
@@ -170,6 +188,7 @@ model Course {
   quiz           quiz[]
   quizsubmission QuizSubmission[]
   roadmapcourse  RoadmapCourse[]
+  coursereview   CourseReview[]
 
   @@index([categoryId], map: "Course_categoryId_fkey")
   @@index([createdById], map: "Course_createdById_fkey")
@@ -206,18 +225,35 @@ model coursevideo {
 }
 
 model CVReview {
-  id             Int      @id @default(autoincrement())
-  userId         Int
-  cvFilePath     String
-  cvVersion      Int
-  reviewResult   String
-  relevanceScore Int
-  feedback       String
-  createdAt      DateTime @default(now())
-  users          User     @relation(fields: [userId], references: [id], map: "CVReview_userId_fkey")
-
-  @@index([userId], map: "CVReview_userId_fkey")
-  @@map("cvreview")
+  id              String   @id @default(cuid())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id], map: "CVReview_userId_fkey")
+  jobmatching     JobMatching[]
+  
+  // File info
+  fileName        String
+  filePath        String
+  fileSize        Int
+  
+  // CV Analysis
+  extractedText   String   @db.Text
+  careerField     String
+  
+  // Scoring (0-100)
+  relevancyRate   Float
+  targetedJobRate Float
+  overallScore    Float
+  relevantSkill   Float
+  workExperience  Float
+  consistency     Float
+  writingQuality  Float
+  
+  // AI Response
+  aiAnalysis      Json
+  suggestions     Json
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Enrollment {
@@ -279,14 +315,12 @@ model LessonProgress {
 model Notification {
   id        Int      @id @default(autoincrement())
   userId    Int
-  message   String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  body      String
+  type      String?  // optional, misal: 'payment', 'message', etc
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
-  type      String
-  users     User     @relation(fields: [userId], references: [id], map: "Notification_userId_fkey")
-
-  @@index([userId], map: "Notification_userId_fkey")
-  @@map("notification")
 }
 
 model Payment {
@@ -400,6 +434,40 @@ model Voucher {
   users     User     @relation(fields: [userId], references: [id])
 
   @@map("voucher")
+}
+
+model JobMatching {
+  id              String   @id @default(cuid())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
+  
+  // Input
+  cvReviewId      String?
+  cvReview        CVReview? @relation(fields: [cvReviewId], references: [id])
+  dreamJob        String
+  
+  // Results
+  matches         Json     // Array of job matches with scores
+  aiAnalysis      Json
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Job {
+  id              String   @id @default(cuid())
+  title           String
+  company         String
+  description     String   @db.Text
+  requirements    Json     // Skills, experience, etc
+  location        String
+  salaryRange     String?
+  jobType         String   // full-time, part-time, contract
+  category        String
+  isActive        Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 enum Role {
