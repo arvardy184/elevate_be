@@ -314,7 +314,7 @@ Content-Type: application/json
 ```json
 {
   "rating": 5,
-  "feedback": "Konseling sangat membantu. Dr. Sarah sangat profesional dan empati."
+  "feedback": "Konseling sangat membantu. Dr. Arvan sangat profesional dan empati."
 }
 ```
 
