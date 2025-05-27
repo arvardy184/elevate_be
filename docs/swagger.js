@@ -20,7 +20,7 @@ const options = {
         description: 'Development Server'
       },
       {
-        url: 'http://test2.ciet.site:3009/api',
+        url: 'http://test2.ciet.site/api',
         description: 'Production Server'
       }
     ],

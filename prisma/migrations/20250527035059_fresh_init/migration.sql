@@ -58,6 +58,20 @@ CREATE TABLE `bookmarkcourse` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `coursereview` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `courseId` INTEGER NOT NULL,
+    `rating` INTEGER NOT NULL,
+    `comment` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `coursereview_userId_courseId_key`(`userId`, `courseId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -71,9 +85,12 @@ CREATE TABLE `certificate` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `courseId` INTEGER NOT NULL,
-    `filePath` VARCHAR(191) NOT NULL,
+    `certificateId` VARCHAR(191) NOT NULL,
+    `fileUrl` VARCHAR(191) NOT NULL,
+    `s3Key` VARCHAR(191) NOT NULL,
     `issuedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `certificate_certificateId_key`(`certificateId`),
     INDEX `Certificate_courseId_fkey`(`courseId`),
     INDEX `Certificate_userId_fkey`(`userId`),
     PRIMARY KEY (`id`)
@@ -101,6 +118,8 @@ CREATE TABLE `counselingsession` (
     `question` VARCHAR(191) NOT NULL,
     `response` VARCHAR(191) NULL,
     `status` VARCHAR(191) NOT NULL,
+    `isPaymentRequired` BOOLEAN NOT NULL DEFAULT false,
+    `price` INTEGER NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `rating` INTEGER NULL,
     `feedback` VARCHAR(191) NULL,
@@ -169,16 +188,25 @@ CREATE TABLE `coursevideo` (
 
 -- CreateTable
 CREATE TABLE `cvreview` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` VARCHAR(191) NOT NULL,
     `userId` INTEGER NOT NULL,
-    `cvFilePath` VARCHAR(191) NOT NULL,
-    `cvVersion` INTEGER NOT NULL,
-    `reviewResult` VARCHAR(191) NOT NULL,
-    `relevanceScore` INTEGER NOT NULL,
-    `feedback` VARCHAR(191) NOT NULL,
+    `fileName` VARCHAR(191) NOT NULL,
+    `filePath` VARCHAR(191) NOT NULL,
+    `fileSize` INTEGER NOT NULL,
+    `extractedText` TEXT NOT NULL,
+    `careerField` VARCHAR(191) NOT NULL,
+    `relevancyRate` DOUBLE NOT NULL,
+    `targetedJobRate` DOUBLE NOT NULL,
+    `overallScore` DOUBLE NOT NULL,
+    `relevantSkill` DOUBLE NOT NULL,
+    `workExperience` DOUBLE NOT NULL,
+    `consistency` DOUBLE NOT NULL,
+    `writingQuality` DOUBLE NOT NULL,
+    `aiAnalysis` JSON NOT NULL,
+    `suggestions` JSON NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
-    INDEX `CVReview_userId_fkey`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -235,15 +263,15 @@ CREATE TABLE `lessonprogress` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `notification` (
+CREATE TABLE `Notification` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
-    `message` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `body` VARCHAR(191) NOT NULL,
+    `type` VARCHAR(191) NULL,
     `isRead` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `type` VARCHAR(191) NOT NULL,
 
-    INDEX `Notification_userId_fkey`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -253,10 +281,11 @@ CREATE TABLE `payment` (
     `userId` INTEGER NOT NULL,
     `courseId` INTEGER NULL,
     `roadmapId` INTEGER NULL,
+    `counselingSessionId` INTEGER NULL,
     `amount` INTEGER NOT NULL,
     `paymentStatus` VARCHAR(191) NOT NULL,
     `status` VARCHAR(191) NOT NULL,
-    `paidAt` DATETIME(3) NOT NULL,
+    `paidAt` DATETIME(3) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `orderId` VARCHAR(191) NULL,
     `snapToken` VARCHAR(191) NULL,
@@ -264,6 +293,7 @@ CREATE TABLE `payment` (
     UNIQUE INDEX `Payment_orderId_key`(`orderId`),
     INDEX `Payment_courseId_fkey`(`courseId`),
     INDEX `Payment_roadmapId_fkey`(`roadmapId`),
+    INDEX `Payment_counselingSessionId_fkey`(`counselingSessionId`),
     INDEX `Payment_userId_fkey`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -328,6 +358,7 @@ CREATE TABLE `userroadmap` (
     `roadmapId` INTEGER NOT NULL,
     `isUnlocked` BOOLEAN NOT NULL,
     `unlockedAt` DATETIME(3) NULL,
+    `paymentId` INTEGER NULL,
 
     INDEX `UserRoadmap_roadmapId_fkey`(`roadmapId`),
     INDEX `UserRoadmap_userId_fkey`(`userId`),
@@ -347,8 +378,46 @@ CREATE TABLE `voucher` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `JobMatching` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `cvReviewId` VARCHAR(191) NULL,
+    `dreamJob` VARCHAR(191) NOT NULL,
+    `matches` JSON NOT NULL,
+    `aiAnalysis` JSON NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Job` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `company` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
+    `requirements` JSON NOT NULL,
+    `location` VARCHAR(191) NOT NULL,
+    `salaryRange` VARCHAR(191) NULL,
+    `jobType` VARCHAR(191) NOT NULL,
+    `category` VARCHAR(191) NOT NULL,
+    `isActive` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `assessment` ADD CONSTRAINT `Assessment_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `coursereview` ADD CONSTRAINT `coursereview_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `coursereview` ADD CONSTRAINT `coursereview_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `course`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `certificate` ADD CONSTRAINT `Certificate_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `course`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -411,13 +480,16 @@ ALTER TABLE `lessonprogress` ADD CONSTRAINT `LessonProgress_lessonId_fkey` FOREI
 ALTER TABLE `lessonprogress` ADD CONSTRAINT `LessonProgress_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `payment` ADD CONSTRAINT `Payment_courseId_fkey` FOREIGN KEY (`courseId`) REFERENCES `course`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `payment` ADD CONSTRAINT `Payment_roadmapId_fkey` FOREIGN KEY (`roadmapId`) REFERENCES `roadmap`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `payment` ADD CONSTRAINT `Payment_counselingSessionId_fkey` FOREIGN KEY (`counselingSessionId`) REFERENCES `counselingsession`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `payment` ADD CONSTRAINT `Payment_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -444,7 +516,16 @@ ALTER TABLE `roadmapcourse` ADD CONSTRAINT `RoadmapCourse_roadmapId_fkey` FOREIG
 ALTER TABLE `userroadmap` ADD CONSTRAINT `UserRoadmap_roadmapId_fkey` FOREIGN KEY (`roadmapId`) REFERENCES `roadmap`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `userroadmap` ADD CONSTRAINT `UserRoadmap_paymentId_fkey` FOREIGN KEY (`paymentId`) REFERENCES `payment`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `userroadmap` ADD CONSTRAINT `UserRoadmap_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `voucher` ADD CONSTRAINT `voucher_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `JobMatching` ADD CONSTRAINT `JobMatching_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `JobMatching` ADD CONSTRAINT `JobMatching_cvReviewId_fkey` FOREIGN KEY (`cvReviewId`) REFERENCES `cvreview`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

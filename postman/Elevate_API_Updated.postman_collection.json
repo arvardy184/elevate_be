@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "05588d40-cf29-49ba-a99e-328e8af919aa",
-		"name": "Elevate API - Complete",
+		"name": "Elevate API - Complete(hampir)",
 		"description": "API lengkap untuk mengelola course, assessment, kategori, user, notifications, job matching, counseling, dan autentikasi.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "26408304"
