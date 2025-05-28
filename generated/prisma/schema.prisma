@@ -234,8 +234,13 @@ model CVReview {
 
   // File info
   fileName String
-  filePath String
+  filePath String? // Local path (optional, for backup)
   fileSize Int
+
+  // B2 Storage info
+  b2FileId   String? // Backblaze B2 file ID
+  b2FileName String? // File name in B2
+  b2FileUrl  String? // Public URL in B2
 
   // CV Analysis
   extractedText String @db.Text
@@ -256,6 +261,8 @@ model CVReview {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("cvreview")
 }
 
 model Enrollment {

@@ -875,12 +875,14 @@ exports.getQuizResult = async (req, res) => {
 exports.getCourseVideos = async (req, res) => {
   console.log("[getCourseVideos] masuk controller");
   const { courseId } = req.params;
+  const { useSignedUrls = 'false' } = req.query; // Query param untuk signed URLs
 
   try {
     const courseVideos = await prisma.coursevideo.findMany({
       where: {
         courseId: Number(courseId),
       },
+      orderBy: { order: 'asc' }
     });
 
     if (!courseVideos.length) {
@@ -889,6 +891,39 @@ exports.getCourseVideos = async (req, res) => {
         .json({ message: "Tidak ada video untuk kursus ini" });
     }
 
+    // Generate signed URLs jika diminta (untuk private bucket)
+    if (useSignedUrls === 'true') {
+      console.log("[getCourseVideos] Generating signed URLs for private bucket access");
+      
+      const videosWithSignedUrls = await Promise.all(
+        courseVideos.map(async (video) => {
+          try {
+            // Extract filename dari s3Key atau videoUrl
+            const fileName = video.s3Key || video.videoUrl.split('/').pop();
+            
+            // Generate signed URL (valid for 2 hours)
+            const signedUrl = await storageService.generateSignedUrl(fileName, 7200);
+            
+            return {
+              ...video,
+              videoUrl: signedUrl, // Replace dengan signed URL
+              originalUrl: video.videoUrl, // Keep original untuk reference
+              signedUrlExpiry: new Date(Date.now() + 7200 * 1000).toISOString()
+            };
+          } catch (error) {
+            console.error(`Error generating signed URL for video ${video.id}:`, error);
+            return video; // Return original jika error
+          }
+        })
+      );
+      
+      return res.status(200).json({ 
+        courseVideos: videosWithSignedUrls,
+        note: "Videos with signed URLs (valid for 2 hours)"
+      });
+    }
+
+    // Return original URLs (untuk public bucket atau testing)
     return res.status(200).json({ courseVideos });
   } catch (e) {
     console.error(e);

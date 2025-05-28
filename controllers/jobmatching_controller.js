@@ -375,7 +375,7 @@ class JobMatchingController {
    * @swagger
    * /api/job-matching/match:
    *   post:
-   *     summary: Placeholder untuk CV job matching (akan diimplementasi dengan AI)
+   *     summary: CV Job Matching dengan AI
    *     tags: [JobMatching]
    *     security:
    *       - bearerAuth: []
@@ -389,45 +389,135 @@ class JobMatchingController {
    *               dreamJob:
    *                 type: string
    *                 description: Pekerjaan impian
+   *                 example: "Software Engineer"
    *               cvReviewId:
    *                 type: string
    *                 description: ID CV Review (optional)
    *     responses:
    *       200:
    *         description: Job matching berhasil
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                   example: success
-   *                 message:
-   *                   type: string
-   *       501:
-   *         description: Feature belum diimplementasi
+   *       400:
+   *         description: Data input tidak valid
+   *       500:
+   *         description: Server error
    */
   static async matchJobs(req, res) {
     try {
-      // Placeholder untuk fitur CV job matching
-      // Akan diimplementasi dengan AI (Gemini/Grok)
+      const userId = req.user.id;
       
-      return res.status(501).json({
-        status: 'info',
-        message: 'Fitur CV job matching akan segera tersedia! Untuk sementara, Anda bisa browse job yang tersedia.',
-        availableEndpoints: {
-          jobs: '/api/jobs',
-          jobCategories: '/api/job-matching/categories',
-          jobDetail: '/api/jobs/{id}'
-        }
+      // Debug logging
+      console.log('Job matching request:', {
+        body: req.body,
+        headers: req.headers['content-type'],
+        method: req.method,
+        url: req.url
       });
       
+      const { dreamJob, cvReviewId } = req.body || {};
+      
+
+      if (!dreamJob) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Dream job wajib diisi'
+        });
+      }
+
+      let cvReview = null;
+      let extractedText = '';
+
+      // Jika cvReviewId diberikan, ambil CV review data
+      if (cvReviewId) {
+        cvReview = await prisma.cVReview.findFirst({
+          where: {
+            id: cvReviewId,
+            userId: userId
+          }
+        });
+
+        if (!cvReview) {
+          return res.status(400).json({
+            status: 'error',
+            message: 'CV Review tidak ditemukan'
+          });
+        }
+
+        extractedText = cvReview.extractedText;
+      }
+
+      // Ambil semua active jobs
+      const availableJobs = await prisma.job.findMany({
+        where: { isActive: true },
+        take: 50 // Limit untuk performa
+      });
+
+      if (availableJobs.length === 0) {
+        return res.status(200).json({
+          status: 'success',
+          message: 'Belum ada job tersedia saat ini',
+          data: {
+            matches: [],
+            aiAnalysis: {
+              summary: 'Belum ada job tersedia untuk dianalisis'
+            }
+          }
+        });
+      }
+
+      // Lakukan job matching dengan AI
+      const aiService = require('../services/ai_service');
+      const matchingResult = await aiService.performJobMatching(
+        extractedText, 
+        dreamJob, 
+        availableJobs
+      );
+
+      // Simpan hasil matching ke database
+      const jobMatching = await prisma.jobMatching.create({
+        data: {
+          userId: userId,
+          cvReviewId: cvReviewId || null,
+          dreamJob: dreamJob,
+          matches: matchingResult.matches || [],
+          aiAnalysis: matchingResult.aiAnalysis || {}
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true
+            }
+          },
+          cvReview: cvReviewId ? {
+            select: {
+              fileName: true,
+              careerField: true,
+              overallScore: true
+            }
+          } : false
+        }
+      });
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Job matching berhasil dilakukan!',
+        data: {
+          id: jobMatching.id,
+          dreamJob: jobMatching.dreamJob,
+          matches: jobMatching.matches,
+          aiAnalysis: jobMatching.aiAnalysis,
+          cvReview: jobMatching.cvReview,
+          createdAt: jobMatching.createdAt,
+          totalMatches: Array.isArray(jobMatching.matches) ? jobMatching.matches.length : 0
+        }
+      });
+
     } catch (error) {
       console.error('Error in matchJobs:', error);
       return res.status(500).json({
         status: 'error',
-        message: 'Terjadi kesalahan server',
+        message: 'Terjadi kesalahan saat melakukan job matching',
         error: error.message
       });
     }

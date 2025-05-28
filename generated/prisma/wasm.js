@@ -257,6 +257,9 @@ exports.Prisma.CVReviewScalarFieldEnum = {
   fileName: 'fileName',
   filePath: 'filePath',
   fileSize: 'fileSize',
+  b2FileId: 'b2FileId',
+  b2FileName: 'b2FileName',
+  b2FileUrl: 'b2FileUrl',
   extractedText: 'extractedText',
   careerField: 'careerField',
   relevancyRate: 'relevancyRate',
@@ -508,6 +511,9 @@ exports.Prisma.CVReviewOrderByRelevanceFieldEnum = {
   id: 'id',
   fileName: 'fileName',
   filePath: 'filePath',
+  b2FileId: 'b2FileId',
+  b2FileName: 'b2FileName',
+  b2FileUrl: 'b2FileUrl',
   extractedText: 'extractedText',
   careerField: 'careerField'
 };

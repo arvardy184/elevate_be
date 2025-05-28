@@ -15,8 +15,21 @@ router.get('/categories', JobMatchingController.getJobCategories);
 // GET /api/job-matching/history - get job matching history (need auth)
 router.get('/history', verifyToken, JobMatchingController.getJobMatchingHistory);
 
-// POST /api/job-matching/match - CV job matching (need auth) - placeholder
-router.post('/match', verifyToken, JobMatchingController.matchJobs);
+// Debug middleware untuk job matching
+const debugJobMatching = (req, res, next) => {
+  console.log('Job matching route debug:', {
+    method: req.method,
+    url: req.url,
+    contentType: req.headers['content-type'],
+    body: req.body,
+    bodyExists: !!req.body,
+    bodyType: typeof req.body
+  });
+  next();
+};
+
+// POST /api/job-matching/match - CV job matching (need auth)
+router.post('/match', debugJobMatching, verifyToken, JobMatchingController.matchJobs);
 
 module.exports = router;
 

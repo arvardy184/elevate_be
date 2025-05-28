@@ -461,3 +461,31 @@ exports.changePassword = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
   }
 }
+
+//change role
+exports.changeRole = async (req, res) =>{
+  try{
+    const userId = req.user.id;
+    const {newRole} = req.body;
+    if(!newRole){
+      return res.status(400).json({ success: false, message: 'Role baru wajib diisi' });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if(!user){
+      return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { role: newRole },
+    });
+
+    return res.status(200).json({ success: true, message: 'Role berhasil diubah' });
+  } catch(e){
+    console.error(e);
+    return res.status(500).json({ success: false, message: 'Terjadi kesalahan server' });
+  }
+}

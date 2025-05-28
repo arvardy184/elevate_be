@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `cvreview` ADD COLUMN `b2FileId` VARCHAR(191) NULL,
+    ADD COLUMN `b2FileName` VARCHAR(191) NULL,
+    ADD COLUMN `b2FileUrl` VARCHAR(191) NULL,
+    MODIFY `filePath` VARCHAR(191) NULL;

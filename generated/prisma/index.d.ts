@@ -17470,6 +17470,9 @@ export namespace Prisma {
     fileName: string | null
     filePath: string | null
     fileSize: number | null
+    b2FileId: string | null
+    b2FileName: string | null
+    b2FileUrl: string | null
     extractedText: string | null
     careerField: string | null
     relevancyRate: number | null
@@ -17489,6 +17492,9 @@ export namespace Prisma {
     fileName: string | null
     filePath: string | null
     fileSize: number | null
+    b2FileId: string | null
+    b2FileName: string | null
+    b2FileUrl: string | null
     extractedText: string | null
     careerField: string | null
     relevancyRate: number | null
@@ -17508,6 +17514,9 @@ export namespace Prisma {
     fileName: number
     filePath: number
     fileSize: number
+    b2FileId: number
+    b2FileName: number
+    b2FileUrl: number
     extractedText: number
     careerField: number
     relevancyRate: number
@@ -17555,6 +17564,9 @@ export namespace Prisma {
     fileName?: true
     filePath?: true
     fileSize?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2FileUrl?: true
     extractedText?: true
     careerField?: true
     relevancyRate?: true
@@ -17574,6 +17586,9 @@ export namespace Prisma {
     fileName?: true
     filePath?: true
     fileSize?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2FileUrl?: true
     extractedText?: true
     careerField?: true
     relevancyRate?: true
@@ -17593,6 +17608,9 @@ export namespace Prisma {
     fileName?: true
     filePath?: true
     fileSize?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2FileUrl?: true
     extractedText?: true
     careerField?: true
     relevancyRate?: true
@@ -17699,8 +17717,11 @@ export namespace Prisma {
     id: string
     userId: number
     fileName: string
-    filePath: string
+    filePath: string | null
     fileSize: number
+    b2FileId: string | null
+    b2FileName: string | null
+    b2FileUrl: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -17741,6 +17762,9 @@ export namespace Prisma {
     fileName?: boolean
     filePath?: boolean
     fileSize?: boolean
+    b2FileId?: boolean
+    b2FileName?: boolean
+    b2FileUrl?: boolean
     extractedText?: boolean
     careerField?: boolean
     relevancyRate?: boolean
@@ -17767,6 +17791,9 @@ export namespace Prisma {
     fileName?: boolean
     filePath?: boolean
     fileSize?: boolean
+    b2FileId?: boolean
+    b2FileName?: boolean
+    b2FileUrl?: boolean
     extractedText?: boolean
     careerField?: boolean
     relevancyRate?: boolean
@@ -17782,7 +17809,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CVReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "filePath" | "fileSize" | "extractedText" | "careerField" | "relevancyRate" | "targetedJobRate" | "overallScore" | "relevantSkill" | "workExperience" | "consistency" | "writingQuality" | "aiAnalysis" | "suggestions" | "createdAt" | "updatedAt", ExtArgs["result"]["cVReview"]>
+  export type CVReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "filePath" | "fileSize" | "b2FileId" | "b2FileName" | "b2FileUrl" | "extractedText" | "careerField" | "relevancyRate" | "targetedJobRate" | "overallScore" | "relevantSkill" | "workExperience" | "consistency" | "writingQuality" | "aiAnalysis" | "suggestions" | "createdAt" | "updatedAt", ExtArgs["result"]["cVReview"]>
   export type CVReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     jobmatching?: boolean | CVReview$jobmatchingArgs<ExtArgs>
@@ -17799,8 +17826,11 @@ export namespace Prisma {
       id: string
       userId: number
       fileName: string
-      filePath: string
+      filePath: string | null
       fileSize: number
+      b2FileId: string | null
+      b2FileName: string | null
+      b2FileUrl: string | null
       extractedText: string
       careerField: string
       relevancyRate: number
@@ -18190,6 +18220,9 @@ export namespace Prisma {
     readonly fileName: FieldRef<"CVReview", 'String'>
     readonly filePath: FieldRef<"CVReview", 'String'>
     readonly fileSize: FieldRef<"CVReview", 'Int'>
+    readonly b2FileId: FieldRef<"CVReview", 'String'>
+    readonly b2FileName: FieldRef<"CVReview", 'String'>
+    readonly b2FileUrl: FieldRef<"CVReview", 'String'>
     readonly extractedText: FieldRef<"CVReview", 'String'>
     readonly careerField: FieldRef<"CVReview", 'String'>
     readonly relevancyRate: FieldRef<"CVReview", 'Float'>
@@ -32904,6 +32937,9 @@ export namespace Prisma {
     fileName: 'fileName',
     filePath: 'filePath',
     fileSize: 'fileSize',
+    b2FileId: 'b2FileId',
+    b2FileName: 'b2FileName',
+    b2FileUrl: 'b2FileUrl',
     extractedText: 'extractedText',
     careerField: 'careerField',
     relevancyRate: 'relevancyRate',
@@ -33248,6 +33284,9 @@ export namespace Prisma {
     id: 'id',
     fileName: 'fileName',
     filePath: 'filePath',
+    b2FileId: 'b2FileId',
+    b2FileName: 'b2FileName',
+    b2FileUrl: 'b2FileUrl',
     extractedText: 'extractedText',
     careerField: 'careerField'
   };
@@ -34398,8 +34437,11 @@ export namespace Prisma {
     id?: StringFilter<"CVReview"> | string
     userId?: IntFilter<"CVReview"> | number
     fileName?: StringFilter<"CVReview"> | string
-    filePath?: StringFilter<"CVReview"> | string
+    filePath?: StringNullableFilter<"CVReview"> | string | null
     fileSize?: IntFilter<"CVReview"> | number
+    b2FileId?: StringNullableFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     extractedText?: StringFilter<"CVReview"> | string
     careerField?: StringFilter<"CVReview"> | string
     relevancyRate?: FloatFilter<"CVReview"> | number
@@ -34421,8 +34463,11 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     fileName?: SortOrder
-    filePath?: SortOrder
+    filePath?: SortOrderInput | SortOrder
     fileSize?: SortOrder
+    b2FileId?: SortOrderInput | SortOrder
+    b2FileName?: SortOrderInput | SortOrder
+    b2FileUrl?: SortOrderInput | SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -34448,8 +34493,11 @@ export namespace Prisma {
     NOT?: CVReviewWhereInput | CVReviewWhereInput[]
     userId?: IntFilter<"CVReview"> | number
     fileName?: StringFilter<"CVReview"> | string
-    filePath?: StringFilter<"CVReview"> | string
+    filePath?: StringNullableFilter<"CVReview"> | string | null
     fileSize?: IntFilter<"CVReview"> | number
+    b2FileId?: StringNullableFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     extractedText?: StringFilter<"CVReview"> | string
     careerField?: StringFilter<"CVReview"> | string
     relevancyRate?: FloatFilter<"CVReview"> | number
@@ -34471,8 +34519,11 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     fileName?: SortOrder
-    filePath?: SortOrder
+    filePath?: SortOrderInput | SortOrder
     fileSize?: SortOrder
+    b2FileId?: SortOrderInput | SortOrder
+    b2FileName?: SortOrderInput | SortOrder
+    b2FileUrl?: SortOrderInput | SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -34500,8 +34551,11 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"CVReview"> | string
     userId?: IntWithAggregatesFilter<"CVReview"> | number
     fileName?: StringWithAggregatesFilter<"CVReview"> | string
-    filePath?: StringWithAggregatesFilter<"CVReview"> | string
+    filePath?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
     fileSize?: IntWithAggregatesFilter<"CVReview"> | number
+    b2FileId?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
     extractedText?: StringWithAggregatesFilter<"CVReview"> | string
     careerField?: StringWithAggregatesFilter<"CVReview"> | string
     relevancyRate?: FloatWithAggregatesFilter<"CVReview"> | number
@@ -36493,8 +36547,11 @@ export namespace Prisma {
   export type CVReviewCreateInput = {
     id?: string
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -36516,8 +36573,11 @@ export namespace Prisma {
     id?: string
     userId: number
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -36537,8 +36597,11 @@ export namespace Prisma {
   export type CVReviewUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36560,8 +36623,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36582,8 +36648,11 @@ export namespace Prisma {
     id?: string
     userId: number
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -36602,8 +36671,11 @@ export namespace Prisma {
   export type CVReviewUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36623,8 +36695,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -38681,6 +38756,9 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrder
     fileSize?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2FileUrl?: SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -38714,6 +38792,9 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrder
     fileSize?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2FileUrl?: SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -38733,6 +38814,9 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrder
     fileSize?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2FileUrl?: SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -42232,8 +42316,11 @@ export namespace Prisma {
   export type CVReviewCreateWithoutUserInput = {
     id?: string
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -42253,8 +42340,11 @@ export namespace Prisma {
   export type CVReviewUncheckedCreateWithoutUserInput = {
     id?: string
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -42788,8 +42878,11 @@ export namespace Prisma {
     id?: StringFilter<"CVReview"> | string
     userId?: IntFilter<"CVReview"> | number
     fileName?: StringFilter<"CVReview"> | string
-    filePath?: StringFilter<"CVReview"> | string
+    filePath?: StringNullableFilter<"CVReview"> | string | null
     fileSize?: IntFilter<"CVReview"> | number
+    b2FileId?: StringNullableFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     extractedText?: StringFilter<"CVReview"> | string
     careerField?: StringFilter<"CVReview"> | string
     relevancyRate?: FloatFilter<"CVReview"> | number
@@ -48390,8 +48483,11 @@ export namespace Prisma {
   export type CVReviewCreateWithoutJobmatchingInput = {
     id?: string
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -48412,8 +48508,11 @@ export namespace Prisma {
     id?: string
     userId: number
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -48526,8 +48625,11 @@ export namespace Prisma {
   export type CVReviewUpdateWithoutJobmatchingInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -48548,8 +48650,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -48629,8 +48734,11 @@ export namespace Prisma {
   export type CVReviewCreateManyUserInput = {
     id?: string
     fileName: string
-    filePath: string
+    filePath?: string | null
     fileSize: number
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -48941,8 +49049,11 @@ export namespace Prisma {
   export type CVReviewUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -48962,8 +49073,11 @@ export namespace Prisma {
   export type CVReviewUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -48983,8 +49097,11 @@ export namespace Prisma {
   export type CVReviewUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number

@@ -98,13 +98,18 @@ async function uploadFile(filePath, category, fileName) {
     // Hapus file lokal setelah diupload
     await unlinkAsync(filePath);
 
+    // Generate public-friendly URL for public access
+    // Format: https://f<bucket_id>.backblazeb2.com/file/<bucket_name>/<file_name>
+    const friendlyUrl = `https://f${B2_BUCKET_ID.slice(0, 12)}.backblazeb2.com/file/${B2_BUCKET_NAME}/${uniqueFileName}`;
+    
     // Return informasi file
     return {
       fileId: uploadResponse.data.fileId,
       fileName: uploadResponse.data.fileName,
       contentLength: uploadResponse.data.contentLength,
       contentType: uploadResponse.data.contentType,
-      fileUrl: `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${uniqueFileName}`,
+      fileUrl: friendlyUrl, // Use friendly URL for public access
+      authorizedUrl: `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${uniqueFileName}`, // Backup authorized URL
     };
   } catch (error) {
     console.error("Error uploading file to B2:", error);
@@ -115,13 +120,47 @@ async function uploadFile(filePath, category, fileName) {
 /**
  * Mendapatkan URL untuk mengakses file dari Backblaze B2
  * @param {string} fileName - Nama file yang sudah disimpan
+ * @param {boolean} publicAccess - True untuk public-friendly URL, false untuk authorized URL
  * @returns {string} - URL file
  */
-function getFileUrl(fileName) {
+function getFileUrl(fileName, publicAccess = true) {
   if (!b2Auth) {
     throw new Error("B2 not initialized");
   }
-  return `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${fileName}`;
+  
+  if (publicAccess) {
+    // Public-friendly URL format
+    return `https://f${B2_BUCKET_ID.slice(0, 12)}.backblazeb2.com/file/${B2_BUCKET_NAME}/${fileName}`;
+  } else {
+    // Authorized URL format
+    return `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${fileName}`;
+  }
+}
+
+/**
+ * Generate signed URL for private bucket access
+ * @param {string} fileName - File name in B2
+ * @param {number} expiresInSeconds - URL expiry in seconds (default: 1 hour)
+ * @returns {Promise<string>} - Signed URL
+ */
+async function generateSignedUrl(fileName, expiresInSeconds = 3600) {
+  try {
+    await initializeB2();
+
+    const response = await b2.getDownloadAuthorization({
+      bucketId: B2_BUCKET_ID,
+      fileNamePrefix: fileName,
+      validDurationInSeconds: expiresInSeconds
+    });
+
+    const authToken = response.data.authorizationToken;
+    
+    // Return signed URL with auth token
+    return `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${fileName}?Authorization=${authToken}`;
+  } catch (error) {
+    console.error("Error generating signed URL:", error);
+    throw error;
+  }
 }
 
 /**
@@ -170,6 +209,7 @@ module.exports = {
   initializeB2,
   uploadFile,
   getFileUrl,
+  generateSignedUrl,
   deleteFile,
   FileCategory,
 };
