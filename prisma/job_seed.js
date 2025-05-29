@@ -10,7 +10,7 @@ async function seedJobs() {
         company: "Tech Innovate",
         description: "Join our team as a Software Engineer to develop cutting-edge web applications using React, Node.js, and cloud technologies. You'll work on scalable solutions that impact millions of users.",
         requirements: {
-          skills: ["JavaScript", "React", "Node.js", "MongoDB", "AWS"],
+          skills: ["JavaScript", "React", "Node.js", "MongoDB", "AWS", "Python", "Java", "C#", "C++", "C", "SQL", "NoSQL", "GraphQL", "REST", "SOAP", "gRPC", "Docker", "Kubernetes", "Terraform", "Linux", "CI/CD", "DevOps", "Cloud Computing", "Cyber Security", "Digital Marketing", "Game Development", "UI/UX Design", "Cloud Engineer", "DevOps Engineer", "Cybersecurity Analyst", "Digital Marketing Specialist", "Game Developer", "Junior Software Engineer"],
           experience: "2+ years",
           education: "Bachelor's degree in Computer Science or related field"
         },
