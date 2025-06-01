@@ -4,6 +4,8 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 const moment = require("moment");
 const fs = require("fs");
+const https = require('https');
+const http = require('http');
 
 /**
  * @swagger
@@ -875,7 +877,6 @@ exports.getQuizResult = async (req, res) => {
 exports.getCourseVideos = async (req, res) => {
   console.log("[getCourseVideos] masuk controller");
   const { courseId } = req.params;
-  const { useSignedUrls = 'false' } = req.query; // Query param untuk signed URLs
 
   try {
     const courseVideos = await prisma.coursevideo.findMany({
@@ -891,43 +892,32 @@ exports.getCourseVideos = async (req, res) => {
         .json({ message: "Tidak ada video untuk kursus ini" });
     }
 
-    // Generate signed URLs jika diminta (untuk private bucket)
-    if (useSignedUrls === 'true') {
-      console.log("[getCourseVideos] Generating signed URLs for private bucket access");
+    // Generate proxy URLs untuk semua video (private bucket access via backend)
+    console.log("[getCourseVideos] Generating proxy URLs for private bucket access");
+    
+    const videosWithProxyUrls = courseVideos.map((video) => {
+      // Generate proxy URL yang akan di-handle sama backend
+      const proxyUrl = `${req.protocol}://${req.get('host')}/api/courses/videos/proxy/${video.id}`;
       
-      const videosWithSignedUrls = await Promise.all(
-        courseVideos.map(async (video) => {
-          try {
-            // Extract filename dari s3Key atau videoUrl
-            const fileName = video.s3Key || video.videoUrl.split('/').pop();
-            
-            // Generate signed URL (valid for 2 hours)
-            const signedUrl = await storageService.generateSignedUrl(fileName, 7200);
-            
-            return {
-              ...video,
-              videoUrl: signedUrl, // Replace dengan signed URL
-              originalUrl: video.videoUrl, // Keep original untuk reference
-              signedUrlExpiry: new Date(Date.now() + 7200 * 1000).toISOString()
-            };
-          } catch (error) {
-            console.error(`Error generating signed URL for video ${video.id}:`, error);
-            return video; // Return original jika error
-          }
-        })
-      );
-      
-      return res.status(200).json({ 
-        courseVideos: videosWithSignedUrls,
-        note: "Videos with signed URLs (valid for 2 hours)"
-      });
-    }
+      return {
+        ...video,
+        videoUrl: proxyUrl, // Replace dengan proxy URL
+        originalUrl: video.videoUrl, // Keep original untuk reference
+        isProxied: true
+      };
+    });
+    
+    return res.status(200).json({ 
+      courseVideos: videosWithProxyUrls,
+      note: "Videos accessible via proxy URLs (secure private bucket access)"
+    });
 
-    // Return original URLs (untuk public bucket atau testing)
-    return res.status(200).json({ courseVideos });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  } catch (error) {
+    console.error("[getCourseVideos] Error:", error);
+    return res.status(500).json({ 
+      message: "Error mengambil video kursus", 
+      error: error.message 
+    });
   }
 };
 
@@ -1582,6 +1572,159 @@ exports.getMyReview = async (req, res) => {
       success: false,
       message: 'Gagal mengambil review',
       error: error.message
+    });
+  }
+};
+
+// GET /api/courses/videos/proxy/:videoId - Proxy video content from private B2
+exports.proxyVideoContent = async (req, res) => {
+  const { videoId } = req.params;
+  
+  try {
+    // Cari video di database
+    const video = await prisma.coursevideo.findUnique({
+      where: { id: Number(videoId) },
+      include: { 
+        course: {
+          include: { enrollment: true }
+        }
+      }
+    });
+
+    if (!video) {
+      return res.status(404).json({ message: "Video tidak ditemukan" });
+    }
+
+    // TODO: Add authentication/authorization check here
+    // Contoh: Check if user enrolled in course
+    // const userId = req.user?.id;
+    // const isEnrolled = video.course.enrollment.some(e => e.userId === userId);
+    // if (!isEnrolled) {
+    //   return res.status(403).json({ message: "Akses ditolak" });
+    // }
+
+    if (!video.s3Key) {
+      return res.status(400).json({ message: "Video file tidak ditemukan" });
+    }
+
+    // Generate signed URL untuk akses internal
+    const signedUrl = await storageService.generateSignedUrl(video.s3Key, 3600); // 1 hour
+    
+    // Set headers untuk video streaming
+    res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    
+    // Handle range requests untuk video streaming
+    const range = req.headers.range;
+    
+    if (range) {
+      // Get file info first untuk content length
+      try {
+        const urlObj = new URL(signedUrl);
+        const protocol = urlObj.protocol === 'https:' ? https : http;
+        
+        // Head request untuk dapatkan content length
+        const headReq = protocol.request({
+          hostname: urlObj.hostname,
+          port: urlObj.port,
+          path: urlObj.pathname + urlObj.search,
+          method: 'HEAD',
+          headers: {
+            'Authorization': urlObj.searchParams.get('Authorization') || ''
+          }
+        }, (headRes) => {
+          const contentLength = parseInt(headRes.headers['content-length'] || '0');
+          
+          if (contentLength === 0) {
+            return res.status(500).json({ message: "Cannot determine file size" });
+          }
+          
+          // Parse range
+          const parts = range.replace(/bytes=/, "").split("-");
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : contentLength - 1;
+          const chunksize = (end - start) + 1;
+          
+          // Set partial content headers
+          res.status(206);
+          res.setHeader('Content-Range', `bytes ${start}-${end}/${contentLength}`);
+          res.setHeader('Content-Length', chunksize.toString());
+          
+          // Stream the requested range
+          const getReq = protocol.request({
+            hostname: urlObj.hostname,
+            port: urlObj.port,
+            path: urlObj.pathname + urlObj.search,
+            method: 'GET',
+            headers: {
+              'Authorization': urlObj.searchParams.get('Authorization') || '',
+              'Range': `bytes=${start}-${end}`
+            }
+          }, (getRes) => {
+            getRes.pipe(res);
+          });
+          
+          getReq.on('error', (error) => {
+            console.error('Error streaming video:', error);
+            res.status(500).json({ message: "Error streaming video" });
+          });
+          
+          getReq.end();
+        });
+        
+        headReq.on('error', (error) => {
+          console.error('Error getting file info:', error);
+          res.status(500).json({ message: "Error accessing video file" });
+        });
+        
+        headReq.end();
+        
+      } catch (error) {
+        console.error('Error parsing signed URL:', error);
+        res.status(500).json({ message: "Error processing video request" });
+      }
+    } else {
+      // No range, stream entire file
+      try {
+        const urlObj = new URL(signedUrl);
+        const protocol = urlObj.protocol === 'https:' ? https : http;
+        
+        const getReq = protocol.request({
+          hostname: urlObj.hostname,
+          port: urlObj.port,
+          path: urlObj.pathname + urlObj.search,
+          method: 'GET',
+          headers: {
+            'Authorization': urlObj.searchParams.get('Authorization') || ''
+          }
+        }, (getRes) => {
+          // Set content length if available
+          if (getRes.headers['content-length']) {
+            res.setHeader('Content-Length', getRes.headers['content-length']);
+          }
+          
+          getRes.pipe(res);
+        });
+        
+        getReq.on('error', (error) => {
+          console.error('Error streaming video:', error);
+          res.status(500).json({ message: "Error streaming video" });
+        });
+        
+        getReq.end();
+        
+      } catch (error) {
+        console.error('Error streaming video:', error);
+        res.status(500).json({ message: "Error processing video request" });
+      }
+    }
+    
+  } catch (error) {
+    console.error('[proxyVideoContent] Error:', error);
+    res.status(500).json({ 
+      message: "Error accessing video",
+      error: error.message 
     });
   }
 };

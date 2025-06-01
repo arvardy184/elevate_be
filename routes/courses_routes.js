@@ -116,6 +116,7 @@ router.put('/:id/reviews', verifyToken, courseController.updateCourseReview);
 router.delete('/:id/reviews', verifyToken, courseController.deleteCourseReview);
 router.get('/:id/reviews/me', verifyToken, courseController.getMyReview);
 
+router.get('/videos/proxy/:videoId', courseController.proxyVideoContent); 
 module.exports = router;
 
 /**

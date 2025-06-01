@@ -138,7 +138,7 @@ class CVReviewController {
         data: {
           userId: userId,
           fileName: req.file.originalname,
-          filePath: req.file.path, // Keep local path for backup
+          filePath: req.file.path, 
           fileSize: req.file.size,
           
           // B2 Storage info
