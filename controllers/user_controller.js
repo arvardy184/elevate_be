@@ -266,7 +266,7 @@ exports.updateProfile = async (req, res) => {
         message: 'Format tanggal lahir tidak valid. Gunakan format DD/MM/YYYY atau DD-MM-YYYY.'
       });
     }
-
+    console.log("parsedBirthDate", profilePicture);
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
