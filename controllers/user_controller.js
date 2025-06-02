@@ -2,6 +2,7 @@ const { uploadMiddleware, uploadToStorage, FileCategory } = require("../utils/fi
 const { generateSignedUrl } = require("../utils/storage");
 const prisma = require('../prisma/client');
 const { parseBirthDate } = require('../utils/dateParser');
+const { validateUserData, DB_LIMITS } = require('../utils/validationUtils');
 /**
  * @swagger
  * components:
@@ -251,7 +252,18 @@ exports.updateProfile = async (req, res) => {
         const signedUrl = await generateSignedUrl(fileName, 24 * 3600); // 24 hours
         console.log('[updateProfile] Generated signed URL:', signedUrl);
         
-        profilePicture = signedUrl;
+        // Validasi panjang URL sebelum simpan ke DB
+        const MAX_URL_LENGTH = 512; // Sesuai dengan @db.VarChar(512)
+        if (signedUrl && signedUrl.length > MAX_URL_LENGTH) {
+          console.warn(`[updateProfile] Signed URL too long: ${signedUrl.length} chars. Using fileName instead.`);
+          // Fallback: simpan nama file aja, nanti generate signed URL saat diambil
+          profilePicture = `elevate-be/${fileName}`;
+        } else {
+          profilePicture = signedUrl;
+        }
+        
+        console.log(`[updateProfile] Final profilePicture length: ${profilePicture?.length || 0} chars`);
+        
       } catch (error) {
         console.error('[updateProfile] Error uploading profile picture:', error);
         return res.status(400).json({
@@ -266,18 +278,31 @@ exports.updateProfile = async (req, res) => {
         message: 'Format tanggal lahir tidak valid. Gunakan format DD/MM/YYYY atau DD-MM-YYYY.'
       });
     }
-    console.log("parsedBirthDate", profilePicture);
+
+    // Validasi semua data sebelum update ke database
+    const updateData = {
+      firstName,
+      lastName,
+      address,
+      phoneNumber,
+      gender,
+      birthDate: parsedBirthDate,
+      profilePicture 
+    };
+
+    const validation = validateUserData(updateData);
+    if (!validation.valid) {
+      console.error('[updateProfile] Validation errors:', validation.errors);
+      return res.status(400).json({
+        message: 'Data tidak valid: ' + validation.errors.join(', ')
+      });
+    }
+
+    console.log(`[updateProfile] All validations passed. profilePicture length: ${profilePicture?.length || 0}`);
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: {
-        firstName,
-        lastName,
-        address,
-        phoneNumber,
-        gender,
-        birthDate: parsedBirthDate,
-        profilePicture 
-      },
+      data: validation.sanitizedData,
       select: {
         id: true, 
         firstName: true,
