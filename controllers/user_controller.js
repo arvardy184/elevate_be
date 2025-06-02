@@ -1,6 +1,7 @@
 const { uploadMiddleware, uploadToStorage, FileCategory } = require("../utils/fileUploader");
+const { generateSignedUrl } = require("../utils/storage");
 const prisma = require('../prisma/client');
-
+const { parseBirthDate } = require('../utils/dateParser');
 /**
  * @swagger
  * components:
@@ -124,6 +125,23 @@ exports.getProfile = async (req, res) => {
         message: 'User tidak ditemukan!',
       });
     }
+    
+    // Generate signed URL untuk profile picture jika ada
+    if (user.profilePicture && user.profilePicture.includes('elevate-be/')) {
+      try {
+        // Extract filename from URL
+        const fileName = user.profilePicture.split('/file/elevate-be/')[1];
+        if (fileName) {
+          const signedUrl = await generateSignedUrl(fileName, 24 * 3600); // 24 hours
+          user.profilePicture = signedUrl;
+          console.log('[getProfile] Generated signed URL for existing profile picture');
+        }
+      } catch (error) {
+        console.error('[getProfile] Error generating signed URL:', error);
+        // Keep original URL if signing fails
+      }
+    }
+    
     return res.status(200).json({
       message: 'Profile user berhasil diakses!',
       user
@@ -217,13 +235,27 @@ exports.updateProfile = async (req, res) => {
     if(req.file) {
       try {
         const uploadResult = await uploadToStorage(req.file, FileCategory.PROFILE_PICTURE);
-        profilePicture = uploadResult.data.fileUrl;
+        console.log('[updateProfile] Upload result:', uploadResult);
+        
+        // Generate signed URL untuk private bucket access (expires in 24 hours)
+        const fileName = uploadResult.data.fileName;
+        const signedUrl = await generateSignedUrl(fileName, 24 * 3600); // 24 hours
+        console.log('[updateProfile] Generated signed URL:', signedUrl);
+        
+        profilePicture = signedUrl;
       } catch (error) {
         console.error('Error uploading profile picture:', error);
         return res.status(400).json({
           message: 'Gagal upload foto profile. ' + error.message
         });
       }
+    }
+
+    const parsedBirthDate = parseBirthDate(birthDate);
+    if(!parsedBirthDate && birthDate){
+      return res.status(400).json({
+        message: 'Format tanggal lahir tidak valid. Gunakan format DD/MM/YYYY atau DD-MM-YYYY.'
+      });
     }
 
     const updatedUser = await prisma.user.update({
@@ -234,7 +266,7 @@ exports.updateProfile = async (req, res) => {
         address,
         phoneNumber,
         gender,
-        birthDate,
+        birthDate: parsedBirthDate,
         profilePicture 
       },
       select: {
@@ -417,6 +449,8 @@ exports.getNotificationDetail = async(req,res) => {
     });
   }
 } 
+
+
 
 
 

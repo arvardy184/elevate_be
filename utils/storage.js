@@ -74,11 +74,14 @@ async function uploadFile(filePath, category, fileName) {
 
     // Baca file
     const fileData = await readFileAsync(filePath);
+    
+    // Clean filename - hapus extension dari fileName karena akan kita ambil dari filePath
     const fileExtension = path.extname(filePath);
+    const cleanFileName = path.basename(fileName, path.extname(fileName));
 
     // Buat unique key untuk file
     const timestamp = Date.now();
-    const uniqueFileName = `${category}/${timestamp}-${fileName}${fileExtension}`;
+    const uniqueFileName = `${category}/${timestamp}-${cleanFileName}${fileExtension}`;
     console.log("uniqueFileName:", uniqueFileName);
 
     // 1. Get upload URL
@@ -98,9 +101,10 @@ async function uploadFile(filePath, category, fileName) {
     // Hapus file lokal setelah diupload
     await unlinkAsync(filePath);
 
-    // Generate public-friendly URL for public access
-    // Format: https://f<bucket_id>.backblazeb2.com/file/<bucket_name>/<file_name>
-    const friendlyUrl = `https://f${B2_BUCKET_ID.slice(0, 12)}.backblazeb2.com/file/${B2_BUCKET_NAME}/${uniqueFileName}`;
+    // Use direct download URL (better compatibility)
+    const directUrl = `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${uniqueFileName}`;
+    
+    console.log("Generated URL:", directUrl);
     
     // Return informasi file
     return {
@@ -108,8 +112,9 @@ async function uploadFile(filePath, category, fileName) {
       fileName: uploadResponse.data.fileName,
       contentLength: uploadResponse.data.contentLength,
       contentType: uploadResponse.data.contentType,
-      fileUrl: friendlyUrl, // Use friendly URL for public access
-      authorizedUrl: `${b2Auth.downloadUrl}/file/${B2_BUCKET_NAME}/${uniqueFileName}`, // Backup authorized URL
+      fileUrl: directUrl, // Use direct download URL
+      category: category,
+      originalName: fileName
     };
   } catch (error) {
     console.error("Error uploading file to B2:", error);

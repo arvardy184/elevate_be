@@ -373,6 +373,139 @@ class CVReviewController {
   /**
    * @swagger
    * /api/cv-review/{id}:
+   *   put:
+   *     summary: Update CV review (re-analyze with new career field)
+   *     tags: [CV Review]
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               careerField:
+   *                 type: string
+   *                 description: Career field baru untuk analisis ulang
+   *                 example: "Data Scientist"
+   *     responses:
+   *       200:
+   *         description: CV review berhasil diupdate dan dianalisis ulang
+   *       404:
+   *         description: CV review tidak ditemukan
+   *       400:
+   *         description: Career field wajib diisi
+   */
+  static async updateCVReview(req, res) {
+    try {
+      const userId = req.user.id;
+      const { id } = req.params;
+      const { careerField } = req.body;
+
+      if (!careerField || careerField.trim().length === 0) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Career field wajib diisi'
+        });
+      }
+
+      // Cek apakah CV review exists dan milik user
+      const existingCVReview = await prisma.cVReview.findFirst({
+        where: {
+          id: id,
+          userId: userId
+        }
+      });
+
+      if (!existingCVReview) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'CV review tidak ditemukan'
+        });
+      }
+
+      // Re-analisis CV dengan career field baru
+      console.log(`Re-analyzing CV ${id} with new career field: ${careerField}`);
+      const analysis = await aiService.analyzeCVWithAI(existingCVReview.extractedText, careerField);
+
+      // Update CV review di database
+      const updatedCVReview = await prisma.cVReview.update({
+        where: { id: id },
+        data: {
+          careerField: careerField,
+          
+          // Update scoring dari AI analysis ulang
+          relevancyRate: analysis.scores.relevancyRate || 0,
+          targetedJobRate: analysis.scores.targetedJobRate || 0,
+          overallScore: analysis.scores.overallScore || 0,
+          relevantSkill: analysis.scores.relevantSkill || 0,
+          workExperience: analysis.scores.workExperience || 0,
+          consistency: analysis.scores.consistency || 0,
+          writingQuality: analysis.scores.writingQuality || 0,
+          
+          // Update AI analysis & suggestions
+          aiAnalysis: analysis.aiAnalysis || {},
+          suggestions: analysis.suggestions || [],
+          
+          updatedAt: new Date()
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true
+            }
+          }
+        }
+      });
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'CV review berhasil diupdate dan dianalisis ulang!',
+        data: {
+          id: updatedCVReview.id,
+          fileName: updatedCVReview.fileName,
+          careerField: updatedCVReview.careerField,
+          fileUrl: updatedCVReview.b2FileUrl,
+          fileSize: updatedCVReview.fileSize,
+          scores: {
+            relevancyRate: updatedCVReview.relevancyRate,
+            targetedJobRate: updatedCVReview.targetedJobRate,
+            overallScore: updatedCVReview.overallScore,
+            relevantSkill: updatedCVReview.relevantSkill,
+            workExperience: updatedCVReview.workExperience,
+            consistency: updatedCVReview.consistency,
+            writingQuality: updatedCVReview.writingQuality
+          },
+          aiAnalysis: updatedCVReview.aiAnalysis,
+          suggestions: updatedCVReview.suggestions,
+          createdAt: updatedCVReview.createdAt,
+          updatedAt: updatedCVReview.updatedAt
+        }
+      });
+
+    } catch (error) {
+      console.error('Error in updateCVReview:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan saat mengupdate CV review',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/cv-review/{id}:
    *   delete:
    *     summary: Delete CV review
    *     tags: [CV Review]

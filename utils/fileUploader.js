@@ -5,15 +5,15 @@ const { v4: uuidv4 } = require('uuid');
 
 // Konfigurasi untuk validasi file
 const FILE_LIMITS = {
-  PROFILE_PICTURE: {
+  'profile-pictures': {
     maxSize: 5 * 1024 * 1024, // 5MB
     allowedTypes: ['image/jpeg', 'image/png', 'image/gif']
   },
-  COURSE_VIDEO: {
+  'course-videos': {
     maxSize: 500 * 1024 * 1024, // 500MB
     allowedTypes: ['video/mp4', 'video/webm']
   },
-  CERTIFICATE: {
+  'certificates': {
     maxSize: 10 * 1024 * 1024, // 10MB
     allowedTypes: ['application/pdf']
   }
@@ -35,10 +35,14 @@ const storage = multer.diskStorage({
 // Validasi file sebelum upload
 const fileFilter = (req, file, cb) => {
   const category = req.fileCategory || FileCategory.PROFILE_PICTURE;
-  const limits = FILE_LIMITS[category.toUpperCase()];
+  console.log('[fileFilter] Category received:', category);
+  
+  const limits = FILE_LIMITS[category];
+  console.log('[fileFilter] Limits found:', limits);
 
   if (!limits) {
-    return cb(new Error('Invalid file category'));
+    console.error('[fileFilter] Invalid category:', category);
+    return cb(new Error(`Invalid file category: ${category}`));
   }
 
   if (!limits.allowedTypes.includes(file.mimetype)) {
@@ -48,38 +52,86 @@ const fileFilter = (req, file, cb) => {
   cb(null, true);
 };
 
-// Setup multer dengan konfigurasi
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: FILE_LIMITS.PROFILE_PICTURE.maxSize // Default limit
-  }
-});
-
 /**
  * Middleware untuk handle file upload dengan validasi
  * @param {string} category - Kategori file (profile-pictures, course-videos, certificates)
+ * @param {string} fieldName - Nama field untuk file (default: berdasarkan kategori)
  * @returns {Function} - Multer middleware
  */
-const uploadMiddleware = (category) => {
+const uploadMiddleware = (category, fieldName = null) => {
   return (req, res, next) => {
     console.log('[uploadMiddleware] Mulai upload file...');
+    
+    // Handle req.body yang mungkin undefined saat ini
+    const bodyFields = req.body ? Object.keys(req.body) : [];
+    console.log('Body fields:', bodyFields);
+    console.log('Files:', req.files || 'No files yet');
+    console.log('File:', req.file || 'No file yet');
+    
     // Set category untuk validasi
     req.fileCategory = category;
     
-    // Update file size limit berdasarkan kategori
-    upload.single('file')(req, res, async (err) => {
+    // Tentukan field name berdasarkan kategori jika tidak disediakan
+    let finalFieldName = fieldName;
+    if (!finalFieldName) {
+      switch(category) {
+        case FileCategory.PROFILE_PICTURE:
+          finalFieldName = 'profilePicture';
+          break;
+        case FileCategory.COURSE_VIDEO:
+          finalFieldName = 'video';
+          break;
+        case FileCategory.CERTIFICATE:
+          finalFieldName = 'certificate';
+          break;
+        default:
+          finalFieldName = 'file';
+      }
+    }
+    
+    console.log(`[uploadMiddleware] Expecting field: ${finalFieldName}`);
+    console.log(`[uploadMiddleware] Category: ${category}`);
+    
+    // Get limits untuk kategori ini
+    const categoryLimits = FILE_LIMITS[category];
+    if (!categoryLimits) {
+      return res.status(400).json({ 
+        message: `Invalid file category: ${category}` 
+      });
+    }
+    
+    // Buat multer instance baru dengan limits yang sesuai untuk kategori ini
+    const categoryUpload = multer({
+      storage,
+      fileFilter,
+      limits: {
+        fileSize: categoryLimits.maxSize
+      }
+    });
+    
+    console.log(`[uploadMiddleware] Max file size: ${categoryLimits.maxSize / (1024 * 1024)}MB`);
+    
+    // Use multer instance yang baru dibuat dengan limits yang tepat
+    categoryUpload.single(finalFieldName)(req, res, async (err) => {
       if (err instanceof multer.MulterError) {
+        console.error('[uploadMiddleware] Multer error:', err);
         if (err.code === 'LIMIT_FILE_SIZE') {
           return res.status(400).json({
-            message: `File terlalu besar. Maksimal ${FILE_LIMITS[category.toUpperCase()].maxSize / (1024 * 1024)}MB`
+            message: `File terlalu besar. Maksimal ${categoryLimits.maxSize / (1024 * 1024)}MB`
           });
         }
-        return res.status(400).json({ message: err.message });
+        if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+          return res.status(400).json({
+            message: `Field file tidak valid. Gunakan field '${finalFieldName}' untuk upload.`
+          });
+        }
+        return res.status(400).json({ message: `Upload error: ${err.message}` });
       } else if (err) {
+        console.error('[uploadMiddleware] General error:', err);
         return res.status(400).json({ message: err.message });
       }
+      
+      console.log('[uploadMiddleware] Upload success, file:', req.file || 'No file uploaded');
       next();
     });
   };

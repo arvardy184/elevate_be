@@ -1,7 +1,7 @@
 const prisma = require('../prisma/client');
 const {
   createTransaction,
-  handlePaymentNotification,
+  handlePaymentNotification: handleNotification,
 } = require("../services/payment_service");
 
 /**
@@ -120,30 +120,51 @@ exports.chargePayment = async (req, res) => {
     const userId = req.user.id;
     const { courseId, roadmapId, voucherCode } = req.body;
 
-    //validate input
+    // Validate input
     if (!courseId && !roadmapId) {
-      return res
-        .status(400)
-        .json({ error: "Either courseId or roadmapId must be provided" });
+      return res.status(400).json({ 
+        status: 'error',
+        message: "Either courseId or roadmapId must be provided" 
+      });
     }
 
-    //get item details;
-    let item, amount;
+    // Get item details
+    let item, originalAmount;
     if (courseId) {
-      item = await prisma.course.findUnique({ where: { id: courseId } });
-      amount = item.price;
+      item = await prisma.course.findUnique({ 
+        where: { id: Number(courseId) },
+        select: { id: true, title: true, price: true, isPaid: true }
+      });
+      originalAmount = item?.price || 0;
     } else {
-      item = await prisma.roadmap.findUnique({ where: { id: roadmapId } });
-      amount = item.price || 0;
+      item = await prisma.roadmap.findUnique({ 
+        where: { id: Number(roadmapId) },
+        select: { id: true, name: true, price: true }
+      });
+      originalAmount = item?.price || 0;
     }
 
     if (!item) {
-      return res.status(404).json({ error: "Item not found" });
+      return res.status(404).json({ 
+        status: 'error',
+        message: "Item tidak ditemukan" 
+      });
     }
 
-    //apply voucher if exists
+    // Check if course is free
+    if (courseId && !item.isPaid) {
+      return res.status(400).json({
+        status: 'error',
+        message: "Course ini gratis, tidak perlu pembayaran"
+      });
+    }
+
+    let finalAmount = originalAmount;
+    let appliedVoucher = null;
+
+    // Apply voucher if exists (tapi jangan mark as used dulu)
     if (voucherCode) {
-      const voucher = await prisma.voucher.findUnique({
+      const voucher = await prisma.voucher.findFirst({
         where: {
           code: voucherCode,
           userId,
@@ -153,40 +174,39 @@ exports.chargePayment = async (req, res) => {
       });
 
       if (!voucher) {
-        return res
-          .status(400)
-          .json({ error: "Invalid or expired voucher code" });
+        return res.status(400).json({
+          status: 'error',
+          message: "Voucher tidak valid atau sudah digunakan"
+        });
       }
 
-      amount = amount - (amount * voucher.discount) / 100;
+      finalAmount = originalAmount - (originalAmount * voucher.discount) / 100;
+      appliedVoucher = voucher;
+    }
 
-      //update voucher usage
-      await prisma.voucher.update({
-        where: { id: voucher.id },
-        data: { isUsed: true },
+    // Get user details
+    const user = await prisma.user.findUnique({ 
+      where: { id: userId },
+      select: { firstName: true, lastName: true, email: true, phone: true }
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        status: 'error',
+        message: "User tidak ditemukan"
       });
     }
 
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-
-    const payment = await prisma.payment.create({
-      data: {
-        userId,
-        courseId: courseId ? Number(courseId) : null,
-        roadmapId: roadmapId ? Number(roadmapId) : null,
-        amount,
-        status: "PENDING",
-        paymentStatus: "PENDING",
-      },
-    });
-
+    // Create transaction via Midtrans
     const transaction = await createTransaction({
       userId,
-      amount,
+      courseId: courseId ? Number(courseId) : null,
+      roadmapId: roadmapId ? Number(roadmapId) : null,
+      amount: finalAmount,
       itemDetails: [
         {
           id: item.id,
-          price: amount,
+          price: finalAmount,
           quantity: 1,
           name: item.title || item.name,
         },
@@ -199,25 +219,38 @@ exports.chargePayment = async (req, res) => {
       },
     });
 
-    await prisma.payment.update({
-      where: { id: payment.id },
-      data: { orderId: transaction.orderId },
-    });
+    // Mark voucher as used AFTER successful payment creation
+    if (appliedVoucher) {
+      await prisma.voucher.update({
+        where: { id: appliedVoucher.id },
+        data: { isUsed: true },
+      });
+    }
 
     return res.status(200).json({
-      message: "Payment initiated",
-      snapToken: transaction.token,
-      redirectUrl: transaction.redirectUrl,
+      status: 'success',
+      message: "Payment berhasil diinisiasi",
+      data: {
+        paymentId: transaction.paymentId,
+        orderId: transaction.orderId,
+        snapToken: transaction.snapToken,
+        redirectUrl: transaction.redirectUrl,
+        amount: finalAmount,
+        originalAmount: originalAmount,
+        discount: appliedVoucher ? appliedVoucher.discount : 0
+      }
     });
   } catch (error) {
     console.error("Error charging payment:", error);
     return res.status(500).json({
+      status: 'error',
       message: "Terjadi kesalahan server",
+      error: error.message
     });
   }
 };
 
-// GET /payments/notification
+// POST /payments/notification
 /**
  * @swagger
  * /api/payments/notification:
@@ -257,6 +290,7 @@ exports.chargePayment = async (req, res) => {
 exports.handlePaymentNotification = async (req, res) => {
   try {
     const notification = req.body;
+    console.log('Received payment notification:', notification);
     
     const result = await handleNotification(notification);
     
@@ -264,7 +298,9 @@ exports.handlePaymentNotification = async (req, res) => {
   } catch (error) {
     console.error('Error handling notification:', error);
     return res.status(500).json({
-      message: "Terjadi kesalahan server"
+      status: 'error',
+      message: "Terjadi kesalahan server",
+      error: error.message
     });
   }
 };

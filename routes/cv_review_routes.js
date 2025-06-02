@@ -89,6 +89,7 @@ router.post('/upload',
 
 router.get('/my-reviews', verifyToken, CVReviewController.getMyCVReviews);
 router.get('/:id', verifyToken, CVReviewController.getCVReviewById);
+router.put('/:id', verifyToken, CVReviewController.updateCVReview);
 router.delete('/:id', verifyToken, CVReviewController.deleteCVReview);
 
 module.exports = router; 
