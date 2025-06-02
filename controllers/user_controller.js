@@ -290,7 +290,9 @@ exports.updateProfile = async (req, res) => {
       profilePicture 
     };
 
-    const validation = validateUserData(updateData);
+    console.log('[updateProfile] Raw updateData:', updateData);
+
+    const validation = validateUserData(updateData, { skipEmail: true });
     if (!validation.valid) {
       console.error('[updateProfile] Validation errors:', validation.errors);
       return res.status(400).json({
@@ -298,6 +300,7 @@ exports.updateProfile = async (req, res) => {
       });
     }
 
+    console.log('[updateProfile] Sanitized data:', validation.sanitizedData);
     console.log(`[updateProfile] All validations passed. profilePicture length: ${profilePicture?.length || 0}`);
 
     const updatedUser = await prisma.user.update({
