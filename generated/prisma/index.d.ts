@@ -19,11 +19,6 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model RoadmapMatcher
- * 
- */
-export type RoadmapMatcher = $Result.DefaultSelection<Prisma.$RoadmapMatcherPayload>
-/**
  * Model Assessment
  * 
  */
@@ -104,11 +99,6 @@ export type lesson = $Result.DefaultSelection<Prisma.$lessonPayload>
  */
 export type LessonProgress = $Result.DefaultSelection<Prisma.$LessonProgressPayload>
 /**
- * Model Notification
- * 
- */
-export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
-/**
  * Model Payment
  * 
  */
@@ -144,15 +134,25 @@ export type UserRoadmap = $Result.DefaultSelection<Prisma.$UserRoadmapPayload>
  */
 export type Voucher = $Result.DefaultSelection<Prisma.$VoucherPayload>
 /**
- * Model JobMatching
+ * Model job
  * 
  */
-export type JobMatching = $Result.DefaultSelection<Prisma.$JobMatchingPayload>
+export type job = $Result.DefaultSelection<Prisma.$jobPayload>
 /**
- * Model Job
+ * Model jobmatching
  * 
  */
-export type Job = $Result.DefaultSelection<Prisma.$JobPayload>
+export type jobmatching = $Result.DefaultSelection<Prisma.$jobmatchingPayload>
+/**
+ * Model notification
+ * 
+ */
+export type notification = $Result.DefaultSelection<Prisma.$notificationPayload>
+/**
+ * Model roadmapmatcher
+ * 
+ */
+export type roadmapmatcher = $Result.DefaultSelection<Prisma.$roadmapmatcherPayload>
 
 /**
  * Enums
@@ -305,16 +305,6 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.roadmapMatcher`: Exposes CRUD operations for the **RoadmapMatcher** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more RoadmapMatchers
-    * const roadmapMatchers = await prisma.roadmapMatcher.findMany()
-    * ```
-    */
-  get roadmapMatcher(): Prisma.RoadmapMatcherDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.assessment`: Exposes CRUD operations for the **Assessment** model.
@@ -477,16 +467,6 @@ export class PrismaClient<
   get lessonProgress(): Prisma.LessonProgressDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Notifications
-    * const notifications = await prisma.notification.findMany()
-    * ```
-    */
-  get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.payment`: Exposes CRUD operations for the **Payment** model.
     * Example usage:
     * ```ts
@@ -557,24 +537,44 @@ export class PrismaClient<
   get voucher(): Prisma.VoucherDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.jobMatching`: Exposes CRUD operations for the **JobMatching** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more JobMatchings
-    * const jobMatchings = await prisma.jobMatching.findMany()
-    * ```
-    */
-  get jobMatching(): Prisma.JobMatchingDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.job`: Exposes CRUD operations for the **Job** model.
+   * `prisma.job`: Exposes CRUD operations for the **job** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Jobs
     * const jobs = await prisma.job.findMany()
     * ```
     */
-  get job(): Prisma.JobDelegate<ExtArgs, ClientOptions>;
+  get job(): Prisma.jobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.jobmatching`: Exposes CRUD operations for the **jobmatching** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Jobmatchings
+    * const jobmatchings = await prisma.jobmatching.findMany()
+    * ```
+    */
+  get jobmatching(): Prisma.jobmatchingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notification`: Exposes CRUD operations for the **notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.notificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roadmapmatcher`: Exposes CRUD operations for the **roadmapmatcher** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Roadmapmatchers
+    * const roadmapmatchers = await prisma.roadmapmatcher.findMany()
+    * ```
+    */
+  get roadmapmatcher(): Prisma.roadmapmatcherDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1016,7 +1016,6 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    RoadmapMatcher: 'RoadmapMatcher',
     Assessment: 'Assessment',
     BookmarkCourse: 'BookmarkCourse',
     CourseReview: 'CourseReview',
@@ -1033,7 +1032,6 @@ export namespace Prisma {
     JobMatch: 'JobMatch',
     lesson: 'lesson',
     LessonProgress: 'LessonProgress',
-    Notification: 'Notification',
     Payment: 'Payment',
     quiz: 'quiz',
     QuizSubmission: 'QuizSubmission',
@@ -1041,8 +1039,10 @@ export namespace Prisma {
     RoadmapCourse: 'RoadmapCourse',
     UserRoadmap: 'UserRoadmap',
     Voucher: 'Voucher',
-    JobMatching: 'JobMatching',
-    Job: 'Job'
+    job: 'job',
+    jobmatching: 'jobmatching',
+    notification: 'notification',
+    roadmapmatcher: 'roadmapmatcher'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1061,7 +1061,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "roadmapMatcher" | "assessment" | "bookmarkCourse" | "courseReview" | "category" | "certificate" | "chatMessage" | "counselingSession" | "counselor" | "course" | "courseProgress" | "coursevideo" | "cVReview" | "enrollment" | "jobMatch" | "lesson" | "lessonProgress" | "notification" | "payment" | "quiz" | "quizSubmission" | "roadmap" | "roadmapCourse" | "userRoadmap" | "voucher" | "jobMatching" | "job"
+      modelProps: "user" | "assessment" | "bookmarkCourse" | "courseReview" | "category" | "certificate" | "chatMessage" | "counselingSession" | "counselor" | "course" | "courseProgress" | "coursevideo" | "cVReview" | "enrollment" | "jobMatch" | "lesson" | "lessonProgress" | "payment" | "quiz" | "quizSubmission" | "roadmap" | "roadmapCourse" | "userRoadmap" | "voucher" | "job" | "jobmatching" | "notification" | "roadmapmatcher"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1128,72 +1128,6 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
-          }
-        }
-      }
-      RoadmapMatcher: {
-        payload: Prisma.$RoadmapMatcherPayload<ExtArgs>
-        fields: Prisma.RoadmapMatcherFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.RoadmapMatcherFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.RoadmapMatcherFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>
-          }
-          findFirst: {
-            args: Prisma.RoadmapMatcherFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.RoadmapMatcherFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>
-          }
-          findMany: {
-            args: Prisma.RoadmapMatcherFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>[]
-          }
-          create: {
-            args: Prisma.RoadmapMatcherCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>
-          }
-          createMany: {
-            args: Prisma.RoadmapMatcherCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.RoadmapMatcherDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>
-          }
-          update: {
-            args: Prisma.RoadmapMatcherUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>
-          }
-          deleteMany: {
-            args: Prisma.RoadmapMatcherDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.RoadmapMatcherUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.RoadmapMatcherUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RoadmapMatcherPayload>
-          }
-          aggregate: {
-            args: Prisma.RoadmapMatcherAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRoadmapMatcher>
-          }
-          groupBy: {
-            args: Prisma.RoadmapMatcherGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RoadmapMatcherGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.RoadmapMatcherCountArgs<ExtArgs>
-            result: $Utils.Optional<RoadmapMatcherCountAggregateOutputType> | number
           }
         }
       }
@@ -2253,72 +2187,6 @@ export namespace Prisma {
           }
         }
       }
-      Notification: {
-        payload: Prisma.$NotificationPayload<ExtArgs>
-        fields: Prisma.NotificationFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.NotificationFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
-          }
-          findFirst: {
-            args: Prisma.NotificationFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
-          }
-          findMany: {
-            args: Prisma.NotificationFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
-          }
-          create: {
-            args: Prisma.NotificationCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
-          }
-          createMany: {
-            args: Prisma.NotificationCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.NotificationDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
-          }
-          update: {
-            args: Prisma.NotificationUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
-          }
-          deleteMany: {
-            args: Prisma.NotificationDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.NotificationUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.NotificationUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
-          }
-          aggregate: {
-            args: Prisma.NotificationAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateNotification>
-          }
-          groupBy: {
-            args: Prisma.NotificationGroupByArgs<ExtArgs>
-            result: $Utils.Optional<NotificationGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.NotificationCountArgs<ExtArgs>
-            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
-          }
-        }
-      }
       Payment: {
         payload: Prisma.$PaymentPayload<ExtArgs>
         fields: Prisma.PaymentFieldRefs
@@ -2781,135 +2649,267 @@ export namespace Prisma {
           }
         }
       }
-      JobMatching: {
-        payload: Prisma.$JobMatchingPayload<ExtArgs>
-        fields: Prisma.JobMatchingFieldRefs
+      job: {
+        payload: Prisma.$jobPayload<ExtArgs>
+        fields: Prisma.jobFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.JobMatchingFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload> | null
+            args: Prisma.jobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.JobMatchingFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>
+            args: Prisma.jobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>
           }
           findFirst: {
-            args: Prisma.JobMatchingFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload> | null
+            args: Prisma.jobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.JobMatchingFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>
+            args: Prisma.jobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>
           }
           findMany: {
-            args: Prisma.JobMatchingFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>[]
+            args: Prisma.jobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>[]
           }
           create: {
-            args: Prisma.JobMatchingCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>
+            args: Prisma.jobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>
           }
           createMany: {
-            args: Prisma.JobMatchingCreateManyArgs<ExtArgs>
+            args: Prisma.jobCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.JobMatchingDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>
+            args: Prisma.jobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>
           }
           update: {
-            args: Prisma.JobMatchingUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>
+            args: Prisma.jobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>
           }
           deleteMany: {
-            args: Prisma.JobMatchingDeleteManyArgs<ExtArgs>
+            args: Prisma.jobDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.JobMatchingUpdateManyArgs<ExtArgs>
+            args: Prisma.jobUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.JobMatchingUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobMatchingPayload>
-          }
-          aggregate: {
-            args: Prisma.JobMatchingAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateJobMatching>
-          }
-          groupBy: {
-            args: Prisma.JobMatchingGroupByArgs<ExtArgs>
-            result: $Utils.Optional<JobMatchingGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.JobMatchingCountArgs<ExtArgs>
-            result: $Utils.Optional<JobMatchingCountAggregateOutputType> | number
-          }
-        }
-      }
-      Job: {
-        payload: Prisma.$JobPayload<ExtArgs>
-        fields: Prisma.JobFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.JobFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.JobFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
-          }
-          findFirst: {
-            args: Prisma.JobFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.JobFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
-          }
-          findMany: {
-            args: Prisma.JobFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>[]
-          }
-          create: {
-            args: Prisma.JobCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
-          }
-          createMany: {
-            args: Prisma.JobCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.JobDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
-          }
-          update: {
-            args: Prisma.JobUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
-          }
-          deleteMany: {
-            args: Prisma.JobDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.JobUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.JobUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobPayload>
+            args: Prisma.jobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobPayload>
           }
           aggregate: {
             args: Prisma.JobAggregateArgs<ExtArgs>
             result: $Utils.Optional<AggregateJob>
           }
           groupBy: {
-            args: Prisma.JobGroupByArgs<ExtArgs>
+            args: Prisma.jobGroupByArgs<ExtArgs>
             result: $Utils.Optional<JobGroupByOutputType>[]
           }
           count: {
-            args: Prisma.JobCountArgs<ExtArgs>
+            args: Prisma.jobCountArgs<ExtArgs>
             result: $Utils.Optional<JobCountAggregateOutputType> | number
+          }
+        }
+      }
+      jobmatching: {
+        payload: Prisma.$jobmatchingPayload<ExtArgs>
+        fields: Prisma.jobmatchingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.jobmatchingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.jobmatchingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>
+          }
+          findFirst: {
+            args: Prisma.jobmatchingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.jobmatchingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>
+          }
+          findMany: {
+            args: Prisma.jobmatchingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>[]
+          }
+          create: {
+            args: Prisma.jobmatchingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>
+          }
+          createMany: {
+            args: Prisma.jobmatchingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.jobmatchingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>
+          }
+          update: {
+            args: Prisma.jobmatchingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>
+          }
+          deleteMany: {
+            args: Prisma.jobmatchingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.jobmatchingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.jobmatchingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$jobmatchingPayload>
+          }
+          aggregate: {
+            args: Prisma.JobmatchingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJobmatching>
+          }
+          groupBy: {
+            args: Prisma.jobmatchingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JobmatchingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.jobmatchingCountArgs<ExtArgs>
+            result: $Utils.Optional<JobmatchingCountAggregateOutputType> | number
+          }
+        }
+      }
+      notification: {
+        payload: Prisma.$notificationPayload<ExtArgs>
+        fields: Prisma.notificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.notificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.notificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>
+          }
+          findFirst: {
+            args: Prisma.notificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.notificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>
+          }
+          findMany: {
+            args: Prisma.notificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>[]
+          }
+          create: {
+            args: Prisma.notificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>
+          }
+          createMany: {
+            args: Prisma.notificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.notificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>
+          }
+          update: {
+            args: Prisma.notificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.notificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.notificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.notificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$notificationPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification>
+          }
+          groupBy: {
+            args: Prisma.notificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.notificationCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      roadmapmatcher: {
+        payload: Prisma.$roadmapmatcherPayload<ExtArgs>
+        fields: Prisma.roadmapmatcherFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.roadmapmatcherFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.roadmapmatcherFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>
+          }
+          findFirst: {
+            args: Prisma.roadmapmatcherFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.roadmapmatcherFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>
+          }
+          findMany: {
+            args: Prisma.roadmapmatcherFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>[]
+          }
+          create: {
+            args: Prisma.roadmapmatcherCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>
+          }
+          createMany: {
+            args: Prisma.roadmapmatcherCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.roadmapmatcherDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>
+          }
+          update: {
+            args: Prisma.roadmapmatcherUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>
+          }
+          deleteMany: {
+            args: Prisma.roadmapmatcherDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.roadmapmatcherUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.roadmapmatcherUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$roadmapmatcherPayload>
+          }
+          aggregate: {
+            args: Prisma.RoadmapmatcherAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoadmapmatcher>
+          }
+          groupBy: {
+            args: Prisma.roadmapmatcherGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapmatcherGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.roadmapmatcherCountArgs<ExtArgs>
+            result: $Utils.Optional<RoadmapmatcherCountAggregateOutputType> | number
           }
         }
       }
@@ -2998,7 +2998,6 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    roadmapMatcher?: RoadmapMatcherOmit
     assessment?: AssessmentOmit
     bookmarkCourse?: BookmarkCourseOmit
     courseReview?: CourseReviewOmit
@@ -3015,7 +3014,6 @@ export namespace Prisma {
     jobMatch?: JobMatchOmit
     lesson?: lessonOmit
     lessonProgress?: LessonProgressOmit
-    notification?: NotificationOmit
     payment?: PaymentOmit
     quiz?: quizOmit
     quizSubmission?: QuizSubmissionOmit
@@ -3023,8 +3021,10 @@ export namespace Prisma {
     roadmapCourse?: RoadmapCourseOmit
     userRoadmap?: UserRoadmapOmit
     voucher?: VoucherOmit
-    jobMatching?: JobMatchingOmit
-    job?: JobOmit
+    job?: jobOmit
+    jobmatching?: jobmatchingOmit
+    notification?: notificationOmit
+    roadmapmatcher?: roadmapmatcherOmit
   }
 
   /* Types for Logging */
@@ -3125,17 +3125,17 @@ export namespace Prisma {
     counselingsession: number
     course: number
     courseprogress: number
+    coursereview: number
     cvreview: number
-    jobmatching: number
     enrollment: number
     jobmatch: number
+    jobmatching: number
     lessonprogress: number
     notification: number
     payment: number
     quizsubmission: number
     userroadmap: number
     voucher: number
-    coursereview: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3145,17 +3145,17 @@ export namespace Prisma {
     counselingsession?: boolean | UserCountOutputTypeCountCounselingsessionArgs
     course?: boolean | UserCountOutputTypeCountCourseArgs
     courseprogress?: boolean | UserCountOutputTypeCountCourseprogressArgs
+    coursereview?: boolean | UserCountOutputTypeCountCoursereviewArgs
     cvreview?: boolean | UserCountOutputTypeCountCvreviewArgs
-    jobmatching?: boolean | UserCountOutputTypeCountJobmatchingArgs
     enrollment?: boolean | UserCountOutputTypeCountEnrollmentArgs
     jobmatch?: boolean | UserCountOutputTypeCountJobmatchArgs
+    jobmatching?: boolean | UserCountOutputTypeCountJobmatchingArgs
     lessonprogress?: boolean | UserCountOutputTypeCountLessonprogressArgs
     notification?: boolean | UserCountOutputTypeCountNotificationArgs
     payment?: boolean | UserCountOutputTypeCountPaymentArgs
     quizsubmission?: boolean | UserCountOutputTypeCountQuizsubmissionArgs
     userroadmap?: boolean | UserCountOutputTypeCountUserroadmapArgs
     voucher?: boolean | UserCountOutputTypeCountVoucherArgs
-    coursereview?: boolean | UserCountOutputTypeCountCoursereviewArgs
   }
 
   // Custom InputTypes
@@ -3214,15 +3214,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountCvreviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CVReviewWhereInput
+  export type UserCountOutputTypeCountCoursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CourseReviewWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountJobmatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobMatchingWhereInput
+  export type UserCountOutputTypeCountCvreviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CVReviewWhereInput
   }
 
   /**
@@ -3242,6 +3242,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountJobmatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: jobmatchingWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountLessonprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LessonProgressWhereInput
   }
@@ -3250,7 +3257,7 @@ export namespace Prisma {
    * UserCountOutputType without action
    */
   export type UserCountOutputTypeCountNotificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NotificationWhereInput
+    where?: notificationWhereInput
   }
 
   /**
@@ -3279,13 +3286,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountVoucherArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VoucherWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCoursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CourseReviewWhereInput
   }
 
 
@@ -3398,6 +3398,7 @@ export namespace Prisma {
   export type CourseCountOutputType = {
     certificate: number
     courseprogress: number
+    coursereview: number
     coursevideo: number
     enrollment: number
     lesson: number
@@ -3405,12 +3406,12 @@ export namespace Prisma {
     quiz: number
     quizsubmission: number
     roadmapcourse: number
-    coursereview: number
   }
 
   export type CourseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     certificate?: boolean | CourseCountOutputTypeCountCertificateArgs
     courseprogress?: boolean | CourseCountOutputTypeCountCourseprogressArgs
+    coursereview?: boolean | CourseCountOutputTypeCountCoursereviewArgs
     coursevideo?: boolean | CourseCountOutputTypeCountCoursevideoArgs
     enrollment?: boolean | CourseCountOutputTypeCountEnrollmentArgs
     lesson?: boolean | CourseCountOutputTypeCountLessonArgs
@@ -3418,7 +3419,6 @@ export namespace Prisma {
     quiz?: boolean | CourseCountOutputTypeCountQuizArgs
     quizsubmission?: boolean | CourseCountOutputTypeCountQuizsubmissionArgs
     roadmapcourse?: boolean | CourseCountOutputTypeCountRoadmapcourseArgs
-    coursereview?: boolean | CourseCountOutputTypeCountCoursereviewArgs
   }
 
   // Custom InputTypes
@@ -3444,6 +3444,13 @@ export namespace Prisma {
    */
   export type CourseCountOutputTypeCountCourseprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CourseProgressWhereInput
+  }
+
+  /**
+   * CourseCountOutputType without action
+   */
+  export type CourseCountOutputTypeCountCoursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CourseReviewWhereInput
   }
 
   /**
@@ -3495,13 +3502,6 @@ export namespace Prisma {
     where?: RoadmapCourseWhereInput
   }
 
-  /**
-   * CourseCountOutputType without action
-   */
-  export type CourseCountOutputTypeCountCoursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CourseReviewWhereInput
-  }
-
 
   /**
    * Count Type CVReviewCountOutputType
@@ -3530,7 +3530,7 @@ export namespace Prisma {
    * CVReviewCountOutputType without action
    */
   export type CVReviewCountOutputTypeCountJobmatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobMatchingWhereInput
+    where?: jobmatchingWhereInput
   }
 
 
@@ -3966,17 +3966,17 @@ export namespace Prisma {
     counselor?: boolean | User$counselorArgs<ExtArgs>
     course?: boolean | User$courseArgs<ExtArgs>
     courseprogress?: boolean | User$courseprogressArgs<ExtArgs>
+    coursereview?: boolean | User$coursereviewArgs<ExtArgs>
     cvreview?: boolean | User$cvreviewArgs<ExtArgs>
-    jobmatching?: boolean | User$jobmatchingArgs<ExtArgs>
     enrollment?: boolean | User$enrollmentArgs<ExtArgs>
     jobmatch?: boolean | User$jobmatchArgs<ExtArgs>
+    jobmatching?: boolean | User$jobmatchingArgs<ExtArgs>
     lessonprogress?: boolean | User$lessonprogressArgs<ExtArgs>
     notification?: boolean | User$notificationArgs<ExtArgs>
     payment?: boolean | User$paymentArgs<ExtArgs>
     quizsubmission?: boolean | User$quizsubmissionArgs<ExtArgs>
     userroadmap?: boolean | User$userroadmapArgs<ExtArgs>
     voucher?: boolean | User$voucherArgs<ExtArgs>
-    coursereview?: boolean | User$coursereviewArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4008,17 +4008,17 @@ export namespace Prisma {
     counselor?: boolean | User$counselorArgs<ExtArgs>
     course?: boolean | User$courseArgs<ExtArgs>
     courseprogress?: boolean | User$courseprogressArgs<ExtArgs>
+    coursereview?: boolean | User$coursereviewArgs<ExtArgs>
     cvreview?: boolean | User$cvreviewArgs<ExtArgs>
-    jobmatching?: boolean | User$jobmatchingArgs<ExtArgs>
     enrollment?: boolean | User$enrollmentArgs<ExtArgs>
     jobmatch?: boolean | User$jobmatchArgs<ExtArgs>
+    jobmatching?: boolean | User$jobmatchingArgs<ExtArgs>
     lessonprogress?: boolean | User$lessonprogressArgs<ExtArgs>
     notification?: boolean | User$notificationArgs<ExtArgs>
     payment?: boolean | User$paymentArgs<ExtArgs>
     quizsubmission?: boolean | User$quizsubmissionArgs<ExtArgs>
     userroadmap?: boolean | User$userroadmapArgs<ExtArgs>
     voucher?: boolean | User$voucherArgs<ExtArgs>
-    coursereview?: boolean | User$coursereviewArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -4032,17 +4032,17 @@ export namespace Prisma {
       counselor: Prisma.$CounselorPayload<ExtArgs> | null
       course: Prisma.$CoursePayload<ExtArgs>[]
       courseprogress: Prisma.$CourseProgressPayload<ExtArgs>[]
+      coursereview: Prisma.$CourseReviewPayload<ExtArgs>[]
       cvreview: Prisma.$CVReviewPayload<ExtArgs>[]
-      jobmatching: Prisma.$JobMatchingPayload<ExtArgs>[]
       enrollment: Prisma.$EnrollmentPayload<ExtArgs>[]
       jobmatch: Prisma.$JobMatchPayload<ExtArgs>[]
+      jobmatching: Prisma.$jobmatchingPayload<ExtArgs>[]
       lessonprogress: Prisma.$LessonProgressPayload<ExtArgs>[]
-      notification: Prisma.$NotificationPayload<ExtArgs>[]
+      notification: Prisma.$notificationPayload<ExtArgs>[]
       payment: Prisma.$PaymentPayload<ExtArgs>[]
       quizsubmission: Prisma.$QuizSubmissionPayload<ExtArgs>[]
       userroadmap: Prisma.$UserRoadmapPayload<ExtArgs>[]
       voucher: Prisma.$VoucherPayload<ExtArgs>[]
-      coursereview: Prisma.$CourseReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4406,17 +4406,17 @@ export namespace Prisma {
     counselor<T extends User$counselorArgs<ExtArgs> = {}>(args?: Subset<T, User$counselorArgs<ExtArgs>>): Prisma__CounselorClient<$Result.GetResult<Prisma.$CounselorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     course<T extends User$courseArgs<ExtArgs> = {}>(args?: Subset<T, User$courseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     courseprogress<T extends User$courseprogressArgs<ExtArgs> = {}>(args?: Subset<T, User$courseprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    coursereview<T extends User$coursereviewArgs<ExtArgs> = {}>(args?: Subset<T, User$coursereviewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cvreview<T extends User$cvreviewArgs<ExtArgs> = {}>(args?: Subset<T, User$cvreviewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CVReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    jobmatching<T extends User$jobmatchingArgs<ExtArgs> = {}>(args?: Subset<T, User$jobmatchingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     enrollment<T extends User$enrollmentArgs<ExtArgs> = {}>(args?: Subset<T, User$enrollmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     jobmatch<T extends User$jobmatchArgs<ExtArgs> = {}>(args?: Subset<T, User$jobmatchArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    jobmatching<T extends User$jobmatchingArgs<ExtArgs> = {}>(args?: Subset<T, User$jobmatchingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lessonprogress<T extends User$lessonprogressArgs<ExtArgs> = {}>(args?: Subset<T, User$lessonprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LessonProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    notification<T extends User$notificationArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notification<T extends User$notificationArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payment<T extends User$paymentArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quizsubmission<T extends User$quizsubmissionArgs<ExtArgs> = {}>(args?: Subset<T, User$quizsubmissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     userroadmap<T extends User$userroadmapArgs<ExtArgs> = {}>(args?: Subset<T, User$userroadmapArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     voucher<T extends User$voucherArgs<ExtArgs> = {}>(args?: Subset<T, User$voucherArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VoucherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    coursereview<T extends User$coursereviewArgs<ExtArgs> = {}>(args?: Subset<T, User$coursereviewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4966,6 +4966,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.coursereview
+   */
+  export type User$coursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CourseReview
+     */
+    select?: CourseReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CourseReview
+     */
+    omit?: CourseReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseReviewInclude<ExtArgs> | null
+    where?: CourseReviewWhereInput
+    orderBy?: CourseReviewOrderByWithRelationInput | CourseReviewOrderByWithRelationInput[]
+    cursor?: CourseReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CourseReviewScalarFieldEnum | CourseReviewScalarFieldEnum[]
+  }
+
+  /**
    * User.cvreview
    */
   export type User$cvreviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4987,30 +5011,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CVReviewScalarFieldEnum | CVReviewScalarFieldEnum[]
-  }
-
-  /**
-   * User.jobmatching
-   */
-  export type User$jobmatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    where?: JobMatchingWhereInput
-    orderBy?: JobMatchingOrderByWithRelationInput | JobMatchingOrderByWithRelationInput[]
-    cursor?: JobMatchingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: JobMatchingScalarFieldEnum | JobMatchingScalarFieldEnum[]
   }
 
   /**
@@ -5062,6 +5062,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.jobmatching
+   */
+  export type User$jobmatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    where?: jobmatchingWhereInput
+    orderBy?: jobmatchingOrderByWithRelationInput | jobmatchingOrderByWithRelationInput[]
+    cursor?: jobmatchingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: JobmatchingScalarFieldEnum | JobmatchingScalarFieldEnum[]
+  }
+
+  /**
    * User.lessonprogress
    */
   export type User$lessonprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5090,20 +5114,20 @@ export namespace Prisma {
    */
   export type User$notificationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Notification
+     * Select specific fields to fetch from the notification
      */
-    select?: NotificationSelect<ExtArgs> | null
+    select?: notificationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Notification
+     * Omit specific fields from the notification
      */
-    omit?: NotificationOmit<ExtArgs> | null
+    omit?: notificationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
+    include?: notificationInclude<ExtArgs> | null
+    where?: notificationWhereInput
+    orderBy?: notificationOrderByWithRelationInput | notificationOrderByWithRelationInput[]
+    cursor?: notificationWhereUniqueInput
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
@@ -5206,30 +5230,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.coursereview
-   */
-  export type User$coursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CourseReview
-     */
-    select?: CourseReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CourseReview
-     */
-    omit?: CourseReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CourseReviewInclude<ExtArgs> | null
-    where?: CourseReviewWhereInput
-    orderBy?: CourseReviewOrderByWithRelationInput | CourseReviewOrderByWithRelationInput[]
-    cursor?: CourseReviewWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CourseReviewScalarFieldEnum | CourseReviewScalarFieldEnum[]
-  }
-
-  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5245,915 +5245,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model RoadmapMatcher
-   */
-
-  export type AggregateRoadmapMatcher = {
-    _count: RoadmapMatcherCountAggregateOutputType | null
-    _avg: RoadmapMatcherAvgAggregateOutputType | null
-    _sum: RoadmapMatcherSumAggregateOutputType | null
-    _min: RoadmapMatcherMinAggregateOutputType | null
-    _max: RoadmapMatcherMaxAggregateOutputType | null
-  }
-
-  export type RoadmapMatcherAvgAggregateOutputType = {
-    id: number | null
-    roadmapId: number | null
-  }
-
-  export type RoadmapMatcherSumAggregateOutputType = {
-    id: number | null
-    roadmapId: number | null
-  }
-
-  export type RoadmapMatcherMinAggregateOutputType = {
-    id: number | null
-    keyword: string | null
-    roadmapId: number | null
-    matchField: string | null
-  }
-
-  export type RoadmapMatcherMaxAggregateOutputType = {
-    id: number | null
-    keyword: string | null
-    roadmapId: number | null
-    matchField: string | null
-  }
-
-  export type RoadmapMatcherCountAggregateOutputType = {
-    id: number
-    keyword: number
-    roadmapId: number
-    matchField: number
-    _all: number
-  }
-
-
-  export type RoadmapMatcherAvgAggregateInputType = {
-    id?: true
-    roadmapId?: true
-  }
-
-  export type RoadmapMatcherSumAggregateInputType = {
-    id?: true
-    roadmapId?: true
-  }
-
-  export type RoadmapMatcherMinAggregateInputType = {
-    id?: true
-    keyword?: true
-    roadmapId?: true
-    matchField?: true
-  }
-
-  export type RoadmapMatcherMaxAggregateInputType = {
-    id?: true
-    keyword?: true
-    roadmapId?: true
-    matchField?: true
-  }
-
-  export type RoadmapMatcherCountAggregateInputType = {
-    id?: true
-    keyword?: true
-    roadmapId?: true
-    matchField?: true
-    _all?: true
-  }
-
-  export type RoadmapMatcherAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which RoadmapMatcher to aggregate.
-     */
-    where?: RoadmapMatcherWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RoadmapMatchers to fetch.
-     */
-    orderBy?: RoadmapMatcherOrderByWithRelationInput | RoadmapMatcherOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: RoadmapMatcherWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RoadmapMatchers from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RoadmapMatchers.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned RoadmapMatchers
-    **/
-    _count?: true | RoadmapMatcherCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: RoadmapMatcherAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: RoadmapMatcherSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: RoadmapMatcherMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: RoadmapMatcherMaxAggregateInputType
-  }
-
-  export type GetRoadmapMatcherAggregateType<T extends RoadmapMatcherAggregateArgs> = {
-        [P in keyof T & keyof AggregateRoadmapMatcher]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateRoadmapMatcher[P]>
-      : GetScalarType<T[P], AggregateRoadmapMatcher[P]>
-  }
-
-
-
-
-  export type RoadmapMatcherGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RoadmapMatcherWhereInput
-    orderBy?: RoadmapMatcherOrderByWithAggregationInput | RoadmapMatcherOrderByWithAggregationInput[]
-    by: RoadmapMatcherScalarFieldEnum[] | RoadmapMatcherScalarFieldEnum
-    having?: RoadmapMatcherScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: RoadmapMatcherCountAggregateInputType | true
-    _avg?: RoadmapMatcherAvgAggregateInputType
-    _sum?: RoadmapMatcherSumAggregateInputType
-    _min?: RoadmapMatcherMinAggregateInputType
-    _max?: RoadmapMatcherMaxAggregateInputType
-  }
-
-  export type RoadmapMatcherGroupByOutputType = {
-    id: number
-    keyword: string
-    roadmapId: number
-    matchField: string
-    _count: RoadmapMatcherCountAggregateOutputType | null
-    _avg: RoadmapMatcherAvgAggregateOutputType | null
-    _sum: RoadmapMatcherSumAggregateOutputType | null
-    _min: RoadmapMatcherMinAggregateOutputType | null
-    _max: RoadmapMatcherMaxAggregateOutputType | null
-  }
-
-  type GetRoadmapMatcherGroupByPayload<T extends RoadmapMatcherGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<RoadmapMatcherGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof RoadmapMatcherGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], RoadmapMatcherGroupByOutputType[P]>
-            : GetScalarType<T[P], RoadmapMatcherGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type RoadmapMatcherSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    keyword?: boolean
-    roadmapId?: boolean
-    matchField?: boolean
-  }, ExtArgs["result"]["roadmapMatcher"]>
-
-
-
-  export type RoadmapMatcherSelectScalar = {
-    id?: boolean
-    keyword?: boolean
-    roadmapId?: boolean
-    matchField?: boolean
-  }
-
-  export type RoadmapMatcherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "keyword" | "roadmapId" | "matchField", ExtArgs["result"]["roadmapMatcher"]>
-
-  export type $RoadmapMatcherPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "RoadmapMatcher"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      keyword: string
-      roadmapId: number
-      matchField: string
-    }, ExtArgs["result"]["roadmapMatcher"]>
-    composites: {}
-  }
-
-  type RoadmapMatcherGetPayload<S extends boolean | null | undefined | RoadmapMatcherDefaultArgs> = $Result.GetResult<Prisma.$RoadmapMatcherPayload, S>
-
-  type RoadmapMatcherCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RoadmapMatcherFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RoadmapMatcherCountAggregateInputType | true
-    }
-
-  export interface RoadmapMatcherDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoadmapMatcher'], meta: { name: 'RoadmapMatcher' } }
-    /**
-     * Find zero or one RoadmapMatcher that matches the filter.
-     * @param {RoadmapMatcherFindUniqueArgs} args - Arguments to find a RoadmapMatcher
-     * @example
-     * // Get one RoadmapMatcher
-     * const roadmapMatcher = await prisma.roadmapMatcher.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends RoadmapMatcherFindUniqueArgs>(args: SelectSubset<T, RoadmapMatcherFindUniqueArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one RoadmapMatcher that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {RoadmapMatcherFindUniqueOrThrowArgs} args - Arguments to find a RoadmapMatcher
-     * @example
-     * // Get one RoadmapMatcher
-     * const roadmapMatcher = await prisma.roadmapMatcher.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends RoadmapMatcherFindUniqueOrThrowArgs>(args: SelectSubset<T, RoadmapMatcherFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first RoadmapMatcher that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherFindFirstArgs} args - Arguments to find a RoadmapMatcher
-     * @example
-     * // Get one RoadmapMatcher
-     * const roadmapMatcher = await prisma.roadmapMatcher.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends RoadmapMatcherFindFirstArgs>(args?: SelectSubset<T, RoadmapMatcherFindFirstArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first RoadmapMatcher that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherFindFirstOrThrowArgs} args - Arguments to find a RoadmapMatcher
-     * @example
-     * // Get one RoadmapMatcher
-     * const roadmapMatcher = await prisma.roadmapMatcher.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends RoadmapMatcherFindFirstOrThrowArgs>(args?: SelectSubset<T, RoadmapMatcherFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more RoadmapMatchers that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all RoadmapMatchers
-     * const roadmapMatchers = await prisma.roadmapMatcher.findMany()
-     * 
-     * // Get first 10 RoadmapMatchers
-     * const roadmapMatchers = await prisma.roadmapMatcher.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const roadmapMatcherWithIdOnly = await prisma.roadmapMatcher.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends RoadmapMatcherFindManyArgs>(args?: SelectSubset<T, RoadmapMatcherFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a RoadmapMatcher.
-     * @param {RoadmapMatcherCreateArgs} args - Arguments to create a RoadmapMatcher.
-     * @example
-     * // Create one RoadmapMatcher
-     * const RoadmapMatcher = await prisma.roadmapMatcher.create({
-     *   data: {
-     *     // ... data to create a RoadmapMatcher
-     *   }
-     * })
-     * 
-     */
-    create<T extends RoadmapMatcherCreateArgs>(args: SelectSubset<T, RoadmapMatcherCreateArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many RoadmapMatchers.
-     * @param {RoadmapMatcherCreateManyArgs} args - Arguments to create many RoadmapMatchers.
-     * @example
-     * // Create many RoadmapMatchers
-     * const roadmapMatcher = await prisma.roadmapMatcher.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends RoadmapMatcherCreateManyArgs>(args?: SelectSubset<T, RoadmapMatcherCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a RoadmapMatcher.
-     * @param {RoadmapMatcherDeleteArgs} args - Arguments to delete one RoadmapMatcher.
-     * @example
-     * // Delete one RoadmapMatcher
-     * const RoadmapMatcher = await prisma.roadmapMatcher.delete({
-     *   where: {
-     *     // ... filter to delete one RoadmapMatcher
-     *   }
-     * })
-     * 
-     */
-    delete<T extends RoadmapMatcherDeleteArgs>(args: SelectSubset<T, RoadmapMatcherDeleteArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one RoadmapMatcher.
-     * @param {RoadmapMatcherUpdateArgs} args - Arguments to update one RoadmapMatcher.
-     * @example
-     * // Update one RoadmapMatcher
-     * const roadmapMatcher = await prisma.roadmapMatcher.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends RoadmapMatcherUpdateArgs>(args: SelectSubset<T, RoadmapMatcherUpdateArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more RoadmapMatchers.
-     * @param {RoadmapMatcherDeleteManyArgs} args - Arguments to filter RoadmapMatchers to delete.
-     * @example
-     * // Delete a few RoadmapMatchers
-     * const { count } = await prisma.roadmapMatcher.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends RoadmapMatcherDeleteManyArgs>(args?: SelectSubset<T, RoadmapMatcherDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more RoadmapMatchers.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many RoadmapMatchers
-     * const roadmapMatcher = await prisma.roadmapMatcher.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends RoadmapMatcherUpdateManyArgs>(args: SelectSubset<T, RoadmapMatcherUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one RoadmapMatcher.
-     * @param {RoadmapMatcherUpsertArgs} args - Arguments to update or create a RoadmapMatcher.
-     * @example
-     * // Update or create a RoadmapMatcher
-     * const roadmapMatcher = await prisma.roadmapMatcher.upsert({
-     *   create: {
-     *     // ... data to create a RoadmapMatcher
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the RoadmapMatcher we want to update
-     *   }
-     * })
-     */
-    upsert<T extends RoadmapMatcherUpsertArgs>(args: SelectSubset<T, RoadmapMatcherUpsertArgs<ExtArgs>>): Prisma__RoadmapMatcherClient<$Result.GetResult<Prisma.$RoadmapMatcherPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of RoadmapMatchers.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherCountArgs} args - Arguments to filter RoadmapMatchers to count.
-     * @example
-     * // Count the number of RoadmapMatchers
-     * const count = await prisma.roadmapMatcher.count({
-     *   where: {
-     *     // ... the filter for the RoadmapMatchers we want to count
-     *   }
-     * })
-    **/
-    count<T extends RoadmapMatcherCountArgs>(
-      args?: Subset<T, RoadmapMatcherCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], RoadmapMatcherCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a RoadmapMatcher.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends RoadmapMatcherAggregateArgs>(args: Subset<T, RoadmapMatcherAggregateArgs>): Prisma.PrismaPromise<GetRoadmapMatcherAggregateType<T>>
-
-    /**
-     * Group by RoadmapMatcher.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RoadmapMatcherGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends RoadmapMatcherGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RoadmapMatcherGroupByArgs['orderBy'] }
-        : { orderBy?: RoadmapMatcherGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, RoadmapMatcherGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoadmapMatcherGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the RoadmapMatcher model
-   */
-  readonly fields: RoadmapMatcherFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for RoadmapMatcher.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__RoadmapMatcherClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the RoadmapMatcher model
-   */
-  interface RoadmapMatcherFieldRefs {
-    readonly id: FieldRef<"RoadmapMatcher", 'Int'>
-    readonly keyword: FieldRef<"RoadmapMatcher", 'String'>
-    readonly roadmapId: FieldRef<"RoadmapMatcher", 'Int'>
-    readonly matchField: FieldRef<"RoadmapMatcher", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * RoadmapMatcher findUnique
-   */
-  export type RoadmapMatcherFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * Filter, which RoadmapMatcher to fetch.
-     */
-    where: RoadmapMatcherWhereUniqueInput
-  }
-
-  /**
-   * RoadmapMatcher findUniqueOrThrow
-   */
-  export type RoadmapMatcherFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * Filter, which RoadmapMatcher to fetch.
-     */
-    where: RoadmapMatcherWhereUniqueInput
-  }
-
-  /**
-   * RoadmapMatcher findFirst
-   */
-  export type RoadmapMatcherFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * Filter, which RoadmapMatcher to fetch.
-     */
-    where?: RoadmapMatcherWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RoadmapMatchers to fetch.
-     */
-    orderBy?: RoadmapMatcherOrderByWithRelationInput | RoadmapMatcherOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for RoadmapMatchers.
-     */
-    cursor?: RoadmapMatcherWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RoadmapMatchers from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RoadmapMatchers.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of RoadmapMatchers.
-     */
-    distinct?: RoadmapMatcherScalarFieldEnum | RoadmapMatcherScalarFieldEnum[]
-  }
-
-  /**
-   * RoadmapMatcher findFirstOrThrow
-   */
-  export type RoadmapMatcherFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * Filter, which RoadmapMatcher to fetch.
-     */
-    where?: RoadmapMatcherWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RoadmapMatchers to fetch.
-     */
-    orderBy?: RoadmapMatcherOrderByWithRelationInput | RoadmapMatcherOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for RoadmapMatchers.
-     */
-    cursor?: RoadmapMatcherWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RoadmapMatchers from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RoadmapMatchers.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of RoadmapMatchers.
-     */
-    distinct?: RoadmapMatcherScalarFieldEnum | RoadmapMatcherScalarFieldEnum[]
-  }
-
-  /**
-   * RoadmapMatcher findMany
-   */
-  export type RoadmapMatcherFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * Filter, which RoadmapMatchers to fetch.
-     */
-    where?: RoadmapMatcherWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RoadmapMatchers to fetch.
-     */
-    orderBy?: RoadmapMatcherOrderByWithRelationInput | RoadmapMatcherOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing RoadmapMatchers.
-     */
-    cursor?: RoadmapMatcherWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RoadmapMatchers from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RoadmapMatchers.
-     */
-    skip?: number
-    distinct?: RoadmapMatcherScalarFieldEnum | RoadmapMatcherScalarFieldEnum[]
-  }
-
-  /**
-   * RoadmapMatcher create
-   */
-  export type RoadmapMatcherCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * The data needed to create a RoadmapMatcher.
-     */
-    data: XOR<RoadmapMatcherCreateInput, RoadmapMatcherUncheckedCreateInput>
-  }
-
-  /**
-   * RoadmapMatcher createMany
-   */
-  export type RoadmapMatcherCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many RoadmapMatchers.
-     */
-    data: RoadmapMatcherCreateManyInput | RoadmapMatcherCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * RoadmapMatcher update
-   */
-  export type RoadmapMatcherUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * The data needed to update a RoadmapMatcher.
-     */
-    data: XOR<RoadmapMatcherUpdateInput, RoadmapMatcherUncheckedUpdateInput>
-    /**
-     * Choose, which RoadmapMatcher to update.
-     */
-    where: RoadmapMatcherWhereUniqueInput
-  }
-
-  /**
-   * RoadmapMatcher updateMany
-   */
-  export type RoadmapMatcherUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update RoadmapMatchers.
-     */
-    data: XOR<RoadmapMatcherUpdateManyMutationInput, RoadmapMatcherUncheckedUpdateManyInput>
-    /**
-     * Filter which RoadmapMatchers to update
-     */
-    where?: RoadmapMatcherWhereInput
-    /**
-     * Limit how many RoadmapMatchers to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * RoadmapMatcher upsert
-   */
-  export type RoadmapMatcherUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * The filter to search for the RoadmapMatcher to update in case it exists.
-     */
-    where: RoadmapMatcherWhereUniqueInput
-    /**
-     * In case the RoadmapMatcher found by the `where` argument doesn't exist, create a new RoadmapMatcher with this data.
-     */
-    create: XOR<RoadmapMatcherCreateInput, RoadmapMatcherUncheckedCreateInput>
-    /**
-     * In case the RoadmapMatcher was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<RoadmapMatcherUpdateInput, RoadmapMatcherUncheckedUpdateInput>
-  }
-
-  /**
-   * RoadmapMatcher delete
-   */
-  export type RoadmapMatcherDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
-    /**
-     * Filter which RoadmapMatcher to delete.
-     */
-    where: RoadmapMatcherWhereUniqueInput
-  }
-
-  /**
-   * RoadmapMatcher deleteMany
-   */
-  export type RoadmapMatcherDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which RoadmapMatchers to delete
-     */
-    where?: RoadmapMatcherWhereInput
-    /**
-     * Limit how many RoadmapMatchers to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * RoadmapMatcher without action
-   */
-  export type RoadmapMatcherDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RoadmapMatcher
-     */
-    select?: RoadmapMatcherSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RoadmapMatcher
-     */
-    omit?: RoadmapMatcherOmit<ExtArgs> | null
   }
 
 
@@ -8318,8 +7409,8 @@ export namespace Prisma {
     comment?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["courseReview"]>
 
 
@@ -8336,15 +7427,15 @@ export namespace Prisma {
 
   export type CourseReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "rating" | "comment" | "createdAt" | "updatedAt", ExtArgs["result"]["courseReview"]>
   export type CourseReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     course?: boolean | CourseDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $CourseReviewPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CourseReview"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       course: Prisma.$CoursePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -8694,8 +7785,8 @@ export namespace Prisma {
    */
   export interface Prisma__CourseReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     course<T extends CourseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CourseDefaultArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12292,9 +11383,9 @@ export namespace Prisma {
     rating?: boolean
     feedback?: boolean
     chatmessage?: boolean | CounselingSession$chatmessageArgs<ExtArgs>
-    payment?: boolean | CounselingSession$paymentArgs<ExtArgs>
     counselor?: boolean | CounselorDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | CounselingSession$paymentArgs<ExtArgs>
     _count?: boolean | CounselingSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["counselingSession"]>
 
@@ -12318,9 +11409,9 @@ export namespace Prisma {
   export type CounselingSessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "counselorId" | "topic" | "question" | "response" | "status" | "isPaymentRequired" | "price" | "createdAt" | "rating" | "feedback", ExtArgs["result"]["counselingSession"]>
   export type CounselingSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     chatmessage?: boolean | CounselingSession$chatmessageArgs<ExtArgs>
-    payment?: boolean | CounselingSession$paymentArgs<ExtArgs>
     counselor?: boolean | CounselorDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
+    payment?: boolean | CounselingSession$paymentArgs<ExtArgs>
     _count?: boolean | CounselingSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -12328,9 +11419,9 @@ export namespace Prisma {
     name: "CounselingSession"
     objects: {
       chatmessage: Prisma.$ChatMessagePayload<ExtArgs>[]
-      payment: Prisma.$PaymentPayload<ExtArgs>[]
       counselor: Prisma.$CounselorPayload<ExtArgs>
       users: Prisma.$UserPayload<ExtArgs>
+      payment: Prisma.$PaymentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -12686,9 +11777,9 @@ export namespace Prisma {
   export interface Prisma__CounselingSessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     chatmessage<T extends CounselingSession$chatmessageArgs<ExtArgs> = {}>(args?: Subset<T, CounselingSession$chatmessageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    payment<T extends CounselingSession$paymentArgs<ExtArgs> = {}>(args?: Subset<T, CounselingSession$paymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     counselor<T extends CounselorDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CounselorDefaultArgs<ExtArgs>>): Prisma__CounselorClient<$Result.GetResult<Prisma.$CounselorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    payment<T extends CounselingSession$paymentArgs<ExtArgs> = {}>(args?: Subset<T, CounselingSession$paymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14382,6 +13473,7 @@ export namespace Prisma {
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     courseprogress?: boolean | Course$courseprogressArgs<ExtArgs>
+    coursereview?: boolean | Course$coursereviewArgs<ExtArgs>
     coursevideo?: boolean | Course$coursevideoArgs<ExtArgs>
     enrollment?: boolean | Course$enrollmentArgs<ExtArgs>
     lesson?: boolean | Course$lessonArgs<ExtArgs>
@@ -14389,7 +13481,6 @@ export namespace Prisma {
     quiz?: boolean | Course$quizArgs<ExtArgs>
     quizsubmission?: boolean | Course$quizsubmissionArgs<ExtArgs>
     roadmapcourse?: boolean | Course$roadmapcourseArgs<ExtArgs>
-    coursereview?: boolean | Course$coursereviewArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["course"]>
 
@@ -14413,6 +13504,7 @@ export namespace Prisma {
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     courseprogress?: boolean | Course$courseprogressArgs<ExtArgs>
+    coursereview?: boolean | Course$coursereviewArgs<ExtArgs>
     coursevideo?: boolean | Course$coursevideoArgs<ExtArgs>
     enrollment?: boolean | Course$enrollmentArgs<ExtArgs>
     lesson?: boolean | Course$lessonArgs<ExtArgs>
@@ -14420,7 +13512,6 @@ export namespace Prisma {
     quiz?: boolean | Course$quizArgs<ExtArgs>
     quizsubmission?: boolean | Course$quizsubmissionArgs<ExtArgs>
     roadmapcourse?: boolean | Course$roadmapcourseArgs<ExtArgs>
-    coursereview?: boolean | Course$coursereviewArgs<ExtArgs>
     _count?: boolean | CourseCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -14431,6 +13522,7 @@ export namespace Prisma {
       category: Prisma.$CategoryPayload<ExtArgs>
       users: Prisma.$UserPayload<ExtArgs>
       courseprogress: Prisma.$CourseProgressPayload<ExtArgs>[]
+      coursereview: Prisma.$CourseReviewPayload<ExtArgs>[]
       coursevideo: Prisma.$coursevideoPayload<ExtArgs>[]
       enrollment: Prisma.$EnrollmentPayload<ExtArgs>[]
       lesson: Prisma.$lessonPayload<ExtArgs>[]
@@ -14438,7 +13530,6 @@ export namespace Prisma {
       quiz: Prisma.$quizPayload<ExtArgs>[]
       quizsubmission: Prisma.$QuizSubmissionPayload<ExtArgs>[]
       roadmapcourse: Prisma.$RoadmapCoursePayload<ExtArgs>[]
-      coursereview: Prisma.$CourseReviewPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -14794,6 +13885,7 @@ export namespace Prisma {
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     courseprogress<T extends Course$courseprogressArgs<ExtArgs> = {}>(args?: Subset<T, Course$courseprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    coursereview<T extends Course$coursereviewArgs<ExtArgs> = {}>(args?: Subset<T, Course$coursereviewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     coursevideo<T extends Course$coursevideoArgs<ExtArgs> = {}>(args?: Subset<T, Course$coursevideoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$coursevideoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     enrollment<T extends Course$enrollmentArgs<ExtArgs> = {}>(args?: Subset<T, Course$enrollmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lesson<T extends Course$lessonArgs<ExtArgs> = {}>(args?: Subset<T, Course$lessonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -14801,7 +13893,6 @@ export namespace Prisma {
     quiz<T extends Course$quizArgs<ExtArgs> = {}>(args?: Subset<T, Course$quizArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$quizPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quizsubmission<T extends Course$quizsubmissionArgs<ExtArgs> = {}>(args?: Subset<T, Course$quizsubmissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     roadmapcourse<T extends Course$roadmapcourseArgs<ExtArgs> = {}>(args?: Subset<T, Course$roadmapcourseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoadmapCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    coursereview<T extends Course$coursereviewArgs<ExtArgs> = {}>(args?: Subset<T, Course$coursereviewArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CourseReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -15231,6 +14322,30 @@ export namespace Prisma {
   }
 
   /**
+   * Course.coursereview
+   */
+  export type Course$coursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CourseReview
+     */
+    select?: CourseReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CourseReview
+     */
+    omit?: CourseReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CourseReviewInclude<ExtArgs> | null
+    where?: CourseReviewWhereInput
+    orderBy?: CourseReviewOrderByWithRelationInput | CourseReviewOrderByWithRelationInput[]
+    cursor?: CourseReviewWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CourseReviewScalarFieldEnum | CourseReviewScalarFieldEnum[]
+  }
+
+  /**
    * Course.coursevideo
    */
   export type Course$coursevideoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -15396,30 +14511,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RoadmapCourseScalarFieldEnum | RoadmapCourseScalarFieldEnum[]
-  }
-
-  /**
-   * Course.coursereview
-   */
-  export type Course$coursereviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CourseReview
-     */
-    select?: CourseReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CourseReview
-     */
-    omit?: CourseReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CourseReviewInclude<ExtArgs> | null
-    where?: CourseReviewWhereInput
-    orderBy?: CourseReviewOrderByWithRelationInput | CourseReviewOrderByWithRelationInput[]
-    cursor?: CourseReviewWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CourseReviewScalarFieldEnum | CourseReviewScalarFieldEnum[]
   }
 
   /**
@@ -17470,9 +16561,6 @@ export namespace Prisma {
     fileName: string | null
     filePath: string | null
     fileSize: number | null
-    b2FileId: string | null
-    b2FileName: string | null
-    b2FileUrl: string | null
     extractedText: string | null
     careerField: string | null
     relevancyRate: number | null
@@ -17484,6 +16572,9 @@ export namespace Prisma {
     writingQuality: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    b2FileId: string | null
+    b2FileName: string | null
+    b2FileUrl: string | null
   }
 
   export type CVReviewMaxAggregateOutputType = {
@@ -17492,9 +16583,6 @@ export namespace Prisma {
     fileName: string | null
     filePath: string | null
     fileSize: number | null
-    b2FileId: string | null
-    b2FileName: string | null
-    b2FileUrl: string | null
     extractedText: string | null
     careerField: string | null
     relevancyRate: number | null
@@ -17506,6 +16594,9 @@ export namespace Prisma {
     writingQuality: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    b2FileId: string | null
+    b2FileName: string | null
+    b2FileUrl: string | null
   }
 
   export type CVReviewCountAggregateOutputType = {
@@ -17514,9 +16605,6 @@ export namespace Prisma {
     fileName: number
     filePath: number
     fileSize: number
-    b2FileId: number
-    b2FileName: number
-    b2FileUrl: number
     extractedText: number
     careerField: number
     relevancyRate: number
@@ -17530,6 +16618,9 @@ export namespace Prisma {
     suggestions: number
     createdAt: number
     updatedAt: number
+    b2FileId: number
+    b2FileName: number
+    b2FileUrl: number
     _all: number
   }
 
@@ -17564,9 +16655,6 @@ export namespace Prisma {
     fileName?: true
     filePath?: true
     fileSize?: true
-    b2FileId?: true
-    b2FileName?: true
-    b2FileUrl?: true
     extractedText?: true
     careerField?: true
     relevancyRate?: true
@@ -17578,6 +16666,9 @@ export namespace Prisma {
     writingQuality?: true
     createdAt?: true
     updatedAt?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2FileUrl?: true
   }
 
   export type CVReviewMaxAggregateInputType = {
@@ -17586,9 +16677,6 @@ export namespace Prisma {
     fileName?: true
     filePath?: true
     fileSize?: true
-    b2FileId?: true
-    b2FileName?: true
-    b2FileUrl?: true
     extractedText?: true
     careerField?: true
     relevancyRate?: true
@@ -17600,6 +16688,9 @@ export namespace Prisma {
     writingQuality?: true
     createdAt?: true
     updatedAt?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2FileUrl?: true
   }
 
   export type CVReviewCountAggregateInputType = {
@@ -17608,9 +16699,6 @@ export namespace Prisma {
     fileName?: true
     filePath?: true
     fileSize?: true
-    b2FileId?: true
-    b2FileName?: true
-    b2FileUrl?: true
     extractedText?: true
     careerField?: true
     relevancyRate?: true
@@ -17624,6 +16712,9 @@ export namespace Prisma {
     suggestions?: true
     createdAt?: true
     updatedAt?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2FileUrl?: true
     _all?: true
   }
 
@@ -17719,9 +16810,6 @@ export namespace Prisma {
     fileName: string
     filePath: string | null
     fileSize: number
-    b2FileId: string | null
-    b2FileName: string | null
-    b2FileUrl: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -17735,6 +16823,9 @@ export namespace Prisma {
     suggestions: JsonValue
     createdAt: Date
     updatedAt: Date
+    b2FileId: string | null
+    b2FileName: string | null
+    b2FileUrl: string | null
     _count: CVReviewCountAggregateOutputType | null
     _avg: CVReviewAvgAggregateOutputType | null
     _sum: CVReviewSumAggregateOutputType | null
@@ -17762,9 +16853,6 @@ export namespace Prisma {
     fileName?: boolean
     filePath?: boolean
     fileSize?: boolean
-    b2FileId?: boolean
-    b2FileName?: boolean
-    b2FileUrl?: boolean
     extractedText?: boolean
     careerField?: boolean
     relevancyRate?: boolean
@@ -17778,6 +16866,9 @@ export namespace Prisma {
     suggestions?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    b2FileId?: boolean
+    b2FileName?: boolean
+    b2FileUrl?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     jobmatching?: boolean | CVReview$jobmatchingArgs<ExtArgs>
     _count?: boolean | CVReviewCountOutputTypeDefaultArgs<ExtArgs>
@@ -17791,9 +16882,6 @@ export namespace Prisma {
     fileName?: boolean
     filePath?: boolean
     fileSize?: boolean
-    b2FileId?: boolean
-    b2FileName?: boolean
-    b2FileUrl?: boolean
     extractedText?: boolean
     careerField?: boolean
     relevancyRate?: boolean
@@ -17807,9 +16895,12 @@ export namespace Prisma {
     suggestions?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    b2FileId?: boolean
+    b2FileName?: boolean
+    b2FileUrl?: boolean
   }
 
-  export type CVReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "filePath" | "fileSize" | "b2FileId" | "b2FileName" | "b2FileUrl" | "extractedText" | "careerField" | "relevancyRate" | "targetedJobRate" | "overallScore" | "relevantSkill" | "workExperience" | "consistency" | "writingQuality" | "aiAnalysis" | "suggestions" | "createdAt" | "updatedAt", ExtArgs["result"]["cVReview"]>
+  export type CVReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "fileName" | "filePath" | "fileSize" | "extractedText" | "careerField" | "relevancyRate" | "targetedJobRate" | "overallScore" | "relevantSkill" | "workExperience" | "consistency" | "writingQuality" | "aiAnalysis" | "suggestions" | "createdAt" | "updatedAt" | "b2FileId" | "b2FileName" | "b2FileUrl", ExtArgs["result"]["cVReview"]>
   export type CVReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     jobmatching?: boolean | CVReview$jobmatchingArgs<ExtArgs>
@@ -17820,7 +16911,7 @@ export namespace Prisma {
     name: "CVReview"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      jobmatching: Prisma.$JobMatchingPayload<ExtArgs>[]
+      jobmatching: Prisma.$jobmatchingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17828,9 +16919,6 @@ export namespace Prisma {
       fileName: string
       filePath: string | null
       fileSize: number
-      b2FileId: string | null
-      b2FileName: string | null
-      b2FileUrl: string | null
       extractedText: string
       careerField: string
       relevancyRate: number
@@ -17844,6 +16932,9 @@ export namespace Prisma {
       suggestions: Prisma.JsonValue
       createdAt: Date
       updatedAt: Date
+      b2FileId: string | null
+      b2FileName: string | null
+      b2FileUrl: string | null
     }, ExtArgs["result"]["cVReview"]>
     composites: {}
   }
@@ -18185,7 +17276,7 @@ export namespace Prisma {
   export interface Prisma__CVReviewClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    jobmatching<T extends CVReview$jobmatchingArgs<ExtArgs> = {}>(args?: Subset<T, CVReview$jobmatchingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    jobmatching<T extends CVReview$jobmatchingArgs<ExtArgs> = {}>(args?: Subset<T, CVReview$jobmatchingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18220,9 +17311,6 @@ export namespace Prisma {
     readonly fileName: FieldRef<"CVReview", 'String'>
     readonly filePath: FieldRef<"CVReview", 'String'>
     readonly fileSize: FieldRef<"CVReview", 'Int'>
-    readonly b2FileId: FieldRef<"CVReview", 'String'>
-    readonly b2FileName: FieldRef<"CVReview", 'String'>
-    readonly b2FileUrl: FieldRef<"CVReview", 'String'>
     readonly extractedText: FieldRef<"CVReview", 'String'>
     readonly careerField: FieldRef<"CVReview", 'String'>
     readonly relevancyRate: FieldRef<"CVReview", 'Float'>
@@ -18236,6 +17324,9 @@ export namespace Prisma {
     readonly suggestions: FieldRef<"CVReview", 'Json'>
     readonly createdAt: FieldRef<"CVReview", 'DateTime'>
     readonly updatedAt: FieldRef<"CVReview", 'DateTime'>
+    readonly b2FileId: FieldRef<"CVReview", 'String'>
+    readonly b2FileName: FieldRef<"CVReview", 'String'>
+    readonly b2FileUrl: FieldRef<"CVReview", 'String'>
   }
     
 
@@ -18583,23 +17674,23 @@ export namespace Prisma {
    */
   export type CVReview$jobmatchingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the JobMatching
+     * Select specific fields to fetch from the jobmatching
      */
-    select?: JobMatchingSelect<ExtArgs> | null
+    select?: jobmatchingSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the JobMatching
+     * Omit specific fields from the jobmatching
      */
-    omit?: JobMatchingOmit<ExtArgs> | null
+    omit?: jobmatchingOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: JobMatchingInclude<ExtArgs> | null
-    where?: JobMatchingWhereInput
-    orderBy?: JobMatchingOrderByWithRelationInput | JobMatchingOrderByWithRelationInput[]
-    cursor?: JobMatchingWhereUniqueInput
+    include?: jobmatchingInclude<ExtArgs> | null
+    where?: jobmatchingWhereInput
+    orderBy?: jobmatchingOrderByWithRelationInput | jobmatchingOrderByWithRelationInput[]
+    cursor?: jobmatchingWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: JobMatchingScalarFieldEnum | JobMatchingScalarFieldEnum[]
+    distinct?: JobmatchingScalarFieldEnum | JobmatchingScalarFieldEnum[]
   }
 
   /**
@@ -22574,995 +21665,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Notification
-   */
-
-  export type AggregateNotification = {
-    _count: NotificationCountAggregateOutputType | null
-    _avg: NotificationAvgAggregateOutputType | null
-    _sum: NotificationSumAggregateOutputType | null
-    _min: NotificationMinAggregateOutputType | null
-    _max: NotificationMaxAggregateOutputType | null
-  }
-
-  export type NotificationAvgAggregateOutputType = {
-    id: number | null
-    userId: number | null
-  }
-
-  export type NotificationSumAggregateOutputType = {
-    id: number | null
-    userId: number | null
-  }
-
-  export type NotificationMinAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    title: string | null
-    body: string | null
-    type: string | null
-    isRead: boolean | null
-    createdAt: Date | null
-  }
-
-  export type NotificationMaxAggregateOutputType = {
-    id: number | null
-    userId: number | null
-    title: string | null
-    body: string | null
-    type: string | null
-    isRead: boolean | null
-    createdAt: Date | null
-  }
-
-  export type NotificationCountAggregateOutputType = {
-    id: number
-    userId: number
-    title: number
-    body: number
-    type: number
-    isRead: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type NotificationAvgAggregateInputType = {
-    id?: true
-    userId?: true
-  }
-
-  export type NotificationSumAggregateInputType = {
-    id?: true
-    userId?: true
-  }
-
-  export type NotificationMinAggregateInputType = {
-    id?: true
-    userId?: true
-    title?: true
-    body?: true
-    type?: true
-    isRead?: true
-    createdAt?: true
-  }
-
-  export type NotificationMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    title?: true
-    body?: true
-    type?: true
-    isRead?: true
-    createdAt?: true
-  }
-
-  export type NotificationCountAggregateInputType = {
-    id?: true
-    userId?: true
-    title?: true
-    body?: true
-    type?: true
-    isRead?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Notification to aggregate.
-     */
-    where?: NotificationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Notifications to fetch.
-     */
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: NotificationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Notifications from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Notifications.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Notifications
-    **/
-    _count?: true | NotificationCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: NotificationAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: NotificationSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: NotificationMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: NotificationMaxAggregateInputType
-  }
-
-  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
-        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateNotification[P]>
-      : GetScalarType<T[P], AggregateNotification[P]>
-  }
-
-
-
-
-  export type NotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithAggregationInput | NotificationOrderByWithAggregationInput[]
-    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
-    having?: NotificationScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: NotificationCountAggregateInputType | true
-    _avg?: NotificationAvgAggregateInputType
-    _sum?: NotificationSumAggregateInputType
-    _min?: NotificationMinAggregateInputType
-    _max?: NotificationMaxAggregateInputType
-  }
-
-  export type NotificationGroupByOutputType = {
-    id: number
-    userId: number
-    title: string
-    body: string
-    type: string | null
-    isRead: boolean
-    createdAt: Date
-    _count: NotificationCountAggregateOutputType | null
-    _avg: NotificationAvgAggregateOutputType | null
-    _sum: NotificationSumAggregateOutputType | null
-    _min: NotificationMinAggregateOutputType | null
-    _max: NotificationMaxAggregateOutputType | null
-  }
-
-  type GetNotificationGroupByPayload<T extends NotificationGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<NotificationGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
-            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    title?: boolean
-    body?: boolean
-    type?: boolean
-    isRead?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["notification"]>
-
-
-
-  export type NotificationSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    title?: boolean
-    body?: boolean
-    type?: boolean
-    isRead?: boolean
-    createdAt?: boolean
-  }
-
-  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "body" | "type" | "isRead" | "createdAt", ExtArgs["result"]["notification"]>
-  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Notification"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: number
-      userId: number
-      title: string
-      body: string
-      type: string | null
-      isRead: boolean
-      createdAt: Date
-    }, ExtArgs["result"]["notification"]>
-    composites: {}
-  }
-
-  type NotificationGetPayload<S extends boolean | null | undefined | NotificationDefaultArgs> = $Result.GetResult<Prisma.$NotificationPayload, S>
-
-  type NotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<NotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: NotificationCountAggregateInputType | true
-    }
-
-  export interface NotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Notification'], meta: { name: 'Notification' } }
-    /**
-     * Find zero or one Notification that matches the filter.
-     * @param {NotificationFindUniqueArgs} args - Arguments to find a Notification
-     * @example
-     * // Get one Notification
-     * const notification = await prisma.notification.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends NotificationFindUniqueArgs>(args: SelectSubset<T, NotificationFindUniqueArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {NotificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
-     * @example
-     * // Get one Notification
-     * const notification = await prisma.notification.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends NotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Notification that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationFindFirstArgs} args - Arguments to find a Notification
-     * @example
-     * // Get one Notification
-     * const notification = await prisma.notification.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends NotificationFindFirstArgs>(args?: SelectSubset<T, NotificationFindFirstArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Notification that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationFindFirstOrThrowArgs} args - Arguments to find a Notification
-     * @example
-     * // Get one Notification
-     * const notification = await prisma.notification.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends NotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Notifications that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Notifications
-     * const notifications = await prisma.notification.findMany()
-     * 
-     * // Get first 10 Notifications
-     * const notifications = await prisma.notification.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends NotificationFindManyArgs>(args?: SelectSubset<T, NotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Notification.
-     * @param {NotificationCreateArgs} args - Arguments to create a Notification.
-     * @example
-     * // Create one Notification
-     * const Notification = await prisma.notification.create({
-     *   data: {
-     *     // ... data to create a Notification
-     *   }
-     * })
-     * 
-     */
-    create<T extends NotificationCreateArgs>(args: SelectSubset<T, NotificationCreateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Notifications.
-     * @param {NotificationCreateManyArgs} args - Arguments to create many Notifications.
-     * @example
-     * // Create many Notifications
-     * const notification = await prisma.notification.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends NotificationCreateManyArgs>(args?: SelectSubset<T, NotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Notification.
-     * @param {NotificationDeleteArgs} args - Arguments to delete one Notification.
-     * @example
-     * // Delete one Notification
-     * const Notification = await prisma.notification.delete({
-     *   where: {
-     *     // ... filter to delete one Notification
-     *   }
-     * })
-     * 
-     */
-    delete<T extends NotificationDeleteArgs>(args: SelectSubset<T, NotificationDeleteArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Notification.
-     * @param {NotificationUpdateArgs} args - Arguments to update one Notification.
-     * @example
-     * // Update one Notification
-     * const notification = await prisma.notification.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends NotificationUpdateArgs>(args: SelectSubset<T, NotificationUpdateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Notifications.
-     * @param {NotificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
-     * @example
-     * // Delete a few Notifications
-     * const { count } = await prisma.notification.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends NotificationDeleteManyArgs>(args?: SelectSubset<T, NotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Notifications.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Notifications
-     * const notification = await prisma.notification.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends NotificationUpdateManyArgs>(args: SelectSubset<T, NotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Notification.
-     * @param {NotificationUpsertArgs} args - Arguments to update or create a Notification.
-     * @example
-     * // Update or create a Notification
-     * const notification = await prisma.notification.upsert({
-     *   create: {
-     *     // ... data to create a Notification
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Notification we want to update
-     *   }
-     * })
-     */
-    upsert<T extends NotificationUpsertArgs>(args: SelectSubset<T, NotificationUpsertArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Notifications.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationCountArgs} args - Arguments to filter Notifications to count.
-     * @example
-     * // Count the number of Notifications
-     * const count = await prisma.notification.count({
-     *   where: {
-     *     // ... the filter for the Notifications we want to count
-     *   }
-     * })
-    **/
-    count<T extends NotificationCountArgs>(
-      args?: Subset<T, NotificationCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Notification.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
-
-    /**
-     * Group by Notification.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {NotificationGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends NotificationGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: NotificationGroupByArgs['orderBy'] }
-        : { orderBy?: NotificationGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, NotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Notification model
-   */
-  readonly fields: NotificationFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Notification.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Notification model
-   */
-  interface NotificationFieldRefs {
-    readonly id: FieldRef<"Notification", 'Int'>
-    readonly userId: FieldRef<"Notification", 'Int'>
-    readonly title: FieldRef<"Notification", 'String'>
-    readonly body: FieldRef<"Notification", 'String'>
-    readonly type: FieldRef<"Notification", 'String'>
-    readonly isRead: FieldRef<"Notification", 'Boolean'>
-    readonly createdAt: FieldRef<"Notification", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Notification findUnique
-   */
-  export type NotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * Filter, which Notification to fetch.
-     */
-    where: NotificationWhereUniqueInput
-  }
-
-  /**
-   * Notification findUniqueOrThrow
-   */
-  export type NotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * Filter, which Notification to fetch.
-     */
-    where: NotificationWhereUniqueInput
-  }
-
-  /**
-   * Notification findFirst
-   */
-  export type NotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * Filter, which Notification to fetch.
-     */
-    where?: NotificationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Notifications to fetch.
-     */
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Notifications.
-     */
-    cursor?: NotificationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Notifications from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Notifications.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Notifications.
-     */
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * Notification findFirstOrThrow
-   */
-  export type NotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * Filter, which Notification to fetch.
-     */
-    where?: NotificationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Notifications to fetch.
-     */
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Notifications.
-     */
-    cursor?: NotificationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Notifications from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Notifications.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Notifications.
-     */
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * Notification findMany
-   */
-  export type NotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * Filter, which Notifications to fetch.
-     */
-    where?: NotificationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Notifications to fetch.
-     */
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Notifications.
-     */
-    cursor?: NotificationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Notifications from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Notifications.
-     */
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * Notification create
-   */
-  export type NotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Notification.
-     */
-    data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
-  }
-
-  /**
-   * Notification createMany
-   */
-  export type NotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Notifications.
-     */
-    data: NotificationCreateManyInput | NotificationCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Notification update
-   */
-  export type NotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Notification.
-     */
-    data: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
-    /**
-     * Choose, which Notification to update.
-     */
-    where: NotificationWhereUniqueInput
-  }
-
-  /**
-   * Notification updateMany
-   */
-  export type NotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Notifications.
-     */
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
-    /**
-     * Filter which Notifications to update
-     */
-    where?: NotificationWhereInput
-    /**
-     * Limit how many Notifications to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Notification upsert
-   */
-  export type NotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Notification to update in case it exists.
-     */
-    where: NotificationWhereUniqueInput
-    /**
-     * In case the Notification found by the `where` argument doesn't exist, create a new Notification with this data.
-     */
-    create: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
-    /**
-     * In case the Notification was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
-  }
-
-  /**
-   * Notification delete
-   */
-  export type NotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    /**
-     * Filter which Notification to delete.
-     */
-    where: NotificationWhereUniqueInput
-  }
-
-  /**
-   * Notification deleteMany
-   */
-  export type NotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Notifications to delete
-     */
-    where?: NotificationWhereInput
-    /**
-     * Limit how many Notifications to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Notification without action
-   */
-  export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Payment
    */
 
@@ -23837,9 +21939,9 @@ export namespace Prisma {
     orderId?: boolean
     snapToken?: boolean
     enrollment?: boolean | Payment$enrollmentArgs<ExtArgs>
+    counselingSession?: boolean | Payment$counselingSessionArgs<ExtArgs>
     course?: boolean | Payment$courseArgs<ExtArgs>
     roadmap?: boolean | Payment$roadmapArgs<ExtArgs>
-    counselingSession?: boolean | Payment$counselingSessionArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     userroadmap?: boolean | Payment$userroadmapArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
@@ -23865,9 +21967,9 @@ export namespace Prisma {
   export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "courseId" | "roadmapId" | "counselingSessionId" | "amount" | "paymentStatus" | "status" | "paidAt" | "createdAt" | "orderId" | "snapToken", ExtArgs["result"]["payment"]>
   export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     enrollment?: boolean | Payment$enrollmentArgs<ExtArgs>
+    counselingSession?: boolean | Payment$counselingSessionArgs<ExtArgs>
     course?: boolean | Payment$courseArgs<ExtArgs>
     roadmap?: boolean | Payment$roadmapArgs<ExtArgs>
-    counselingSession?: boolean | Payment$counselingSessionArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
     userroadmap?: boolean | Payment$userroadmapArgs<ExtArgs>
     _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
@@ -23877,9 +21979,9 @@ export namespace Prisma {
     name: "Payment"
     objects: {
       enrollment: Prisma.$EnrollmentPayload<ExtArgs>[]
+      counselingSession: Prisma.$CounselingSessionPayload<ExtArgs> | null
       course: Prisma.$CoursePayload<ExtArgs> | null
       roadmap: Prisma.$RoadmapPayload<ExtArgs> | null
-      counselingSession: Prisma.$CounselingSessionPayload<ExtArgs> | null
       users: Prisma.$UserPayload<ExtArgs>
       userroadmap: Prisma.$UserRoadmapPayload<ExtArgs>[]
     }
@@ -24237,9 +22339,9 @@ export namespace Prisma {
   export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     enrollment<T extends Payment$enrollmentArgs<ExtArgs> = {}>(args?: Subset<T, Payment$enrollmentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnrollmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    counselingSession<T extends Payment$counselingSessionArgs<ExtArgs> = {}>(args?: Subset<T, Payment$counselingSessionArgs<ExtArgs>>): Prisma__CounselingSessionClient<$Result.GetResult<Prisma.$CounselingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     course<T extends Payment$courseArgs<ExtArgs> = {}>(args?: Subset<T, Payment$courseArgs<ExtArgs>>): Prisma__CourseClient<$Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     roadmap<T extends Payment$roadmapArgs<ExtArgs> = {}>(args?: Subset<T, Payment$roadmapArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    counselingSession<T extends Payment$counselingSessionArgs<ExtArgs> = {}>(args?: Subset<T, Payment$counselingSessionArgs<ExtArgs>>): Prisma__CounselingSessionClient<$Result.GetResult<Prisma.$CounselingSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     userroadmap<T extends Payment$userroadmapArgs<ExtArgs> = {}>(args?: Subset<T, Payment$userroadmapArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRoadmapPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -24650,6 +22752,25 @@ export namespace Prisma {
   }
 
   /**
+   * Payment.counselingSession
+   */
+  export type Payment$counselingSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CounselingSession
+     */
+    select?: CounselingSessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CounselingSession
+     */
+    omit?: CounselingSessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CounselingSessionInclude<ExtArgs> | null
+    where?: CounselingSessionWhereInput
+  }
+
+  /**
    * Payment.course
    */
   export type Payment$courseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -24685,25 +22806,6 @@ export namespace Prisma {
      */
     include?: RoadmapInclude<ExtArgs> | null
     where?: RoadmapWhereInput
-  }
-
-  /**
-   * Payment.counselingSession
-   */
-  export type Payment$counselingSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CounselingSession
-     */
-    select?: CounselingSessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CounselingSession
-     */
-    omit?: CounselingSessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CounselingSessionInclude<ExtArgs> | null
-    where?: CounselingSessionWhereInput
   }
 
   /**
@@ -29004,8 +27106,8 @@ export namespace Prisma {
     isUnlocked?: boolean
     unlockedAt?: boolean
     paymentId?: boolean
-    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
     payment?: boolean | UserRoadmap$paymentArgs<ExtArgs>
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRoadmap"]>
 
@@ -29022,16 +27124,16 @@ export namespace Prisma {
 
   export type UserRoadmapOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "roadmapId" | "isUnlocked" | "unlockedAt" | "paymentId", ExtArgs["result"]["userRoadmap"]>
   export type UserRoadmapInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
     payment?: boolean | UserRoadmap$paymentArgs<ExtArgs>
+    roadmap?: boolean | RoadmapDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $UserRoadmapPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserRoadmap"
     objects: {
-      roadmap: Prisma.$RoadmapPayload<ExtArgs>
       payment: Prisma.$PaymentPayload<ExtArgs> | null
+      roadmap: Prisma.$RoadmapPayload<ExtArgs>
       users: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -29381,8 +27483,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserRoadmapClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    roadmap<T extends RoadmapDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapDefaultArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     payment<T extends UserRoadmap$paymentArgs<ExtArgs> = {}>(args?: Subset<T, UserRoadmap$paymentArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    roadmap<T extends RoadmapDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoadmapDefaultArgs<ExtArgs>>): Prisma__RoadmapClient<$Result.GetResult<Prisma.$RoadmapPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -30782,1018 +28884,7 @@ export namespace Prisma {
 
 
   /**
-   * Model JobMatching
-   */
-
-  export type AggregateJobMatching = {
-    _count: JobMatchingCountAggregateOutputType | null
-    _avg: JobMatchingAvgAggregateOutputType | null
-    _sum: JobMatchingSumAggregateOutputType | null
-    _min: JobMatchingMinAggregateOutputType | null
-    _max: JobMatchingMaxAggregateOutputType | null
-  }
-
-  export type JobMatchingAvgAggregateOutputType = {
-    userId: number | null
-  }
-
-  export type JobMatchingSumAggregateOutputType = {
-    userId: number | null
-  }
-
-  export type JobMatchingMinAggregateOutputType = {
-    id: string | null
-    userId: number | null
-    cvReviewId: string | null
-    dreamJob: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type JobMatchingMaxAggregateOutputType = {
-    id: string | null
-    userId: number | null
-    cvReviewId: string | null
-    dreamJob: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type JobMatchingCountAggregateOutputType = {
-    id: number
-    userId: number
-    cvReviewId: number
-    dreamJob: number
-    matches: number
-    aiAnalysis: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type JobMatchingAvgAggregateInputType = {
-    userId?: true
-  }
-
-  export type JobMatchingSumAggregateInputType = {
-    userId?: true
-  }
-
-  export type JobMatchingMinAggregateInputType = {
-    id?: true
-    userId?: true
-    cvReviewId?: true
-    dreamJob?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type JobMatchingMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    cvReviewId?: true
-    dreamJob?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type JobMatchingCountAggregateInputType = {
-    id?: true
-    userId?: true
-    cvReviewId?: true
-    dreamJob?: true
-    matches?: true
-    aiAnalysis?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type JobMatchingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which JobMatching to aggregate.
-     */
-    where?: JobMatchingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobMatchings to fetch.
-     */
-    orderBy?: JobMatchingOrderByWithRelationInput | JobMatchingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: JobMatchingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobMatchings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobMatchings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned JobMatchings
-    **/
-    _count?: true | JobMatchingCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: JobMatchingAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: JobMatchingSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: JobMatchingMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: JobMatchingMaxAggregateInputType
-  }
-
-  export type GetJobMatchingAggregateType<T extends JobMatchingAggregateArgs> = {
-        [P in keyof T & keyof AggregateJobMatching]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateJobMatching[P]>
-      : GetScalarType<T[P], AggregateJobMatching[P]>
-  }
-
-
-
-
-  export type JobMatchingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobMatchingWhereInput
-    orderBy?: JobMatchingOrderByWithAggregationInput | JobMatchingOrderByWithAggregationInput[]
-    by: JobMatchingScalarFieldEnum[] | JobMatchingScalarFieldEnum
-    having?: JobMatchingScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: JobMatchingCountAggregateInputType | true
-    _avg?: JobMatchingAvgAggregateInputType
-    _sum?: JobMatchingSumAggregateInputType
-    _min?: JobMatchingMinAggregateInputType
-    _max?: JobMatchingMaxAggregateInputType
-  }
-
-  export type JobMatchingGroupByOutputType = {
-    id: string
-    userId: number
-    cvReviewId: string | null
-    dreamJob: string
-    matches: JsonValue
-    aiAnalysis: JsonValue
-    createdAt: Date
-    updatedAt: Date
-    _count: JobMatchingCountAggregateOutputType | null
-    _avg: JobMatchingAvgAggregateOutputType | null
-    _sum: JobMatchingSumAggregateOutputType | null
-    _min: JobMatchingMinAggregateOutputType | null
-    _max: JobMatchingMaxAggregateOutputType | null
-  }
-
-  type GetJobMatchingGroupByPayload<T extends JobMatchingGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<JobMatchingGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof JobMatchingGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], JobMatchingGroupByOutputType[P]>
-            : GetScalarType<T[P], JobMatchingGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type JobMatchingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    cvReviewId?: boolean
-    dreamJob?: boolean
-    matches?: boolean
-    aiAnalysis?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    cvReview?: boolean | JobMatching$cvReviewArgs<ExtArgs>
-  }, ExtArgs["result"]["jobMatching"]>
-
-
-
-  export type JobMatchingSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    cvReviewId?: boolean
-    dreamJob?: boolean
-    matches?: boolean
-    aiAnalysis?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type JobMatchingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "cvReviewId" | "dreamJob" | "matches" | "aiAnalysis" | "createdAt" | "updatedAt", ExtArgs["result"]["jobMatching"]>
-  export type JobMatchingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    cvReview?: boolean | JobMatching$cvReviewArgs<ExtArgs>
-  }
-
-  export type $JobMatchingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "JobMatching"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      cvReview: Prisma.$CVReviewPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: number
-      cvReviewId: string | null
-      dreamJob: string
-      matches: Prisma.JsonValue
-      aiAnalysis: Prisma.JsonValue
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["jobMatching"]>
-    composites: {}
-  }
-
-  type JobMatchingGetPayload<S extends boolean | null | undefined | JobMatchingDefaultArgs> = $Result.GetResult<Prisma.$JobMatchingPayload, S>
-
-  type JobMatchingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<JobMatchingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: JobMatchingCountAggregateInputType | true
-    }
-
-  export interface JobMatchingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['JobMatching'], meta: { name: 'JobMatching' } }
-    /**
-     * Find zero or one JobMatching that matches the filter.
-     * @param {JobMatchingFindUniqueArgs} args - Arguments to find a JobMatching
-     * @example
-     * // Get one JobMatching
-     * const jobMatching = await prisma.jobMatching.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends JobMatchingFindUniqueArgs>(args: SelectSubset<T, JobMatchingFindUniqueArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one JobMatching that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {JobMatchingFindUniqueOrThrowArgs} args - Arguments to find a JobMatching
-     * @example
-     * // Get one JobMatching
-     * const jobMatching = await prisma.jobMatching.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends JobMatchingFindUniqueOrThrowArgs>(args: SelectSubset<T, JobMatchingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first JobMatching that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingFindFirstArgs} args - Arguments to find a JobMatching
-     * @example
-     * // Get one JobMatching
-     * const jobMatching = await prisma.jobMatching.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends JobMatchingFindFirstArgs>(args?: SelectSubset<T, JobMatchingFindFirstArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first JobMatching that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingFindFirstOrThrowArgs} args - Arguments to find a JobMatching
-     * @example
-     * // Get one JobMatching
-     * const jobMatching = await prisma.jobMatching.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends JobMatchingFindFirstOrThrowArgs>(args?: SelectSubset<T, JobMatchingFindFirstOrThrowArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more JobMatchings that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all JobMatchings
-     * const jobMatchings = await prisma.jobMatching.findMany()
-     * 
-     * // Get first 10 JobMatchings
-     * const jobMatchings = await prisma.jobMatching.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const jobMatchingWithIdOnly = await prisma.jobMatching.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends JobMatchingFindManyArgs>(args?: SelectSubset<T, JobMatchingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a JobMatching.
-     * @param {JobMatchingCreateArgs} args - Arguments to create a JobMatching.
-     * @example
-     * // Create one JobMatching
-     * const JobMatching = await prisma.jobMatching.create({
-     *   data: {
-     *     // ... data to create a JobMatching
-     *   }
-     * })
-     * 
-     */
-    create<T extends JobMatchingCreateArgs>(args: SelectSubset<T, JobMatchingCreateArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many JobMatchings.
-     * @param {JobMatchingCreateManyArgs} args - Arguments to create many JobMatchings.
-     * @example
-     * // Create many JobMatchings
-     * const jobMatching = await prisma.jobMatching.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends JobMatchingCreateManyArgs>(args?: SelectSubset<T, JobMatchingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a JobMatching.
-     * @param {JobMatchingDeleteArgs} args - Arguments to delete one JobMatching.
-     * @example
-     * // Delete one JobMatching
-     * const JobMatching = await prisma.jobMatching.delete({
-     *   where: {
-     *     // ... filter to delete one JobMatching
-     *   }
-     * })
-     * 
-     */
-    delete<T extends JobMatchingDeleteArgs>(args: SelectSubset<T, JobMatchingDeleteArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one JobMatching.
-     * @param {JobMatchingUpdateArgs} args - Arguments to update one JobMatching.
-     * @example
-     * // Update one JobMatching
-     * const jobMatching = await prisma.jobMatching.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends JobMatchingUpdateArgs>(args: SelectSubset<T, JobMatchingUpdateArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more JobMatchings.
-     * @param {JobMatchingDeleteManyArgs} args - Arguments to filter JobMatchings to delete.
-     * @example
-     * // Delete a few JobMatchings
-     * const { count } = await prisma.jobMatching.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends JobMatchingDeleteManyArgs>(args?: SelectSubset<T, JobMatchingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more JobMatchings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many JobMatchings
-     * const jobMatching = await prisma.jobMatching.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends JobMatchingUpdateManyArgs>(args: SelectSubset<T, JobMatchingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one JobMatching.
-     * @param {JobMatchingUpsertArgs} args - Arguments to update or create a JobMatching.
-     * @example
-     * // Update or create a JobMatching
-     * const jobMatching = await prisma.jobMatching.upsert({
-     *   create: {
-     *     // ... data to create a JobMatching
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the JobMatching we want to update
-     *   }
-     * })
-     */
-    upsert<T extends JobMatchingUpsertArgs>(args: SelectSubset<T, JobMatchingUpsertArgs<ExtArgs>>): Prisma__JobMatchingClient<$Result.GetResult<Prisma.$JobMatchingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of JobMatchings.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingCountArgs} args - Arguments to filter JobMatchings to count.
-     * @example
-     * // Count the number of JobMatchings
-     * const count = await prisma.jobMatching.count({
-     *   where: {
-     *     // ... the filter for the JobMatchings we want to count
-     *   }
-     * })
-    **/
-    count<T extends JobMatchingCountArgs>(
-      args?: Subset<T, JobMatchingCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], JobMatchingCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a JobMatching.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends JobMatchingAggregateArgs>(args: Subset<T, JobMatchingAggregateArgs>): Prisma.PrismaPromise<GetJobMatchingAggregateType<T>>
-
-    /**
-     * Group by JobMatching.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobMatchingGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends JobMatchingGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: JobMatchingGroupByArgs['orderBy'] }
-        : { orderBy?: JobMatchingGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, JobMatchingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobMatchingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the JobMatching model
-   */
-  readonly fields: JobMatchingFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for JobMatching.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__JobMatchingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    cvReview<T extends JobMatching$cvReviewArgs<ExtArgs> = {}>(args?: Subset<T, JobMatching$cvReviewArgs<ExtArgs>>): Prisma__CVReviewClient<$Result.GetResult<Prisma.$CVReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the JobMatching model
-   */
-  interface JobMatchingFieldRefs {
-    readonly id: FieldRef<"JobMatching", 'String'>
-    readonly userId: FieldRef<"JobMatching", 'Int'>
-    readonly cvReviewId: FieldRef<"JobMatching", 'String'>
-    readonly dreamJob: FieldRef<"JobMatching", 'String'>
-    readonly matches: FieldRef<"JobMatching", 'Json'>
-    readonly aiAnalysis: FieldRef<"JobMatching", 'Json'>
-    readonly createdAt: FieldRef<"JobMatching", 'DateTime'>
-    readonly updatedAt: FieldRef<"JobMatching", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * JobMatching findUnique
-   */
-  export type JobMatchingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * Filter, which JobMatching to fetch.
-     */
-    where: JobMatchingWhereUniqueInput
-  }
-
-  /**
-   * JobMatching findUniqueOrThrow
-   */
-  export type JobMatchingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * Filter, which JobMatching to fetch.
-     */
-    where: JobMatchingWhereUniqueInput
-  }
-
-  /**
-   * JobMatching findFirst
-   */
-  export type JobMatchingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * Filter, which JobMatching to fetch.
-     */
-    where?: JobMatchingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobMatchings to fetch.
-     */
-    orderBy?: JobMatchingOrderByWithRelationInput | JobMatchingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for JobMatchings.
-     */
-    cursor?: JobMatchingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobMatchings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobMatchings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of JobMatchings.
-     */
-    distinct?: JobMatchingScalarFieldEnum | JobMatchingScalarFieldEnum[]
-  }
-
-  /**
-   * JobMatching findFirstOrThrow
-   */
-  export type JobMatchingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * Filter, which JobMatching to fetch.
-     */
-    where?: JobMatchingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobMatchings to fetch.
-     */
-    orderBy?: JobMatchingOrderByWithRelationInput | JobMatchingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for JobMatchings.
-     */
-    cursor?: JobMatchingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobMatchings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobMatchings.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of JobMatchings.
-     */
-    distinct?: JobMatchingScalarFieldEnum | JobMatchingScalarFieldEnum[]
-  }
-
-  /**
-   * JobMatching findMany
-   */
-  export type JobMatchingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * Filter, which JobMatchings to fetch.
-     */
-    where?: JobMatchingWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobMatchings to fetch.
-     */
-    orderBy?: JobMatchingOrderByWithRelationInput | JobMatchingOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing JobMatchings.
-     */
-    cursor?: JobMatchingWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobMatchings from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobMatchings.
-     */
-    skip?: number
-    distinct?: JobMatchingScalarFieldEnum | JobMatchingScalarFieldEnum[]
-  }
-
-  /**
-   * JobMatching create
-   */
-  export type JobMatchingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * The data needed to create a JobMatching.
-     */
-    data: XOR<JobMatchingCreateInput, JobMatchingUncheckedCreateInput>
-  }
-
-  /**
-   * JobMatching createMany
-   */
-  export type JobMatchingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many JobMatchings.
-     */
-    data: JobMatchingCreateManyInput | JobMatchingCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * JobMatching update
-   */
-  export type JobMatchingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * The data needed to update a JobMatching.
-     */
-    data: XOR<JobMatchingUpdateInput, JobMatchingUncheckedUpdateInput>
-    /**
-     * Choose, which JobMatching to update.
-     */
-    where: JobMatchingWhereUniqueInput
-  }
-
-  /**
-   * JobMatching updateMany
-   */
-  export type JobMatchingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update JobMatchings.
-     */
-    data: XOR<JobMatchingUpdateManyMutationInput, JobMatchingUncheckedUpdateManyInput>
-    /**
-     * Filter which JobMatchings to update
-     */
-    where?: JobMatchingWhereInput
-    /**
-     * Limit how many JobMatchings to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * JobMatching upsert
-   */
-  export type JobMatchingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * The filter to search for the JobMatching to update in case it exists.
-     */
-    where: JobMatchingWhereUniqueInput
-    /**
-     * In case the JobMatching found by the `where` argument doesn't exist, create a new JobMatching with this data.
-     */
-    create: XOR<JobMatchingCreateInput, JobMatchingUncheckedCreateInput>
-    /**
-     * In case the JobMatching was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<JobMatchingUpdateInput, JobMatchingUncheckedUpdateInput>
-  }
-
-  /**
-   * JobMatching delete
-   */
-  export type JobMatchingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-    /**
-     * Filter which JobMatching to delete.
-     */
-    where: JobMatchingWhereUniqueInput
-  }
-
-  /**
-   * JobMatching deleteMany
-   */
-  export type JobMatchingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which JobMatchings to delete
-     */
-    where?: JobMatchingWhereInput
-    /**
-     * Limit how many JobMatchings to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * JobMatching.cvReview
-   */
-  export type JobMatching$cvReviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CVReview
-     */
-    select?: CVReviewSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CVReview
-     */
-    omit?: CVReviewOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CVReviewInclude<ExtArgs> | null
-    where?: CVReviewWhereInput
-  }
-
-  /**
-   * JobMatching without action
-   */
-  export type JobMatchingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobMatching
-     */
-    select?: JobMatchingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobMatching
-     */
-    omit?: JobMatchingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobMatchingInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Job
+   * Model job
    */
 
   export type AggregateJob = {
@@ -31893,37 +28984,37 @@ export namespace Prisma {
 
   export type JobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Job to aggregate.
+     * Filter which job to aggregate.
      */
-    where?: JobWhereInput
+    where?: jobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of jobs to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: jobOrderByWithRelationInput | jobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: jobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` jobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` jobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Jobs
+     * Count returned jobs
     **/
     _count?: true | JobCountAggregateInputType
     /**
@@ -31951,11 +29042,11 @@ export namespace Prisma {
 
 
 
-  export type JobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobWhereInput
-    orderBy?: JobOrderByWithAggregationInput | JobOrderByWithAggregationInput[]
+  export type jobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: jobWhereInput
+    orderBy?: jobOrderByWithAggregationInput | jobOrderByWithAggregationInput[]
     by: JobScalarFieldEnum[] | JobScalarFieldEnum
-    having?: JobScalarWhereWithAggregatesInput
+    having?: jobScalarWhereWithAggregatesInput
     take?: number
     skip?: number
     _count?: JobCountAggregateInputType | true
@@ -31981,7 +29072,7 @@ export namespace Prisma {
     _max: JobMaxAggregateOutputType | null
   }
 
-  type GetJobGroupByPayload<T extends JobGroupByArgs> = Prisma.PrismaPromise<
+  type GetJobGroupByPayload<T extends jobGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<JobGroupByOutputType, T['by']> &
         {
@@ -31995,7 +29086,7 @@ export namespace Prisma {
     >
 
 
-  export type JobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type jobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
     company?: boolean
@@ -32012,7 +29103,7 @@ export namespace Prisma {
 
 
 
-  export type JobSelectScalar = {
+  export type jobSelectScalar = {
     id?: boolean
     title?: boolean
     company?: boolean
@@ -32027,10 +29118,10 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "company" | "description" | "requirements" | "location" | "salaryRange" | "jobType" | "category" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
+  export type jobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "company" | "description" | "requirements" | "location" | "salaryRange" | "jobType" | "category" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
 
-  export type $JobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Job"
+  export type $jobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "job"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -32049,18 +29140,18 @@ export namespace Prisma {
     composites: {}
   }
 
-  type JobGetPayload<S extends boolean | null | undefined | JobDefaultArgs> = $Result.GetResult<Prisma.$JobPayload, S>
+  type jobGetPayload<S extends boolean | null | undefined | jobDefaultArgs> = $Result.GetResult<Prisma.$jobPayload, S>
 
-  type JobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<JobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+  type jobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<jobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: JobCountAggregateInputType | true
     }
 
-  export interface JobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Job'], meta: { name: 'Job' } }
+  export interface jobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['job'], meta: { name: 'job' } }
     /**
      * Find zero or one Job that matches the filter.
-     * @param {JobFindUniqueArgs} args - Arguments to find a Job
+     * @param {jobFindUniqueArgs} args - Arguments to find a Job
      * @example
      * // Get one Job
      * const job = await prisma.job.findUnique({
@@ -32069,12 +29160,12 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUnique<T extends JobFindUniqueArgs>(args: SelectSubset<T, JobFindUniqueArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends jobFindUniqueArgs>(args: SelectSubset<T, jobFindUniqueArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find one Job that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {JobFindUniqueOrThrowArgs} args - Arguments to find a Job
+     * @param {jobFindUniqueOrThrowArgs} args - Arguments to find a Job
      * @example
      * // Get one Job
      * const job = await prisma.job.findUniqueOrThrow({
@@ -32083,13 +29174,13 @@ export namespace Prisma {
      *   }
      * })
      */
-    findUniqueOrThrow<T extends JobFindUniqueOrThrowArgs>(args: SelectSubset<T, JobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends jobFindUniqueOrThrowArgs>(args: SelectSubset<T, jobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first Job that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobFindFirstArgs} args - Arguments to find a Job
+     * @param {jobFindFirstArgs} args - Arguments to find a Job
      * @example
      * // Get one Job
      * const job = await prisma.job.findFirst({
@@ -32098,14 +29189,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirst<T extends JobFindFirstArgs>(args?: SelectSubset<T, JobFindFirstArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends jobFindFirstArgs>(args?: SelectSubset<T, jobFindFirstArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find the first Job that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobFindFirstOrThrowArgs} args - Arguments to find a Job
+     * @param {jobFindFirstOrThrowArgs} args - Arguments to find a Job
      * @example
      * // Get one Job
      * const job = await prisma.job.findFirstOrThrow({
@@ -32114,13 +29205,13 @@ export namespace Prisma {
      *   }
      * })
      */
-    findFirstOrThrow<T extends JobFindFirstOrThrowArgs>(args?: SelectSubset<T, JobFindFirstOrThrowArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends jobFindFirstOrThrowArgs>(args?: SelectSubset<T, jobFindFirstOrThrowArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Find zero or more Jobs that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {jobFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
      * // Get all Jobs
      * const jobs = await prisma.job.findMany()
@@ -32132,11 +29223,11 @@ export namespace Prisma {
      * const jobWithIdOnly = await prisma.job.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends JobFindManyArgs>(args?: SelectSubset<T, JobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends jobFindManyArgs>(args?: SelectSubset<T, jobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
      * Create a Job.
-     * @param {JobCreateArgs} args - Arguments to create a Job.
+     * @param {jobCreateArgs} args - Arguments to create a Job.
      * @example
      * // Create one Job
      * const Job = await prisma.job.create({
@@ -32146,11 +29237,11 @@ export namespace Prisma {
      * })
      * 
      */
-    create<T extends JobCreateArgs>(args: SelectSubset<T, JobCreateArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends jobCreateArgs>(args: SelectSubset<T, jobCreateArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Create many Jobs.
-     * @param {JobCreateManyArgs} args - Arguments to create many Jobs.
+     * @param {jobCreateManyArgs} args - Arguments to create many Jobs.
      * @example
      * // Create many Jobs
      * const job = await prisma.job.createMany({
@@ -32160,11 +29251,11 @@ export namespace Prisma {
      * })
      *     
      */
-    createMany<T extends JobCreateManyArgs>(args?: SelectSubset<T, JobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends jobCreateManyArgs>(args?: SelectSubset<T, jobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
      * Delete a Job.
-     * @param {JobDeleteArgs} args - Arguments to delete one Job.
+     * @param {jobDeleteArgs} args - Arguments to delete one Job.
      * @example
      * // Delete one Job
      * const Job = await prisma.job.delete({
@@ -32174,11 +29265,11 @@ export namespace Prisma {
      * })
      * 
      */
-    delete<T extends JobDeleteArgs>(args: SelectSubset<T, JobDeleteArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends jobDeleteArgs>(args: SelectSubset<T, jobDeleteArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Update one Job.
-     * @param {JobUpdateArgs} args - Arguments to update one Job.
+     * @param {jobUpdateArgs} args - Arguments to update one Job.
      * @example
      * // Update one Job
      * const job = await prisma.job.update({
@@ -32191,11 +29282,11 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends JobUpdateArgs>(args: SelectSubset<T, JobUpdateArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends jobUpdateArgs>(args: SelectSubset<T, jobUpdateArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
      * Delete zero or more Jobs.
-     * @param {JobDeleteManyArgs} args - Arguments to filter Jobs to delete.
+     * @param {jobDeleteManyArgs} args - Arguments to filter Jobs to delete.
      * @example
      * // Delete a few Jobs
      * const { count } = await prisma.job.deleteMany({
@@ -32205,13 +29296,13 @@ export namespace Prisma {
      * })
      * 
      */
-    deleteMany<T extends JobDeleteManyArgs>(args?: SelectSubset<T, JobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends jobDeleteManyArgs>(args?: SelectSubset<T, jobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
      * Update zero or more Jobs.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {jobUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
      * // Update many Jobs
      * const job = await prisma.job.updateMany({
@@ -32224,11 +29315,11 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends JobUpdateManyArgs>(args: SelectSubset<T, JobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends jobUpdateManyArgs>(args: SelectSubset<T, jobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
      * Create or update one Job.
-     * @param {JobUpsertArgs} args - Arguments to update or create a Job.
+     * @param {jobUpsertArgs} args - Arguments to update or create a Job.
      * @example
      * // Update or create a Job
      * const job = await prisma.job.upsert({
@@ -32243,14 +29334,14 @@ export namespace Prisma {
      *   }
      * })
      */
-    upsert<T extends JobUpsertArgs>(args: SelectSubset<T, JobUpsertArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends jobUpsertArgs>(args: SelectSubset<T, jobUpsertArgs<ExtArgs>>): Prisma__jobClient<$Result.GetResult<Prisma.$jobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
      * Count the number of Jobs.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobCountArgs} args - Arguments to filter Jobs to count.
+     * @param {jobCountArgs} args - Arguments to filter Jobs to count.
      * @example
      * // Count the number of Jobs
      * const count = await prisma.job.count({
@@ -32259,8 +29350,8 @@ export namespace Prisma {
      *   }
      * })
     **/
-    count<T extends JobCountArgs>(
-      args?: Subset<T, JobCountArgs>,
+    count<T extends jobCountArgs>(
+      args?: Subset<T, jobCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
@@ -32299,7 +29390,7 @@ export namespace Prisma {
      * Group by Job.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobGroupByArgs} args - Group by arguments.
+     * @param {jobGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -32314,14 +29405,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends JobGroupByArgs,
+      T extends jobGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: JobGroupByArgs['orderBy'] }
-        : { orderBy?: JobGroupByArgs['orderBy'] },
+        ? { orderBy: jobGroupByArgs['orderBy'] }
+        : { orderBy?: jobGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -32370,20 +29461,20 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, JobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, jobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the Job model
+   * Fields of the job model
    */
-  readonly fields: JobFieldRefs;
+  readonly fields: jobFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Job.
+   * The delegate class that acts as a "Promise-like" for job.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__JobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__jobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -32411,339 +29502,3248 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the Job model
+   * Fields of the job model
    */
-  interface JobFieldRefs {
-    readonly id: FieldRef<"Job", 'String'>
-    readonly title: FieldRef<"Job", 'String'>
-    readonly company: FieldRef<"Job", 'String'>
-    readonly description: FieldRef<"Job", 'String'>
-    readonly requirements: FieldRef<"Job", 'Json'>
-    readonly location: FieldRef<"Job", 'String'>
-    readonly salaryRange: FieldRef<"Job", 'String'>
-    readonly jobType: FieldRef<"Job", 'String'>
-    readonly category: FieldRef<"Job", 'String'>
-    readonly isActive: FieldRef<"Job", 'Boolean'>
-    readonly createdAt: FieldRef<"Job", 'DateTime'>
-    readonly updatedAt: FieldRef<"Job", 'DateTime'>
+  interface jobFieldRefs {
+    readonly id: FieldRef<"job", 'String'>
+    readonly title: FieldRef<"job", 'String'>
+    readonly company: FieldRef<"job", 'String'>
+    readonly description: FieldRef<"job", 'String'>
+    readonly requirements: FieldRef<"job", 'Json'>
+    readonly location: FieldRef<"job", 'String'>
+    readonly salaryRange: FieldRef<"job", 'String'>
+    readonly jobType: FieldRef<"job", 'String'>
+    readonly category: FieldRef<"job", 'String'>
+    readonly isActive: FieldRef<"job", 'Boolean'>
+    readonly createdAt: FieldRef<"job", 'DateTime'>
+    readonly updatedAt: FieldRef<"job", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * Job findUnique
+   * job findUnique
    */
-  export type JobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Filter, which job to fetch.
      */
-    where: JobWhereUniqueInput
+    where: jobWhereUniqueInput
   }
 
   /**
-   * Job findUniqueOrThrow
+   * job findUniqueOrThrow
    */
-  export type JobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Filter, which job to fetch.
      */
-    where: JobWhereUniqueInput
+    where: jobWhereUniqueInput
   }
 
   /**
-   * Job findFirst
+   * job findFirst
    */
-  export type JobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Filter, which job to fetch.
      */
-    where?: JobWhereInput
+    where?: jobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of jobs to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: jobOrderByWithRelationInput | jobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Jobs.
+     * Sets the position for searching for jobs.
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: jobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` jobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` jobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Jobs.
+     * Filter by unique combinations of jobs.
      */
     distinct?: JobScalarFieldEnum | JobScalarFieldEnum[]
   }
 
   /**
-   * Job findFirstOrThrow
+   * job findFirstOrThrow
    */
-  export type JobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * Filter, which Job to fetch.
+     * Filter, which job to fetch.
      */
-    where?: JobWhereInput
+    where?: jobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of jobs to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: jobOrderByWithRelationInput | jobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Jobs.
+     * Sets the position for searching for jobs.
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: jobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` jobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` jobs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Jobs.
+     * Filter by unique combinations of jobs.
      */
     distinct?: JobScalarFieldEnum | JobScalarFieldEnum[]
   }
 
   /**
-   * Job findMany
+   * job findMany
    */
-  export type JobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * Filter, which Jobs to fetch.
+     * Filter, which jobs to fetch.
      */
-    where?: JobWhereInput
+    where?: jobWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Jobs to fetch.
+     * Determine the order of jobs to fetch.
      */
-    orderBy?: JobOrderByWithRelationInput | JobOrderByWithRelationInput[]
+    orderBy?: jobOrderByWithRelationInput | jobOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Jobs.
+     * Sets the position for listing jobs.
      */
-    cursor?: JobWhereUniqueInput
+    cursor?: jobWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Jobs from the position of the cursor.
+     * Take `±n` jobs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Jobs.
+     * Skip the first `n` jobs.
      */
     skip?: number
     distinct?: JobScalarFieldEnum | JobScalarFieldEnum[]
   }
 
   /**
-   * Job create
+   * job create
    */
-  export type JobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * The data needed to create a Job.
+     * The data needed to create a job.
      */
-    data: XOR<JobCreateInput, JobUncheckedCreateInput>
+    data: XOR<jobCreateInput, jobUncheckedCreateInput>
   }
 
   /**
-   * Job createMany
+   * job createMany
    */
-  export type JobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many Jobs.
+     * The data used to create many jobs.
      */
-    data: JobCreateManyInput | JobCreateManyInput[]
+    data: jobCreateManyInput | jobCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * Job update
+   * job update
    */
-  export type JobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * The data needed to update a Job.
+     * The data needed to update a job.
      */
-    data: XOR<JobUpdateInput, JobUncheckedUpdateInput>
+    data: XOR<jobUpdateInput, jobUncheckedUpdateInput>
     /**
-     * Choose, which Job to update.
+     * Choose, which job to update.
      */
-    where: JobWhereUniqueInput
+    where: jobWhereUniqueInput
   }
 
   /**
-   * Job updateMany
+   * job updateMany
    */
-  export type JobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update Jobs.
+     * The data used to update jobs.
      */
-    data: XOR<JobUpdateManyMutationInput, JobUncheckedUpdateManyInput>
+    data: XOR<jobUpdateManyMutationInput, jobUncheckedUpdateManyInput>
     /**
-     * Filter which Jobs to update
+     * Filter which jobs to update
      */
-    where?: JobWhereInput
+    where?: jobWhereInput
     /**
-     * Limit how many Jobs to update.
+     * Limit how many jobs to update.
      */
     limit?: number
   }
 
   /**
-   * Job upsert
+   * job upsert
    */
-  export type JobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * The filter to search for the Job to update in case it exists.
+     * The filter to search for the job to update in case it exists.
      */
-    where: JobWhereUniqueInput
+    where: jobWhereUniqueInput
     /**
-     * In case the Job found by the `where` argument doesn't exist, create a new Job with this data.
+     * In case the job found by the `where` argument doesn't exist, create a new job with this data.
      */
-    create: XOR<JobCreateInput, JobUncheckedCreateInput>
+    create: XOR<jobCreateInput, jobUncheckedCreateInput>
     /**
-     * In case the Job was found with the provided `where` argument, update it with this data.
+     * In case the job was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<JobUpdateInput, JobUncheckedUpdateInput>
+    update: XOR<jobUpdateInput, jobUncheckedUpdateInput>
   }
 
   /**
-   * Job delete
+   * job delete
    */
-  export type JobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
     /**
-     * Filter which Job to delete.
+     * Filter which job to delete.
      */
-    where: JobWhereUniqueInput
+    where: jobWhereUniqueInput
   }
 
   /**
-   * Job deleteMany
+   * job deleteMany
    */
-  export type JobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which Jobs to delete
+     * Filter which jobs to delete
      */
-    where?: JobWhereInput
+    where?: jobWhereInput
     /**
-     * Limit how many Jobs to delete.
+     * Limit how many jobs to delete.
      */
     limit?: number
   }
 
   /**
-   * Job without action
+   * job without action
    */
-  export type JobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type jobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Job
+     * Select specific fields to fetch from the job
      */
-    select?: JobSelect<ExtArgs> | null
+    select?: jobSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Job
+     * Omit specific fields from the job
      */
-    omit?: JobOmit<ExtArgs> | null
+    omit?: jobOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model jobmatching
+   */
+
+  export type AggregateJobmatching = {
+    _count: JobmatchingCountAggregateOutputType | null
+    _avg: JobmatchingAvgAggregateOutputType | null
+    _sum: JobmatchingSumAggregateOutputType | null
+    _min: JobmatchingMinAggregateOutputType | null
+    _max: JobmatchingMaxAggregateOutputType | null
+  }
+
+  export type JobmatchingAvgAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type JobmatchingSumAggregateOutputType = {
+    userId: number | null
+  }
+
+  export type JobmatchingMinAggregateOutputType = {
+    id: string | null
+    userId: number | null
+    cvReviewId: string | null
+    dreamJob: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type JobmatchingMaxAggregateOutputType = {
+    id: string | null
+    userId: number | null
+    cvReviewId: string | null
+    dreamJob: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type JobmatchingCountAggregateOutputType = {
+    id: number
+    userId: number
+    cvReviewId: number
+    dreamJob: number
+    matches: number
+    aiAnalysis: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type JobmatchingAvgAggregateInputType = {
+    userId?: true
+  }
+
+  export type JobmatchingSumAggregateInputType = {
+    userId?: true
+  }
+
+  export type JobmatchingMinAggregateInputType = {
+    id?: true
+    userId?: true
+    cvReviewId?: true
+    dreamJob?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type JobmatchingMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    cvReviewId?: true
+    dreamJob?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type JobmatchingCountAggregateInputType = {
+    id?: true
+    userId?: true
+    cvReviewId?: true
+    dreamJob?: true
+    matches?: true
+    aiAnalysis?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type JobmatchingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which jobmatching to aggregate.
+     */
+    where?: jobmatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jobmatchings to fetch.
+     */
+    orderBy?: jobmatchingOrderByWithRelationInput | jobmatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: jobmatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jobmatchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jobmatchings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned jobmatchings
+    **/
+    _count?: true | JobmatchingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: JobmatchingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: JobmatchingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: JobmatchingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: JobmatchingMaxAggregateInputType
+  }
+
+  export type GetJobmatchingAggregateType<T extends JobmatchingAggregateArgs> = {
+        [P in keyof T & keyof AggregateJobmatching]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateJobmatching[P]>
+      : GetScalarType<T[P], AggregateJobmatching[P]>
+  }
+
+
+
+
+  export type jobmatchingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: jobmatchingWhereInput
+    orderBy?: jobmatchingOrderByWithAggregationInput | jobmatchingOrderByWithAggregationInput[]
+    by: JobmatchingScalarFieldEnum[] | JobmatchingScalarFieldEnum
+    having?: jobmatchingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: JobmatchingCountAggregateInputType | true
+    _avg?: JobmatchingAvgAggregateInputType
+    _sum?: JobmatchingSumAggregateInputType
+    _min?: JobmatchingMinAggregateInputType
+    _max?: JobmatchingMaxAggregateInputType
+  }
+
+  export type JobmatchingGroupByOutputType = {
+    id: string
+    userId: number
+    cvReviewId: string | null
+    dreamJob: string
+    matches: JsonValue
+    aiAnalysis: JsonValue
+    createdAt: Date
+    updatedAt: Date
+    _count: JobmatchingCountAggregateOutputType | null
+    _avg: JobmatchingAvgAggregateOutputType | null
+    _sum: JobmatchingSumAggregateOutputType | null
+    _min: JobmatchingMinAggregateOutputType | null
+    _max: JobmatchingMaxAggregateOutputType | null
+  }
+
+  type GetJobmatchingGroupByPayload<T extends jobmatchingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<JobmatchingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof JobmatchingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], JobmatchingGroupByOutputType[P]>
+            : GetScalarType<T[P], JobmatchingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type jobmatchingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    cvReviewId?: boolean
+    dreamJob?: boolean
+    matches?: boolean
+    aiAnalysis?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    cvreview?: boolean | jobmatching$cvreviewArgs<ExtArgs>
+    users?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jobmatching"]>
+
+
+
+  export type jobmatchingSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    cvReviewId?: boolean
+    dreamJob?: boolean
+    matches?: boolean
+    aiAnalysis?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type jobmatchingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "cvReviewId" | "dreamJob" | "matches" | "aiAnalysis" | "createdAt" | "updatedAt", ExtArgs["result"]["jobmatching"]>
+  export type jobmatchingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cvreview?: boolean | jobmatching$cvreviewArgs<ExtArgs>
+    users?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $jobmatchingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "jobmatching"
+    objects: {
+      cvreview: Prisma.$CVReviewPayload<ExtArgs> | null
+      users: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: number
+      cvReviewId: string | null
+      dreamJob: string
+      matches: Prisma.JsonValue
+      aiAnalysis: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["jobmatching"]>
+    composites: {}
+  }
+
+  type jobmatchingGetPayload<S extends boolean | null | undefined | jobmatchingDefaultArgs> = $Result.GetResult<Prisma.$jobmatchingPayload, S>
+
+  type jobmatchingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<jobmatchingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JobmatchingCountAggregateInputType | true
+    }
+
+  export interface jobmatchingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['jobmatching'], meta: { name: 'jobmatching' } }
+    /**
+     * Find zero or one Jobmatching that matches the filter.
+     * @param {jobmatchingFindUniqueArgs} args - Arguments to find a Jobmatching
+     * @example
+     * // Get one Jobmatching
+     * const jobmatching = await prisma.jobmatching.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends jobmatchingFindUniqueArgs>(args: SelectSubset<T, jobmatchingFindUniqueArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Jobmatching that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {jobmatchingFindUniqueOrThrowArgs} args - Arguments to find a Jobmatching
+     * @example
+     * // Get one Jobmatching
+     * const jobmatching = await prisma.jobmatching.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends jobmatchingFindUniqueOrThrowArgs>(args: SelectSubset<T, jobmatchingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Jobmatching that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jobmatchingFindFirstArgs} args - Arguments to find a Jobmatching
+     * @example
+     * // Get one Jobmatching
+     * const jobmatching = await prisma.jobmatching.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends jobmatchingFindFirstArgs>(args?: SelectSubset<T, jobmatchingFindFirstArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Jobmatching that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jobmatchingFindFirstOrThrowArgs} args - Arguments to find a Jobmatching
+     * @example
+     * // Get one Jobmatching
+     * const jobmatching = await prisma.jobmatching.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends jobmatchingFindFirstOrThrowArgs>(args?: SelectSubset<T, jobmatchingFindFirstOrThrowArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Jobmatchings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jobmatchingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Jobmatchings
+     * const jobmatchings = await prisma.jobmatching.findMany()
+     * 
+     * // Get first 10 Jobmatchings
+     * const jobmatchings = await prisma.jobmatching.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const jobmatchingWithIdOnly = await prisma.jobmatching.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends jobmatchingFindManyArgs>(args?: SelectSubset<T, jobmatchingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Jobmatching.
+     * @param {jobmatchingCreateArgs} args - Arguments to create a Jobmatching.
+     * @example
+     * // Create one Jobmatching
+     * const Jobmatching = await prisma.jobmatching.create({
+     *   data: {
+     *     // ... data to create a Jobmatching
+     *   }
+     * })
+     * 
+     */
+    create<T extends jobmatchingCreateArgs>(args: SelectSubset<T, jobmatchingCreateArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Jobmatchings.
+     * @param {jobmatchingCreateManyArgs} args - Arguments to create many Jobmatchings.
+     * @example
+     * // Create many Jobmatchings
+     * const jobmatching = await prisma.jobmatching.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends jobmatchingCreateManyArgs>(args?: SelectSubset<T, jobmatchingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Jobmatching.
+     * @param {jobmatchingDeleteArgs} args - Arguments to delete one Jobmatching.
+     * @example
+     * // Delete one Jobmatching
+     * const Jobmatching = await prisma.jobmatching.delete({
+     *   where: {
+     *     // ... filter to delete one Jobmatching
+     *   }
+     * })
+     * 
+     */
+    delete<T extends jobmatchingDeleteArgs>(args: SelectSubset<T, jobmatchingDeleteArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Jobmatching.
+     * @param {jobmatchingUpdateArgs} args - Arguments to update one Jobmatching.
+     * @example
+     * // Update one Jobmatching
+     * const jobmatching = await prisma.jobmatching.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends jobmatchingUpdateArgs>(args: SelectSubset<T, jobmatchingUpdateArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Jobmatchings.
+     * @param {jobmatchingDeleteManyArgs} args - Arguments to filter Jobmatchings to delete.
+     * @example
+     * // Delete a few Jobmatchings
+     * const { count } = await prisma.jobmatching.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends jobmatchingDeleteManyArgs>(args?: SelectSubset<T, jobmatchingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Jobmatchings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jobmatchingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Jobmatchings
+     * const jobmatching = await prisma.jobmatching.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends jobmatchingUpdateManyArgs>(args: SelectSubset<T, jobmatchingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Jobmatching.
+     * @param {jobmatchingUpsertArgs} args - Arguments to update or create a Jobmatching.
+     * @example
+     * // Update or create a Jobmatching
+     * const jobmatching = await prisma.jobmatching.upsert({
+     *   create: {
+     *     // ... data to create a Jobmatching
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Jobmatching we want to update
+     *   }
+     * })
+     */
+    upsert<T extends jobmatchingUpsertArgs>(args: SelectSubset<T, jobmatchingUpsertArgs<ExtArgs>>): Prisma__jobmatchingClient<$Result.GetResult<Prisma.$jobmatchingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Jobmatchings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jobmatchingCountArgs} args - Arguments to filter Jobmatchings to count.
+     * @example
+     * // Count the number of Jobmatchings
+     * const count = await prisma.jobmatching.count({
+     *   where: {
+     *     // ... the filter for the Jobmatchings we want to count
+     *   }
+     * })
+    **/
+    count<T extends jobmatchingCountArgs>(
+      args?: Subset<T, jobmatchingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], JobmatchingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Jobmatching.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JobmatchingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends JobmatchingAggregateArgs>(args: Subset<T, JobmatchingAggregateArgs>): Prisma.PrismaPromise<GetJobmatchingAggregateType<T>>
+
+    /**
+     * Group by Jobmatching.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {jobmatchingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends jobmatchingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: jobmatchingGroupByArgs['orderBy'] }
+        : { orderBy?: jobmatchingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, jobmatchingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobmatchingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the jobmatching model
+   */
+  readonly fields: jobmatchingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for jobmatching.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__jobmatchingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    cvreview<T extends jobmatching$cvreviewArgs<ExtArgs> = {}>(args?: Subset<T, jobmatching$cvreviewArgs<ExtArgs>>): Prisma__CVReviewClient<$Result.GetResult<Prisma.$CVReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the jobmatching model
+   */
+  interface jobmatchingFieldRefs {
+    readonly id: FieldRef<"jobmatching", 'String'>
+    readonly userId: FieldRef<"jobmatching", 'Int'>
+    readonly cvReviewId: FieldRef<"jobmatching", 'String'>
+    readonly dreamJob: FieldRef<"jobmatching", 'String'>
+    readonly matches: FieldRef<"jobmatching", 'Json'>
+    readonly aiAnalysis: FieldRef<"jobmatching", 'Json'>
+    readonly createdAt: FieldRef<"jobmatching", 'DateTime'>
+    readonly updatedAt: FieldRef<"jobmatching", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * jobmatching findUnique
+   */
+  export type jobmatchingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which jobmatching to fetch.
+     */
+    where: jobmatchingWhereUniqueInput
+  }
+
+  /**
+   * jobmatching findUniqueOrThrow
+   */
+  export type jobmatchingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which jobmatching to fetch.
+     */
+    where: jobmatchingWhereUniqueInput
+  }
+
+  /**
+   * jobmatching findFirst
+   */
+  export type jobmatchingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which jobmatching to fetch.
+     */
+    where?: jobmatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jobmatchings to fetch.
+     */
+    orderBy?: jobmatchingOrderByWithRelationInput | jobmatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for jobmatchings.
+     */
+    cursor?: jobmatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jobmatchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jobmatchings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of jobmatchings.
+     */
+    distinct?: JobmatchingScalarFieldEnum | JobmatchingScalarFieldEnum[]
+  }
+
+  /**
+   * jobmatching findFirstOrThrow
+   */
+  export type jobmatchingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which jobmatching to fetch.
+     */
+    where?: jobmatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jobmatchings to fetch.
+     */
+    orderBy?: jobmatchingOrderByWithRelationInput | jobmatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for jobmatchings.
+     */
+    cursor?: jobmatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jobmatchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jobmatchings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of jobmatchings.
+     */
+    distinct?: JobmatchingScalarFieldEnum | JobmatchingScalarFieldEnum[]
+  }
+
+  /**
+   * jobmatching findMany
+   */
+  export type jobmatchingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * Filter, which jobmatchings to fetch.
+     */
+    where?: jobmatchingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of jobmatchings to fetch.
+     */
+    orderBy?: jobmatchingOrderByWithRelationInput | jobmatchingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing jobmatchings.
+     */
+    cursor?: jobmatchingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` jobmatchings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` jobmatchings.
+     */
+    skip?: number
+    distinct?: JobmatchingScalarFieldEnum | JobmatchingScalarFieldEnum[]
+  }
+
+  /**
+   * jobmatching create
+   */
+  export type jobmatchingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a jobmatching.
+     */
+    data: XOR<jobmatchingCreateInput, jobmatchingUncheckedCreateInput>
+  }
+
+  /**
+   * jobmatching createMany
+   */
+  export type jobmatchingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many jobmatchings.
+     */
+    data: jobmatchingCreateManyInput | jobmatchingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * jobmatching update
+   */
+  export type jobmatchingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a jobmatching.
+     */
+    data: XOR<jobmatchingUpdateInput, jobmatchingUncheckedUpdateInput>
+    /**
+     * Choose, which jobmatching to update.
+     */
+    where: jobmatchingWhereUniqueInput
+  }
+
+  /**
+   * jobmatching updateMany
+   */
+  export type jobmatchingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update jobmatchings.
+     */
+    data: XOR<jobmatchingUpdateManyMutationInput, jobmatchingUncheckedUpdateManyInput>
+    /**
+     * Filter which jobmatchings to update
+     */
+    where?: jobmatchingWhereInput
+    /**
+     * Limit how many jobmatchings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * jobmatching upsert
+   */
+  export type jobmatchingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the jobmatching to update in case it exists.
+     */
+    where: jobmatchingWhereUniqueInput
+    /**
+     * In case the jobmatching found by the `where` argument doesn't exist, create a new jobmatching with this data.
+     */
+    create: XOR<jobmatchingCreateInput, jobmatchingUncheckedCreateInput>
+    /**
+     * In case the jobmatching was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<jobmatchingUpdateInput, jobmatchingUncheckedUpdateInput>
+  }
+
+  /**
+   * jobmatching delete
+   */
+  export type jobmatchingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+    /**
+     * Filter which jobmatching to delete.
+     */
+    where: jobmatchingWhereUniqueInput
+  }
+
+  /**
+   * jobmatching deleteMany
+   */
+  export type jobmatchingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which jobmatchings to delete
+     */
+    where?: jobmatchingWhereInput
+    /**
+     * Limit how many jobmatchings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * jobmatching.cvreview
+   */
+  export type jobmatching$cvreviewArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CVReview
+     */
+    select?: CVReviewSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CVReview
+     */
+    omit?: CVReviewOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CVReviewInclude<ExtArgs> | null
+    where?: CVReviewWhereInput
+  }
+
+  /**
+   * jobmatching without action
+   */
+  export type jobmatchingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the jobmatching
+     */
+    select?: jobmatchingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the jobmatching
+     */
+    omit?: jobmatchingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: jobmatchingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model notification
+   */
+
+  export type AggregateNotification = {
+    _count: NotificationCountAggregateOutputType | null
+    _avg: NotificationAvgAggregateOutputType | null
+    _sum: NotificationSumAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  export type NotificationAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+  }
+
+  export type NotificationSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+  }
+
+  export type NotificationMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    title: string | null
+    body: string | null
+    type: string | null
+    isRead: boolean | null
+    createdAt: Date | null
+  }
+
+  export type NotificationMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    title: string | null
+    body: string | null
+    type: string | null
+    isRead: boolean | null
+    createdAt: Date | null
+  }
+
+  export type NotificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    title: number
+    body: number
+    type: number
+    isRead: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type NotificationAvgAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type NotificationSumAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type NotificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    body?: true
+    type?: true
+    isRead?: true
+    createdAt?: true
+  }
+
+  export type NotificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    body?: true
+    type?: true
+    isRead?: true
+    createdAt?: true
+  }
+
+  export type NotificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    body?: true
+    type?: true
+    isRead?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which notification to aggregate.
+     */
+    where?: notificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notifications to fetch.
+     */
+    orderBy?: notificationOrderByWithRelationInput | notificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: notificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned notifications
+    **/
+    _count?: true | NotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: NotificationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: NotificationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification[P]>
+      : GetScalarType<T[P], AggregateNotification[P]>
+  }
+
+
+
+
+  export type notificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: notificationWhereInput
+    orderBy?: notificationOrderByWithAggregationInput | notificationOrderByWithAggregationInput[]
+    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
+    having?: notificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationCountAggregateInputType | true
+    _avg?: NotificationAvgAggregateInputType
+    _sum?: NotificationSumAggregateInputType
+    _min?: NotificationMinAggregateInputType
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type NotificationGroupByOutputType = {
+    id: number
+    userId: number
+    title: string
+    body: string
+    type: string | null
+    isRead: boolean
+    createdAt: Date
+    _count: NotificationCountAggregateOutputType | null
+    _avg: NotificationAvgAggregateOutputType | null
+    _sum: NotificationSumAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  type GetNotificationGroupByPayload<T extends notificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type notificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    body?: boolean
+    type?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+    users?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+
+
+  export type notificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    body?: boolean
+    type?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+  }
+
+  export type notificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "body" | "type" | "isRead" | "createdAt", ExtArgs["result"]["notification"]>
+  export type notificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $notificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "notification"
+    objects: {
+      users: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      title: string
+      body: string
+      type: string | null
+      isRead: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["notification"]>
+    composites: {}
+  }
+
+  type notificationGetPayload<S extends boolean | null | undefined | notificationDefaultArgs> = $Result.GetResult<Prisma.$notificationPayload, S>
+
+  type notificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<notificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationCountAggregateInputType | true
+    }
+
+  export interface notificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['notification'], meta: { name: 'notification' } }
+    /**
+     * Find zero or one Notification that matches the filter.
+     * @param {notificationFindUniqueArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends notificationFindUniqueArgs>(args: SelectSubset<T, notificationFindUniqueArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {notificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends notificationFindUniqueOrThrowArgs>(args: SelectSubset<T, notificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notificationFindFirstArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends notificationFindFirstArgs>(args?: SelectSubset<T, notificationFindFirstArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notificationFindFirstOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends notificationFindFirstOrThrowArgs>(args?: SelectSubset<T, notificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notifications
+     * const notifications = await prisma.notification.findMany()
+     * 
+     * // Get first 10 Notifications
+     * const notifications = await prisma.notification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends notificationFindManyArgs>(args?: SelectSubset<T, notificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification.
+     * @param {notificationCreateArgs} args - Arguments to create a Notification.
+     * @example
+     * // Create one Notification
+     * const Notification = await prisma.notification.create({
+     *   data: {
+     *     // ... data to create a Notification
+     *   }
+     * })
+     * 
+     */
+    create<T extends notificationCreateArgs>(args: SelectSubset<T, notificationCreateArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notifications.
+     * @param {notificationCreateManyArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends notificationCreateManyArgs>(args?: SelectSubset<T, notificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Notification.
+     * @param {notificationDeleteArgs} args - Arguments to delete one Notification.
+     * @example
+     * // Delete one Notification
+     * const Notification = await prisma.notification.delete({
+     *   where: {
+     *     // ... filter to delete one Notification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends notificationDeleteArgs>(args: SelectSubset<T, notificationDeleteArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification.
+     * @param {notificationUpdateArgs} args - Arguments to update one Notification.
+     * @example
+     * // Update one Notification
+     * const notification = await prisma.notification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends notificationUpdateArgs>(args: SelectSubset<T, notificationUpdateArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notifications.
+     * @param {notificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
+     * @example
+     * // Delete a few Notifications
+     * const { count } = await prisma.notification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends notificationDeleteManyArgs>(args?: SelectSubset<T, notificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends notificationUpdateManyArgs>(args: SelectSubset<T, notificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Notification.
+     * @param {notificationUpsertArgs} args - Arguments to update or create a Notification.
+     * @example
+     * // Update or create a Notification
+     * const notification = await prisma.notification.upsert({
+     *   create: {
+     *     // ... data to create a Notification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends notificationUpsertArgs>(args: SelectSubset<T, notificationUpsertArgs<ExtArgs>>): Prisma__notificationClient<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notificationCountArgs} args - Arguments to filter Notifications to count.
+     * @example
+     * // Count the number of Notifications
+     * const count = await prisma.notification.count({
+     *   where: {
+     *     // ... the filter for the Notifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends notificationCountArgs>(
+      args?: Subset<T, notificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
+
+    /**
+     * Group by Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {notificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends notificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: notificationGroupByArgs['orderBy'] }
+        : { orderBy?: notificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, notificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the notification model
+   */
+  readonly fields: notificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for notification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__notificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    users<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the notification model
+   */
+  interface notificationFieldRefs {
+    readonly id: FieldRef<"notification", 'Int'>
+    readonly userId: FieldRef<"notification", 'Int'>
+    readonly title: FieldRef<"notification", 'String'>
+    readonly body: FieldRef<"notification", 'String'>
+    readonly type: FieldRef<"notification", 'String'>
+    readonly isRead: FieldRef<"notification", 'Boolean'>
+    readonly createdAt: FieldRef<"notification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * notification findUnique
+   */
+  export type notificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * Filter, which notification to fetch.
+     */
+    where: notificationWhereUniqueInput
+  }
+
+  /**
+   * notification findUniqueOrThrow
+   */
+  export type notificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * Filter, which notification to fetch.
+     */
+    where: notificationWhereUniqueInput
+  }
+
+  /**
+   * notification findFirst
+   */
+  export type notificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * Filter, which notification to fetch.
+     */
+    where?: notificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notifications to fetch.
+     */
+    orderBy?: notificationOrderByWithRelationInput | notificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for notifications.
+     */
+    cursor?: notificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * notification findFirstOrThrow
+   */
+  export type notificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * Filter, which notification to fetch.
+     */
+    where?: notificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notifications to fetch.
+     */
+    orderBy?: notificationOrderByWithRelationInput | notificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for notifications.
+     */
+    cursor?: notificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * notification findMany
+   */
+  export type notificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * Filter, which notifications to fetch.
+     */
+    where?: notificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of notifications to fetch.
+     */
+    orderBy?: notificationOrderByWithRelationInput | notificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing notifications.
+     */
+    cursor?: notificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` notifications.
+     */
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * notification create
+   */
+  export type notificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a notification.
+     */
+    data: XOR<notificationCreateInput, notificationUncheckedCreateInput>
+  }
+
+  /**
+   * notification createMany
+   */
+  export type notificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many notifications.
+     */
+    data: notificationCreateManyInput | notificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * notification update
+   */
+  export type notificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a notification.
+     */
+    data: XOR<notificationUpdateInput, notificationUncheckedUpdateInput>
+    /**
+     * Choose, which notification to update.
+     */
+    where: notificationWhereUniqueInput
+  }
+
+  /**
+   * notification updateMany
+   */
+  export type notificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update notifications.
+     */
+    data: XOR<notificationUpdateManyMutationInput, notificationUncheckedUpdateManyInput>
+    /**
+     * Filter which notifications to update
+     */
+    where?: notificationWhereInput
+    /**
+     * Limit how many notifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * notification upsert
+   */
+  export type notificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the notification to update in case it exists.
+     */
+    where: notificationWhereUniqueInput
+    /**
+     * In case the notification found by the `where` argument doesn't exist, create a new notification with this data.
+     */
+    create: XOR<notificationCreateInput, notificationUncheckedCreateInput>
+    /**
+     * In case the notification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<notificationUpdateInput, notificationUncheckedUpdateInput>
+  }
+
+  /**
+   * notification delete
+   */
+  export type notificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+    /**
+     * Filter which notification to delete.
+     */
+    where: notificationWhereUniqueInput
+  }
+
+  /**
+   * notification deleteMany
+   */
+  export type notificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which notifications to delete
+     */
+    where?: notificationWhereInput
+    /**
+     * Limit how many notifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * notification without action
+   */
+  export type notificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the notification
+     */
+    select?: notificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the notification
+     */
+    omit?: notificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: notificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model roadmapmatcher
+   */
+
+  export type AggregateRoadmapmatcher = {
+    _count: RoadmapmatcherCountAggregateOutputType | null
+    _avg: RoadmapmatcherAvgAggregateOutputType | null
+    _sum: RoadmapmatcherSumAggregateOutputType | null
+    _min: RoadmapmatcherMinAggregateOutputType | null
+    _max: RoadmapmatcherMaxAggregateOutputType | null
+  }
+
+  export type RoadmapmatcherAvgAggregateOutputType = {
+    id: number | null
+    roadmapId: number | null
+  }
+
+  export type RoadmapmatcherSumAggregateOutputType = {
+    id: number | null
+    roadmapId: number | null
+  }
+
+  export type RoadmapmatcherMinAggregateOutputType = {
+    id: number | null
+    keyword: string | null
+    roadmapId: number | null
+    matchField: string | null
+  }
+
+  export type RoadmapmatcherMaxAggregateOutputType = {
+    id: number | null
+    keyword: string | null
+    roadmapId: number | null
+    matchField: string | null
+  }
+
+  export type RoadmapmatcherCountAggregateOutputType = {
+    id: number
+    keyword: number
+    roadmapId: number
+    matchField: number
+    _all: number
+  }
+
+
+  export type RoadmapmatcherAvgAggregateInputType = {
+    id?: true
+    roadmapId?: true
+  }
+
+  export type RoadmapmatcherSumAggregateInputType = {
+    id?: true
+    roadmapId?: true
+  }
+
+  export type RoadmapmatcherMinAggregateInputType = {
+    id?: true
+    keyword?: true
+    roadmapId?: true
+    matchField?: true
+  }
+
+  export type RoadmapmatcherMaxAggregateInputType = {
+    id?: true
+    keyword?: true
+    roadmapId?: true
+    matchField?: true
+  }
+
+  export type RoadmapmatcherCountAggregateInputType = {
+    id?: true
+    keyword?: true
+    roadmapId?: true
+    matchField?: true
+    _all?: true
+  }
+
+  export type RoadmapmatcherAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which roadmapmatcher to aggregate.
+     */
+    where?: roadmapmatcherWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of roadmapmatchers to fetch.
+     */
+    orderBy?: roadmapmatcherOrderByWithRelationInput | roadmapmatcherOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: roadmapmatcherWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` roadmapmatchers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` roadmapmatchers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned roadmapmatchers
+    **/
+    _count?: true | RoadmapmatcherCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoadmapmatcherAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoadmapmatcherSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoadmapmatcherMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoadmapmatcherMaxAggregateInputType
+  }
+
+  export type GetRoadmapmatcherAggregateType<T extends RoadmapmatcherAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoadmapmatcher]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoadmapmatcher[P]>
+      : GetScalarType<T[P], AggregateRoadmapmatcher[P]>
+  }
+
+
+
+
+  export type roadmapmatcherGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: roadmapmatcherWhereInput
+    orderBy?: roadmapmatcherOrderByWithAggregationInput | roadmapmatcherOrderByWithAggregationInput[]
+    by: RoadmapmatcherScalarFieldEnum[] | RoadmapmatcherScalarFieldEnum
+    having?: roadmapmatcherScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoadmapmatcherCountAggregateInputType | true
+    _avg?: RoadmapmatcherAvgAggregateInputType
+    _sum?: RoadmapmatcherSumAggregateInputType
+    _min?: RoadmapmatcherMinAggregateInputType
+    _max?: RoadmapmatcherMaxAggregateInputType
+  }
+
+  export type RoadmapmatcherGroupByOutputType = {
+    id: number
+    keyword: string
+    roadmapId: number
+    matchField: string
+    _count: RoadmapmatcherCountAggregateOutputType | null
+    _avg: RoadmapmatcherAvgAggregateOutputType | null
+    _sum: RoadmapmatcherSumAggregateOutputType | null
+    _min: RoadmapmatcherMinAggregateOutputType | null
+    _max: RoadmapmatcherMaxAggregateOutputType | null
+  }
+
+  type GetRoadmapmatcherGroupByPayload<T extends roadmapmatcherGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoadmapmatcherGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoadmapmatcherGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoadmapmatcherGroupByOutputType[P]>
+            : GetScalarType<T[P], RoadmapmatcherGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type roadmapmatcherSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    keyword?: boolean
+    roadmapId?: boolean
+    matchField?: boolean
+  }, ExtArgs["result"]["roadmapmatcher"]>
+
+
+
+  export type roadmapmatcherSelectScalar = {
+    id?: boolean
+    keyword?: boolean
+    roadmapId?: boolean
+    matchField?: boolean
+  }
+
+  export type roadmapmatcherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "keyword" | "roadmapId" | "matchField", ExtArgs["result"]["roadmapmatcher"]>
+
+  export type $roadmapmatcherPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "roadmapmatcher"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      keyword: string
+      roadmapId: number
+      matchField: string
+    }, ExtArgs["result"]["roadmapmatcher"]>
+    composites: {}
+  }
+
+  type roadmapmatcherGetPayload<S extends boolean | null | undefined | roadmapmatcherDefaultArgs> = $Result.GetResult<Prisma.$roadmapmatcherPayload, S>
+
+  type roadmapmatcherCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<roadmapmatcherFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoadmapmatcherCountAggregateInputType | true
+    }
+
+  export interface roadmapmatcherDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['roadmapmatcher'], meta: { name: 'roadmapmatcher' } }
+    /**
+     * Find zero or one Roadmapmatcher that matches the filter.
+     * @param {roadmapmatcherFindUniqueArgs} args - Arguments to find a Roadmapmatcher
+     * @example
+     * // Get one Roadmapmatcher
+     * const roadmapmatcher = await prisma.roadmapmatcher.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends roadmapmatcherFindUniqueArgs>(args: SelectSubset<T, roadmapmatcherFindUniqueArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Roadmapmatcher that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {roadmapmatcherFindUniqueOrThrowArgs} args - Arguments to find a Roadmapmatcher
+     * @example
+     * // Get one Roadmapmatcher
+     * const roadmapmatcher = await prisma.roadmapmatcher.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends roadmapmatcherFindUniqueOrThrowArgs>(args: SelectSubset<T, roadmapmatcherFindUniqueOrThrowArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Roadmapmatcher that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {roadmapmatcherFindFirstArgs} args - Arguments to find a Roadmapmatcher
+     * @example
+     * // Get one Roadmapmatcher
+     * const roadmapmatcher = await prisma.roadmapmatcher.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends roadmapmatcherFindFirstArgs>(args?: SelectSubset<T, roadmapmatcherFindFirstArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Roadmapmatcher that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {roadmapmatcherFindFirstOrThrowArgs} args - Arguments to find a Roadmapmatcher
+     * @example
+     * // Get one Roadmapmatcher
+     * const roadmapmatcher = await prisma.roadmapmatcher.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends roadmapmatcherFindFirstOrThrowArgs>(args?: SelectSubset<T, roadmapmatcherFindFirstOrThrowArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Roadmapmatchers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {roadmapmatcherFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Roadmapmatchers
+     * const roadmapmatchers = await prisma.roadmapmatcher.findMany()
+     * 
+     * // Get first 10 Roadmapmatchers
+     * const roadmapmatchers = await prisma.roadmapmatcher.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roadmapmatcherWithIdOnly = await prisma.roadmapmatcher.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends roadmapmatcherFindManyArgs>(args?: SelectSubset<T, roadmapmatcherFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Roadmapmatcher.
+     * @param {roadmapmatcherCreateArgs} args - Arguments to create a Roadmapmatcher.
+     * @example
+     * // Create one Roadmapmatcher
+     * const Roadmapmatcher = await prisma.roadmapmatcher.create({
+     *   data: {
+     *     // ... data to create a Roadmapmatcher
+     *   }
+     * })
+     * 
+     */
+    create<T extends roadmapmatcherCreateArgs>(args: SelectSubset<T, roadmapmatcherCreateArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Roadmapmatchers.
+     * @param {roadmapmatcherCreateManyArgs} args - Arguments to create many Roadmapmatchers.
+     * @example
+     * // Create many Roadmapmatchers
+     * const roadmapmatcher = await prisma.roadmapmatcher.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends roadmapmatcherCreateManyArgs>(args?: SelectSubset<T, roadmapmatcherCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Roadmapmatcher.
+     * @param {roadmapmatcherDeleteArgs} args - Arguments to delete one Roadmapmatcher.
+     * @example
+     * // Delete one Roadmapmatcher
+     * const Roadmapmatcher = await prisma.roadmapmatcher.delete({
+     *   where: {
+     *     // ... filter to delete one Roadmapmatcher
+     *   }
+     * })
+     * 
+     */
+    delete<T extends roadmapmatcherDeleteArgs>(args: SelectSubset<T, roadmapmatcherDeleteArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Roadmapmatcher.
+     * @param {roadmapmatcherUpdateArgs} args - Arguments to update one Roadmapmatcher.
+     * @example
+     * // Update one Roadmapmatcher
+     * const roadmapmatcher = await prisma.roadmapmatcher.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends roadmapmatcherUpdateArgs>(args: SelectSubset<T, roadmapmatcherUpdateArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Roadmapmatchers.
+     * @param {roadmapmatcherDeleteManyArgs} args - Arguments to filter Roadmapmatchers to delete.
+     * @example
+     * // Delete a few Roadmapmatchers
+     * const { count } = await prisma.roadmapmatcher.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends roadmapmatcherDeleteManyArgs>(args?: SelectSubset<T, roadmapmatcherDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Roadmapmatchers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {roadmapmatcherUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Roadmapmatchers
+     * const roadmapmatcher = await prisma.roadmapmatcher.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends roadmapmatcherUpdateManyArgs>(args: SelectSubset<T, roadmapmatcherUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Roadmapmatcher.
+     * @param {roadmapmatcherUpsertArgs} args - Arguments to update or create a Roadmapmatcher.
+     * @example
+     * // Update or create a Roadmapmatcher
+     * const roadmapmatcher = await prisma.roadmapmatcher.upsert({
+     *   create: {
+     *     // ... data to create a Roadmapmatcher
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Roadmapmatcher we want to update
+     *   }
+     * })
+     */
+    upsert<T extends roadmapmatcherUpsertArgs>(args: SelectSubset<T, roadmapmatcherUpsertArgs<ExtArgs>>): Prisma__roadmapmatcherClient<$Result.GetResult<Prisma.$roadmapmatcherPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Roadmapmatchers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {roadmapmatcherCountArgs} args - Arguments to filter Roadmapmatchers to count.
+     * @example
+     * // Count the number of Roadmapmatchers
+     * const count = await prisma.roadmapmatcher.count({
+     *   where: {
+     *     // ... the filter for the Roadmapmatchers we want to count
+     *   }
+     * })
+    **/
+    count<T extends roadmapmatcherCountArgs>(
+      args?: Subset<T, roadmapmatcherCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoadmapmatcherCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Roadmapmatcher.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoadmapmatcherAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoadmapmatcherAggregateArgs>(args: Subset<T, RoadmapmatcherAggregateArgs>): Prisma.PrismaPromise<GetRoadmapmatcherAggregateType<T>>
+
+    /**
+     * Group by Roadmapmatcher.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {roadmapmatcherGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends roadmapmatcherGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: roadmapmatcherGroupByArgs['orderBy'] }
+        : { orderBy?: roadmapmatcherGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, roadmapmatcherGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoadmapmatcherGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the roadmapmatcher model
+   */
+  readonly fields: roadmapmatcherFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for roadmapmatcher.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__roadmapmatcherClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the roadmapmatcher model
+   */
+  interface roadmapmatcherFieldRefs {
+    readonly id: FieldRef<"roadmapmatcher", 'Int'>
+    readonly keyword: FieldRef<"roadmapmatcher", 'String'>
+    readonly roadmapId: FieldRef<"roadmapmatcher", 'Int'>
+    readonly matchField: FieldRef<"roadmapmatcher", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * roadmapmatcher findUnique
+   */
+  export type roadmapmatcherFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * Filter, which roadmapmatcher to fetch.
+     */
+    where: roadmapmatcherWhereUniqueInput
+  }
+
+  /**
+   * roadmapmatcher findUniqueOrThrow
+   */
+  export type roadmapmatcherFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * Filter, which roadmapmatcher to fetch.
+     */
+    where: roadmapmatcherWhereUniqueInput
+  }
+
+  /**
+   * roadmapmatcher findFirst
+   */
+  export type roadmapmatcherFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * Filter, which roadmapmatcher to fetch.
+     */
+    where?: roadmapmatcherWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of roadmapmatchers to fetch.
+     */
+    orderBy?: roadmapmatcherOrderByWithRelationInput | roadmapmatcherOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for roadmapmatchers.
+     */
+    cursor?: roadmapmatcherWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` roadmapmatchers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` roadmapmatchers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of roadmapmatchers.
+     */
+    distinct?: RoadmapmatcherScalarFieldEnum | RoadmapmatcherScalarFieldEnum[]
+  }
+
+  /**
+   * roadmapmatcher findFirstOrThrow
+   */
+  export type roadmapmatcherFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * Filter, which roadmapmatcher to fetch.
+     */
+    where?: roadmapmatcherWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of roadmapmatchers to fetch.
+     */
+    orderBy?: roadmapmatcherOrderByWithRelationInput | roadmapmatcherOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for roadmapmatchers.
+     */
+    cursor?: roadmapmatcherWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` roadmapmatchers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` roadmapmatchers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of roadmapmatchers.
+     */
+    distinct?: RoadmapmatcherScalarFieldEnum | RoadmapmatcherScalarFieldEnum[]
+  }
+
+  /**
+   * roadmapmatcher findMany
+   */
+  export type roadmapmatcherFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * Filter, which roadmapmatchers to fetch.
+     */
+    where?: roadmapmatcherWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of roadmapmatchers to fetch.
+     */
+    orderBy?: roadmapmatcherOrderByWithRelationInput | roadmapmatcherOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing roadmapmatchers.
+     */
+    cursor?: roadmapmatcherWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` roadmapmatchers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` roadmapmatchers.
+     */
+    skip?: number
+    distinct?: RoadmapmatcherScalarFieldEnum | RoadmapmatcherScalarFieldEnum[]
+  }
+
+  /**
+   * roadmapmatcher create
+   */
+  export type roadmapmatcherCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * The data needed to create a roadmapmatcher.
+     */
+    data: XOR<roadmapmatcherCreateInput, roadmapmatcherUncheckedCreateInput>
+  }
+
+  /**
+   * roadmapmatcher createMany
+   */
+  export type roadmapmatcherCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many roadmapmatchers.
+     */
+    data: roadmapmatcherCreateManyInput | roadmapmatcherCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * roadmapmatcher update
+   */
+  export type roadmapmatcherUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * The data needed to update a roadmapmatcher.
+     */
+    data: XOR<roadmapmatcherUpdateInput, roadmapmatcherUncheckedUpdateInput>
+    /**
+     * Choose, which roadmapmatcher to update.
+     */
+    where: roadmapmatcherWhereUniqueInput
+  }
+
+  /**
+   * roadmapmatcher updateMany
+   */
+  export type roadmapmatcherUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update roadmapmatchers.
+     */
+    data: XOR<roadmapmatcherUpdateManyMutationInput, roadmapmatcherUncheckedUpdateManyInput>
+    /**
+     * Filter which roadmapmatchers to update
+     */
+    where?: roadmapmatcherWhereInput
+    /**
+     * Limit how many roadmapmatchers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * roadmapmatcher upsert
+   */
+  export type roadmapmatcherUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * The filter to search for the roadmapmatcher to update in case it exists.
+     */
+    where: roadmapmatcherWhereUniqueInput
+    /**
+     * In case the roadmapmatcher found by the `where` argument doesn't exist, create a new roadmapmatcher with this data.
+     */
+    create: XOR<roadmapmatcherCreateInput, roadmapmatcherUncheckedCreateInput>
+    /**
+     * In case the roadmapmatcher was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<roadmapmatcherUpdateInput, roadmapmatcherUncheckedUpdateInput>
+  }
+
+  /**
+   * roadmapmatcher delete
+   */
+  export type roadmapmatcherDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
+    /**
+     * Filter which roadmapmatcher to delete.
+     */
+    where: roadmapmatcherWhereUniqueInput
+  }
+
+  /**
+   * roadmapmatcher deleteMany
+   */
+  export type roadmapmatcherDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which roadmapmatchers to delete
+     */
+    where?: roadmapmatcherWhereInput
+    /**
+     * Limit how many roadmapmatchers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * roadmapmatcher without action
+   */
+  export type roadmapmatcherDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the roadmapmatcher
+     */
+    select?: roadmapmatcherSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the roadmapmatcher
+     */
+    omit?: roadmapmatcherOmit<ExtArgs> | null
   }
 
 
@@ -32779,16 +32779,6 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-  export const RoadmapMatcherScalarFieldEnum: {
-    id: 'id',
-    keyword: 'keyword',
-    roadmapId: 'roadmapId',
-    matchField: 'matchField'
-  };
-
-  export type RoadmapMatcherScalarFieldEnum = (typeof RoadmapMatcherScalarFieldEnum)[keyof typeof RoadmapMatcherScalarFieldEnum]
 
 
   export const AssessmentScalarFieldEnum: {
@@ -32937,9 +32927,6 @@ export namespace Prisma {
     fileName: 'fileName',
     filePath: 'filePath',
     fileSize: 'fileSize',
-    b2FileId: 'b2FileId',
-    b2FileName: 'b2FileName',
-    b2FileUrl: 'b2FileUrl',
     extractedText: 'extractedText',
     careerField: 'careerField',
     relevancyRate: 'relevancyRate',
@@ -32952,7 +32939,10 @@ export namespace Prisma {
     aiAnalysis: 'aiAnalysis',
     suggestions: 'suggestions',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    b2FileId: 'b2FileId',
+    b2FileName: 'b2FileName',
+    b2FileUrl: 'b2FileUrl'
   };
 
   export type CVReviewScalarFieldEnum = (typeof CVReviewScalarFieldEnum)[keyof typeof CVReviewScalarFieldEnum]
@@ -33001,19 +32991,6 @@ export namespace Prisma {
   };
 
   export type LessonProgressScalarFieldEnum = (typeof LessonProgressScalarFieldEnum)[keyof typeof LessonProgressScalarFieldEnum]
-
-
-  export const NotificationScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    title: 'title',
-    body: 'body',
-    type: 'type',
-    isRead: 'isRead',
-    createdAt: 'createdAt'
-  };
-
-  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
   export const PaymentScalarFieldEnum: {
@@ -33105,20 +33082,6 @@ export namespace Prisma {
   export type VoucherScalarFieldEnum = (typeof VoucherScalarFieldEnum)[keyof typeof VoucherScalarFieldEnum]
 
 
-  export const JobMatchingScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    cvReviewId: 'cvReviewId',
-    dreamJob: 'dreamJob',
-    matches: 'matches',
-    aiAnalysis: 'aiAnalysis',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type JobMatchingScalarFieldEnum = (typeof JobMatchingScalarFieldEnum)[keyof typeof JobMatchingScalarFieldEnum]
-
-
   export const JobScalarFieldEnum: {
     id: 'id',
     title: 'title',
@@ -33135,6 +33098,43 @@ export namespace Prisma {
   };
 
   export type JobScalarFieldEnum = (typeof JobScalarFieldEnum)[keyof typeof JobScalarFieldEnum]
+
+
+  export const JobmatchingScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    cvReviewId: 'cvReviewId',
+    dreamJob: 'dreamJob',
+    matches: 'matches',
+    aiAnalysis: 'aiAnalysis',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type JobmatchingScalarFieldEnum = (typeof JobmatchingScalarFieldEnum)[keyof typeof JobmatchingScalarFieldEnum]
+
+
+  export const NotificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    title: 'title',
+    body: 'body',
+    type: 'type',
+    isRead: 'isRead',
+    createdAt: 'createdAt'
+  };
+
+  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const RoadmapmatcherScalarFieldEnum: {
+    id: 'id',
+    keyword: 'keyword',
+    roadmapId: 'roadmapId',
+    matchField: 'matchField'
+  };
+
+  export type RoadmapmatcherScalarFieldEnum = (typeof RoadmapmatcherScalarFieldEnum)[keyof typeof RoadmapmatcherScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -33173,14 +33173,6 @@ export namespace Prisma {
   };
 
   export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
-
-
-  export const RoadmapMatcherOrderByRelevanceFieldEnum: {
-    keyword: 'keyword',
-    matchField: 'matchField'
-  };
-
-  export type RoadmapMatcherOrderByRelevanceFieldEnum = (typeof RoadmapMatcherOrderByRelevanceFieldEnum)[keyof typeof RoadmapMatcherOrderByRelevanceFieldEnum]
 
 
   export const AssessmentOrderByRelevanceFieldEnum: {
@@ -33284,11 +33276,11 @@ export namespace Prisma {
     id: 'id',
     fileName: 'fileName',
     filePath: 'filePath',
+    extractedText: 'extractedText',
+    careerField: 'careerField',
     b2FileId: 'b2FileId',
     b2FileName: 'b2FileName',
-    b2FileUrl: 'b2FileUrl',
-    extractedText: 'extractedText',
-    careerField: 'careerField'
+    b2FileUrl: 'b2FileUrl'
   };
 
   export type CVReviewOrderByRelevanceFieldEnum = (typeof CVReviewOrderByRelevanceFieldEnum)[keyof typeof CVReviewOrderByRelevanceFieldEnum]
@@ -33307,15 +33299,6 @@ export namespace Prisma {
   };
 
   export type lessonOrderByRelevanceFieldEnum = (typeof lessonOrderByRelevanceFieldEnum)[keyof typeof lessonOrderByRelevanceFieldEnum]
-
-
-  export const NotificationOrderByRelevanceFieldEnum: {
-    title: 'title',
-    body: 'body',
-    type: 'type'
-  };
-
-  export type NotificationOrderByRelevanceFieldEnum = (typeof NotificationOrderByRelevanceFieldEnum)[keyof typeof NotificationOrderByRelevanceFieldEnum]
 
 
   export const PaymentOrderByRelevanceFieldEnum: {
@@ -33352,16 +33335,7 @@ export namespace Prisma {
   export type VoucherOrderByRelevanceFieldEnum = (typeof VoucherOrderByRelevanceFieldEnum)[keyof typeof VoucherOrderByRelevanceFieldEnum]
 
 
-  export const JobMatchingOrderByRelevanceFieldEnum: {
-    id: 'id',
-    cvReviewId: 'cvReviewId',
-    dreamJob: 'dreamJob'
-  };
-
-  export type JobMatchingOrderByRelevanceFieldEnum = (typeof JobMatchingOrderByRelevanceFieldEnum)[keyof typeof JobMatchingOrderByRelevanceFieldEnum]
-
-
-  export const JobOrderByRelevanceFieldEnum: {
+  export const jobOrderByRelevanceFieldEnum: {
     id: 'id',
     title: 'title',
     company: 'company',
@@ -33372,7 +33346,33 @@ export namespace Prisma {
     category: 'category'
   };
 
-  export type JobOrderByRelevanceFieldEnum = (typeof JobOrderByRelevanceFieldEnum)[keyof typeof JobOrderByRelevanceFieldEnum]
+  export type jobOrderByRelevanceFieldEnum = (typeof jobOrderByRelevanceFieldEnum)[keyof typeof jobOrderByRelevanceFieldEnum]
+
+
+  export const jobmatchingOrderByRelevanceFieldEnum: {
+    id: 'id',
+    cvReviewId: 'cvReviewId',
+    dreamJob: 'dreamJob'
+  };
+
+  export type jobmatchingOrderByRelevanceFieldEnum = (typeof jobmatchingOrderByRelevanceFieldEnum)[keyof typeof jobmatchingOrderByRelevanceFieldEnum]
+
+
+  export const notificationOrderByRelevanceFieldEnum: {
+    title: 'title',
+    body: 'body',
+    type: 'type'
+  };
+
+  export type notificationOrderByRelevanceFieldEnum = (typeof notificationOrderByRelevanceFieldEnum)[keyof typeof notificationOrderByRelevanceFieldEnum]
+
+
+  export const roadmapmatcherOrderByRelevanceFieldEnum: {
+    keyword: 'keyword',
+    matchField: 'matchField'
+  };
+
+  export type roadmapmatcherOrderByRelevanceFieldEnum = (typeof roadmapmatcherOrderByRelevanceFieldEnum)[keyof typeof roadmapmatcherOrderByRelevanceFieldEnum]
 
 
   /**
@@ -33464,17 +33464,17 @@ export namespace Prisma {
     counselor?: XOR<CounselorNullableScalarRelationFilter, CounselorWhereInput> | null
     course?: CourseListRelationFilter
     courseprogress?: CourseProgressListRelationFilter
+    coursereview?: CourseReviewListRelationFilter
     cvreview?: CVReviewListRelationFilter
-    jobmatching?: JobMatchingListRelationFilter
     enrollment?: EnrollmentListRelationFilter
     jobmatch?: JobMatchListRelationFilter
+    jobmatching?: JobmatchingListRelationFilter
     lessonprogress?: LessonProgressListRelationFilter
     notification?: NotificationListRelationFilter
     payment?: PaymentListRelationFilter
     quizsubmission?: QuizSubmissionListRelationFilter
     userroadmap?: UserRoadmapListRelationFilter
     voucher?: VoucherListRelationFilter
-    coursereview?: CourseReviewListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -33499,17 +33499,17 @@ export namespace Prisma {
     counselor?: CounselorOrderByWithRelationInput
     course?: CourseOrderByRelationAggregateInput
     courseprogress?: CourseProgressOrderByRelationAggregateInput
+    coursereview?: CourseReviewOrderByRelationAggregateInput
     cvreview?: CVReviewOrderByRelationAggregateInput
-    jobmatching?: JobMatchingOrderByRelationAggregateInput
     enrollment?: EnrollmentOrderByRelationAggregateInput
     jobmatch?: JobMatchOrderByRelationAggregateInput
+    jobmatching?: jobmatchingOrderByRelationAggregateInput
     lessonprogress?: LessonProgressOrderByRelationAggregateInput
-    notification?: NotificationOrderByRelationAggregateInput
+    notification?: notificationOrderByRelationAggregateInput
     payment?: PaymentOrderByRelationAggregateInput
     quizsubmission?: QuizSubmissionOrderByRelationAggregateInput
     userroadmap?: UserRoadmapOrderByRelationAggregateInput
     voucher?: VoucherOrderByRelationAggregateInput
-    coursereview?: CourseReviewOrderByRelationAggregateInput
     _relevance?: UserOrderByRelevanceInput
   }
 
@@ -33538,17 +33538,17 @@ export namespace Prisma {
     counselor?: XOR<CounselorNullableScalarRelationFilter, CounselorWhereInput> | null
     course?: CourseListRelationFilter
     courseprogress?: CourseProgressListRelationFilter
+    coursereview?: CourseReviewListRelationFilter
     cvreview?: CVReviewListRelationFilter
-    jobmatching?: JobMatchingListRelationFilter
     enrollment?: EnrollmentListRelationFilter
     jobmatch?: JobMatchListRelationFilter
+    jobmatching?: JobmatchingListRelationFilter
     lessonprogress?: LessonProgressListRelationFilter
     notification?: NotificationListRelationFilter
     payment?: PaymentListRelationFilter
     quizsubmission?: QuizSubmissionListRelationFilter
     userroadmap?: UserRoadmapListRelationFilter
     voucher?: VoucherListRelationFilter
-    coursereview?: CourseReviewListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -33591,56 +33591,6 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetTokenExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-  }
-
-  export type RoadmapMatcherWhereInput = {
-    AND?: RoadmapMatcherWhereInput | RoadmapMatcherWhereInput[]
-    OR?: RoadmapMatcherWhereInput[]
-    NOT?: RoadmapMatcherWhereInput | RoadmapMatcherWhereInput[]
-    id?: IntFilter<"RoadmapMatcher"> | number
-    keyword?: StringFilter<"RoadmapMatcher"> | string
-    roadmapId?: IntFilter<"RoadmapMatcher"> | number
-    matchField?: StringFilter<"RoadmapMatcher"> | string
-  }
-
-  export type RoadmapMatcherOrderByWithRelationInput = {
-    id?: SortOrder
-    keyword?: SortOrder
-    roadmapId?: SortOrder
-    matchField?: SortOrder
-    _relevance?: RoadmapMatcherOrderByRelevanceInput
-  }
-
-  export type RoadmapMatcherWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: RoadmapMatcherWhereInput | RoadmapMatcherWhereInput[]
-    OR?: RoadmapMatcherWhereInput[]
-    NOT?: RoadmapMatcherWhereInput | RoadmapMatcherWhereInput[]
-    keyword?: StringFilter<"RoadmapMatcher"> | string
-    roadmapId?: IntFilter<"RoadmapMatcher"> | number
-    matchField?: StringFilter<"RoadmapMatcher"> | string
-  }, "id">
-
-  export type RoadmapMatcherOrderByWithAggregationInput = {
-    id?: SortOrder
-    keyword?: SortOrder
-    roadmapId?: SortOrder
-    matchField?: SortOrder
-    _count?: RoadmapMatcherCountOrderByAggregateInput
-    _avg?: RoadmapMatcherAvgOrderByAggregateInput
-    _max?: RoadmapMatcherMaxOrderByAggregateInput
-    _min?: RoadmapMatcherMinOrderByAggregateInput
-    _sum?: RoadmapMatcherSumOrderByAggregateInput
-  }
-
-  export type RoadmapMatcherScalarWhereWithAggregatesInput = {
-    AND?: RoadmapMatcherScalarWhereWithAggregatesInput | RoadmapMatcherScalarWhereWithAggregatesInput[]
-    OR?: RoadmapMatcherScalarWhereWithAggregatesInput[]
-    NOT?: RoadmapMatcherScalarWhereWithAggregatesInput | RoadmapMatcherScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"RoadmapMatcher"> | number
-    keyword?: StringWithAggregatesFilter<"RoadmapMatcher"> | string
-    roadmapId?: IntWithAggregatesFilter<"RoadmapMatcher"> | number
-    matchField?: StringWithAggregatesFilter<"RoadmapMatcher"> | string
   }
 
   export type AssessmentWhereInput = {
@@ -33787,8 +33737,8 @@ export namespace Prisma {
     comment?: StringNullableFilter<"CourseReview"> | string | null
     createdAt?: DateTimeFilter<"CourseReview"> | Date | string
     updatedAt?: DateTimeFilter<"CourseReview"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type CourseReviewOrderByWithRelationInput = {
@@ -33799,8 +33749,8 @@ export namespace Prisma {
     comment?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     _relevance?: CourseReviewOrderByRelevanceInput
   }
 
@@ -33816,8 +33766,8 @@ export namespace Prisma {
     comment?: StringNullableFilter<"CourseReview"> | string | null
     createdAt?: DateTimeFilter<"CourseReview"> | Date | string
     updatedAt?: DateTimeFilter<"CourseReview"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     course?: XOR<CourseScalarRelationFilter, CourseWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_courseId">
 
   export type CourseReviewOrderByWithAggregationInput = {
@@ -34040,9 +33990,9 @@ export namespace Prisma {
     rating?: IntNullableFilter<"CounselingSession"> | number | null
     feedback?: StringNullableFilter<"CounselingSession"> | string | null
     chatmessage?: ChatMessageListRelationFilter
-    payment?: PaymentListRelationFilter
     counselor?: XOR<CounselorScalarRelationFilter, CounselorWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
+    payment?: PaymentListRelationFilter
   }
 
   export type CounselingSessionOrderByWithRelationInput = {
@@ -34059,9 +34009,9 @@ export namespace Prisma {
     rating?: SortOrderInput | SortOrder
     feedback?: SortOrderInput | SortOrder
     chatmessage?: ChatMessageOrderByRelationAggregateInput
-    payment?: PaymentOrderByRelationAggregateInput
     counselor?: CounselorOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
+    payment?: PaymentOrderByRelationAggregateInput
     _relevance?: CounselingSessionOrderByRelevanceInput
   }
 
@@ -34082,9 +34032,9 @@ export namespace Prisma {
     rating?: IntNullableFilter<"CounselingSession"> | number | null
     feedback?: StringNullableFilter<"CounselingSession"> | string | null
     chatmessage?: ChatMessageListRelationFilter
-    payment?: PaymentListRelationFilter
     counselor?: XOR<CounselorScalarRelationFilter, CounselorWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
+    payment?: PaymentListRelationFilter
   }, "id">
 
   export type CounselingSessionOrderByWithAggregationInput = {
@@ -34203,6 +34153,7 @@ export namespace Prisma {
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
     courseprogress?: CourseProgressListRelationFilter
+    coursereview?: CourseReviewListRelationFilter
     coursevideo?: CoursevideoListRelationFilter
     enrollment?: EnrollmentListRelationFilter
     lesson?: LessonListRelationFilter
@@ -34210,7 +34161,6 @@ export namespace Prisma {
     quiz?: QuizListRelationFilter
     quizsubmission?: QuizSubmissionListRelationFilter
     roadmapcourse?: RoadmapCourseListRelationFilter
-    coursereview?: CourseReviewListRelationFilter
   }
 
   export type CourseOrderByWithRelationInput = {
@@ -34227,6 +34177,7 @@ export namespace Prisma {
     category?: CategoryOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
     courseprogress?: CourseProgressOrderByRelationAggregateInput
+    coursereview?: CourseReviewOrderByRelationAggregateInput
     coursevideo?: coursevideoOrderByRelationAggregateInput
     enrollment?: EnrollmentOrderByRelationAggregateInput
     lesson?: lessonOrderByRelationAggregateInput
@@ -34234,7 +34185,6 @@ export namespace Prisma {
     quiz?: quizOrderByRelationAggregateInput
     quizsubmission?: QuizSubmissionOrderByRelationAggregateInput
     roadmapcourse?: RoadmapCourseOrderByRelationAggregateInput
-    coursereview?: CourseReviewOrderByRelationAggregateInput
     _relevance?: CourseOrderByRelevanceInput
   }
 
@@ -34255,6 +34205,7 @@ export namespace Prisma {
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
     courseprogress?: CourseProgressListRelationFilter
+    coursereview?: CourseReviewListRelationFilter
     coursevideo?: CoursevideoListRelationFilter
     enrollment?: EnrollmentListRelationFilter
     lesson?: LessonListRelationFilter
@@ -34262,7 +34213,6 @@ export namespace Prisma {
     quiz?: QuizListRelationFilter
     quizsubmission?: QuizSubmissionListRelationFilter
     roadmapcourse?: RoadmapCourseListRelationFilter
-    coursereview?: CourseReviewListRelationFilter
   }, "id">
 
   export type CourseOrderByWithAggregationInput = {
@@ -34439,9 +34389,6 @@ export namespace Prisma {
     fileName?: StringFilter<"CVReview"> | string
     filePath?: StringNullableFilter<"CVReview"> | string | null
     fileSize?: IntFilter<"CVReview"> | number
-    b2FileId?: StringNullableFilter<"CVReview"> | string | null
-    b2FileName?: StringNullableFilter<"CVReview"> | string | null
-    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     extractedText?: StringFilter<"CVReview"> | string
     careerField?: StringFilter<"CVReview"> | string
     relevancyRate?: FloatFilter<"CVReview"> | number
@@ -34455,8 +34402,11 @@ export namespace Prisma {
     suggestions?: JsonFilter<"CVReview">
     createdAt?: DateTimeFilter<"CVReview"> | Date | string
     updatedAt?: DateTimeFilter<"CVReview"> | Date | string
+    b2FileId?: StringNullableFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    jobmatching?: JobMatchingListRelationFilter
+    jobmatching?: JobmatchingListRelationFilter
   }
 
   export type CVReviewOrderByWithRelationInput = {
@@ -34465,9 +34415,6 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrderInput | SortOrder
     fileSize?: SortOrder
-    b2FileId?: SortOrderInput | SortOrder
-    b2FileName?: SortOrderInput | SortOrder
-    b2FileUrl?: SortOrderInput | SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -34481,8 +34428,11 @@ export namespace Prisma {
     suggestions?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    b2FileId?: SortOrderInput | SortOrder
+    b2FileName?: SortOrderInput | SortOrder
+    b2FileUrl?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
-    jobmatching?: JobMatchingOrderByRelationAggregateInput
+    jobmatching?: jobmatchingOrderByRelationAggregateInput
     _relevance?: CVReviewOrderByRelevanceInput
   }
 
@@ -34495,9 +34445,6 @@ export namespace Prisma {
     fileName?: StringFilter<"CVReview"> | string
     filePath?: StringNullableFilter<"CVReview"> | string | null
     fileSize?: IntFilter<"CVReview"> | number
-    b2FileId?: StringNullableFilter<"CVReview"> | string | null
-    b2FileName?: StringNullableFilter<"CVReview"> | string | null
-    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     extractedText?: StringFilter<"CVReview"> | string
     careerField?: StringFilter<"CVReview"> | string
     relevancyRate?: FloatFilter<"CVReview"> | number
@@ -34511,8 +34458,11 @@ export namespace Prisma {
     suggestions?: JsonFilter<"CVReview">
     createdAt?: DateTimeFilter<"CVReview"> | Date | string
     updatedAt?: DateTimeFilter<"CVReview"> | Date | string
+    b2FileId?: StringNullableFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    jobmatching?: JobMatchingListRelationFilter
+    jobmatching?: JobmatchingListRelationFilter
   }, "id">
 
   export type CVReviewOrderByWithAggregationInput = {
@@ -34521,9 +34471,6 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrderInput | SortOrder
     fileSize?: SortOrder
-    b2FileId?: SortOrderInput | SortOrder
-    b2FileName?: SortOrderInput | SortOrder
-    b2FileUrl?: SortOrderInput | SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -34537,6 +34484,9 @@ export namespace Prisma {
     suggestions?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    b2FileId?: SortOrderInput | SortOrder
+    b2FileName?: SortOrderInput | SortOrder
+    b2FileUrl?: SortOrderInput | SortOrder
     _count?: CVReviewCountOrderByAggregateInput
     _avg?: CVReviewAvgOrderByAggregateInput
     _max?: CVReviewMaxOrderByAggregateInput
@@ -34553,9 +34503,6 @@ export namespace Prisma {
     fileName?: StringWithAggregatesFilter<"CVReview"> | string
     filePath?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
     fileSize?: IntWithAggregatesFilter<"CVReview"> | number
-    b2FileId?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
-    b2FileName?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
-    b2FileUrl?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
     extractedText?: StringWithAggregatesFilter<"CVReview"> | string
     careerField?: StringWithAggregatesFilter<"CVReview"> | string
     relevancyRate?: FloatWithAggregatesFilter<"CVReview"> | number
@@ -34569,6 +34516,9 @@ export namespace Prisma {
     suggestions?: JsonWithAggregatesFilter<"CVReview">
     createdAt?: DateTimeWithAggregatesFilter<"CVReview"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CVReview"> | Date | string
+    b2FileId?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableWithAggregatesFilter<"CVReview"> | string | null
   }
 
   export type EnrollmentWhereInput = {
@@ -34819,74 +34769,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"LessonProgress"> | Date | string
   }
 
-  export type NotificationWhereInput = {
-    AND?: NotificationWhereInput | NotificationWhereInput[]
-    OR?: NotificationWhereInput[]
-    NOT?: NotificationWhereInput | NotificationWhereInput[]
-    id?: IntFilter<"Notification"> | number
-    userId?: IntFilter<"Notification"> | number
-    title?: StringFilter<"Notification"> | string
-    body?: StringFilter<"Notification"> | string
-    type?: StringNullableFilter<"Notification"> | string | null
-    isRead?: BoolFilter<"Notification"> | boolean
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type NotificationOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    title?: SortOrder
-    body?: SortOrder
-    type?: SortOrderInput | SortOrder
-    isRead?: SortOrder
-    createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    _relevance?: NotificationOrderByRelevanceInput
-  }
-
-  export type NotificationWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: NotificationWhereInput | NotificationWhereInput[]
-    OR?: NotificationWhereInput[]
-    NOT?: NotificationWhereInput | NotificationWhereInput[]
-    userId?: IntFilter<"Notification"> | number
-    title?: StringFilter<"Notification"> | string
-    body?: StringFilter<"Notification"> | string
-    type?: StringNullableFilter<"Notification"> | string | null
-    isRead?: BoolFilter<"Notification"> | boolean
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type NotificationOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    title?: SortOrder
-    body?: SortOrder
-    type?: SortOrderInput | SortOrder
-    isRead?: SortOrder
-    createdAt?: SortOrder
-    _count?: NotificationCountOrderByAggregateInput
-    _avg?: NotificationAvgOrderByAggregateInput
-    _max?: NotificationMaxOrderByAggregateInput
-    _min?: NotificationMinOrderByAggregateInput
-    _sum?: NotificationSumOrderByAggregateInput
-  }
-
-  export type NotificationScalarWhereWithAggregatesInput = {
-    AND?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
-    OR?: NotificationScalarWhereWithAggregatesInput[]
-    NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Notification"> | number
-    userId?: IntWithAggregatesFilter<"Notification"> | number
-    title?: StringWithAggregatesFilter<"Notification"> | string
-    body?: StringWithAggregatesFilter<"Notification"> | string
-    type?: StringNullableWithAggregatesFilter<"Notification"> | string | null
-    isRead?: BoolWithAggregatesFilter<"Notification"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
-  }
-
   export type PaymentWhereInput = {
     AND?: PaymentWhereInput | PaymentWhereInput[]
     OR?: PaymentWhereInput[]
@@ -34904,9 +34786,9 @@ export namespace Prisma {
     orderId?: StringNullableFilter<"Payment"> | string | null
     snapToken?: StringNullableFilter<"Payment"> | string | null
     enrollment?: EnrollmentListRelationFilter
+    counselingSession?: XOR<CounselingSessionNullableScalarRelationFilter, CounselingSessionWhereInput> | null
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
     roadmap?: XOR<RoadmapNullableScalarRelationFilter, RoadmapWhereInput> | null
-    counselingSession?: XOR<CounselingSessionNullableScalarRelationFilter, CounselingSessionWhereInput> | null
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
     userroadmap?: UserRoadmapListRelationFilter
   }
@@ -34925,9 +34807,9 @@ export namespace Prisma {
     orderId?: SortOrderInput | SortOrder
     snapToken?: SortOrderInput | SortOrder
     enrollment?: EnrollmentOrderByRelationAggregateInput
+    counselingSession?: CounselingSessionOrderByWithRelationInput
     course?: CourseOrderByWithRelationInput
     roadmap?: RoadmapOrderByWithRelationInput
-    counselingSession?: CounselingSessionOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
     userroadmap?: UserRoadmapOrderByRelationAggregateInput
     _relevance?: PaymentOrderByRelevanceInput
@@ -34950,9 +34832,9 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Payment"> | Date | string
     snapToken?: StringNullableFilter<"Payment"> | string | null
     enrollment?: EnrollmentListRelationFilter
+    counselingSession?: XOR<CounselingSessionNullableScalarRelationFilter, CounselingSessionWhereInput> | null
     course?: XOR<CourseNullableScalarRelationFilter, CourseWhereInput> | null
     roadmap?: XOR<RoadmapNullableScalarRelationFilter, RoadmapWhereInput> | null
-    counselingSession?: XOR<CounselingSessionNullableScalarRelationFilter, CounselingSessionWhereInput> | null
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
     userroadmap?: UserRoadmapListRelationFilter
   }, "id" | "orderId">
@@ -35268,8 +35150,8 @@ export namespace Prisma {
     isUnlocked?: BoolFilter<"UserRoadmap"> | boolean
     unlockedAt?: DateTimeNullableFilter<"UserRoadmap"> | Date | string | null
     paymentId?: IntNullableFilter<"UserRoadmap"> | number | null
-    roadmap?: XOR<RoadmapScalarRelationFilter, RoadmapWhereInput>
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
+    roadmap?: XOR<RoadmapScalarRelationFilter, RoadmapWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -35280,8 +35162,8 @@ export namespace Prisma {
     isUnlocked?: SortOrder
     unlockedAt?: SortOrderInput | SortOrder
     paymentId?: SortOrderInput | SortOrder
-    roadmap?: RoadmapOrderByWithRelationInput
     payment?: PaymentOrderByWithRelationInput
+    roadmap?: RoadmapOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
   }
 
@@ -35295,8 +35177,8 @@ export namespace Prisma {
     isUnlocked?: BoolFilter<"UserRoadmap"> | boolean
     unlockedAt?: DateTimeNullableFilter<"UserRoadmap"> | Date | string | null
     paymentId?: IntNullableFilter<"UserRoadmap"> | number | null
-    roadmap?: XOR<RoadmapScalarRelationFilter, RoadmapWhereInput>
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
+    roadmap?: XOR<RoadmapScalarRelationFilter, RoadmapWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
@@ -35389,101 +35271,25 @@ export namespace Prisma {
     isUsed?: BoolWithAggregatesFilter<"Voucher"> | boolean
   }
 
-  export type JobMatchingWhereInput = {
-    AND?: JobMatchingWhereInput | JobMatchingWhereInput[]
-    OR?: JobMatchingWhereInput[]
-    NOT?: JobMatchingWhereInput | JobMatchingWhereInput[]
-    id?: StringFilter<"JobMatching"> | string
-    userId?: IntFilter<"JobMatching"> | number
-    cvReviewId?: StringNullableFilter<"JobMatching"> | string | null
-    dreamJob?: StringFilter<"JobMatching"> | string
-    matches?: JsonFilter<"JobMatching">
-    aiAnalysis?: JsonFilter<"JobMatching">
-    createdAt?: DateTimeFilter<"JobMatching"> | Date | string
-    updatedAt?: DateTimeFilter<"JobMatching"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    cvReview?: XOR<CVReviewNullableScalarRelationFilter, CVReviewWhereInput> | null
+  export type jobWhereInput = {
+    AND?: jobWhereInput | jobWhereInput[]
+    OR?: jobWhereInput[]
+    NOT?: jobWhereInput | jobWhereInput[]
+    id?: StringFilter<"job"> | string
+    title?: StringFilter<"job"> | string
+    company?: StringFilter<"job"> | string
+    description?: StringFilter<"job"> | string
+    requirements?: JsonFilter<"job">
+    location?: StringFilter<"job"> | string
+    salaryRange?: StringNullableFilter<"job"> | string | null
+    jobType?: StringFilter<"job"> | string
+    category?: StringFilter<"job"> | string
+    isActive?: BoolFilter<"job"> | boolean
+    createdAt?: DateTimeFilter<"job"> | Date | string
+    updatedAt?: DateTimeFilter<"job"> | Date | string
   }
 
-  export type JobMatchingOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    cvReviewId?: SortOrderInput | SortOrder
-    dreamJob?: SortOrder
-    matches?: SortOrder
-    aiAnalysis?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    cvReview?: CVReviewOrderByWithRelationInput
-    _relevance?: JobMatchingOrderByRelevanceInput
-  }
-
-  export type JobMatchingWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: JobMatchingWhereInput | JobMatchingWhereInput[]
-    OR?: JobMatchingWhereInput[]
-    NOT?: JobMatchingWhereInput | JobMatchingWhereInput[]
-    userId?: IntFilter<"JobMatching"> | number
-    cvReviewId?: StringNullableFilter<"JobMatching"> | string | null
-    dreamJob?: StringFilter<"JobMatching"> | string
-    matches?: JsonFilter<"JobMatching">
-    aiAnalysis?: JsonFilter<"JobMatching">
-    createdAt?: DateTimeFilter<"JobMatching"> | Date | string
-    updatedAt?: DateTimeFilter<"JobMatching"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    cvReview?: XOR<CVReviewNullableScalarRelationFilter, CVReviewWhereInput> | null
-  }, "id">
-
-  export type JobMatchingOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    cvReviewId?: SortOrderInput | SortOrder
-    dreamJob?: SortOrder
-    matches?: SortOrder
-    aiAnalysis?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: JobMatchingCountOrderByAggregateInput
-    _avg?: JobMatchingAvgOrderByAggregateInput
-    _max?: JobMatchingMaxOrderByAggregateInput
-    _min?: JobMatchingMinOrderByAggregateInput
-    _sum?: JobMatchingSumOrderByAggregateInput
-  }
-
-  export type JobMatchingScalarWhereWithAggregatesInput = {
-    AND?: JobMatchingScalarWhereWithAggregatesInput | JobMatchingScalarWhereWithAggregatesInput[]
-    OR?: JobMatchingScalarWhereWithAggregatesInput[]
-    NOT?: JobMatchingScalarWhereWithAggregatesInput | JobMatchingScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"JobMatching"> | string
-    userId?: IntWithAggregatesFilter<"JobMatching"> | number
-    cvReviewId?: StringNullableWithAggregatesFilter<"JobMatching"> | string | null
-    dreamJob?: StringWithAggregatesFilter<"JobMatching"> | string
-    matches?: JsonWithAggregatesFilter<"JobMatching">
-    aiAnalysis?: JsonWithAggregatesFilter<"JobMatching">
-    createdAt?: DateTimeWithAggregatesFilter<"JobMatching"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"JobMatching"> | Date | string
-  }
-
-  export type JobWhereInput = {
-    AND?: JobWhereInput | JobWhereInput[]
-    OR?: JobWhereInput[]
-    NOT?: JobWhereInput | JobWhereInput[]
-    id?: StringFilter<"Job"> | string
-    title?: StringFilter<"Job"> | string
-    company?: StringFilter<"Job"> | string
-    description?: StringFilter<"Job"> | string
-    requirements?: JsonFilter<"Job">
-    location?: StringFilter<"Job"> | string
-    salaryRange?: StringNullableFilter<"Job"> | string | null
-    jobType?: StringFilter<"Job"> | string
-    category?: StringFilter<"Job"> | string
-    isActive?: BoolFilter<"Job"> | boolean
-    createdAt?: DateTimeFilter<"Job"> | Date | string
-    updatedAt?: DateTimeFilter<"Job"> | Date | string
-  }
-
-  export type JobOrderByWithRelationInput = {
+  export type jobOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
     company?: SortOrder
@@ -35496,28 +35302,28 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _relevance?: JobOrderByRelevanceInput
+    _relevance?: jobOrderByRelevanceInput
   }
 
-  export type JobWhereUniqueInput = Prisma.AtLeast<{
+  export type jobWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: JobWhereInput | JobWhereInput[]
-    OR?: JobWhereInput[]
-    NOT?: JobWhereInput | JobWhereInput[]
-    title?: StringFilter<"Job"> | string
-    company?: StringFilter<"Job"> | string
-    description?: StringFilter<"Job"> | string
-    requirements?: JsonFilter<"Job">
-    location?: StringFilter<"Job"> | string
-    salaryRange?: StringNullableFilter<"Job"> | string | null
-    jobType?: StringFilter<"Job"> | string
-    category?: StringFilter<"Job"> | string
-    isActive?: BoolFilter<"Job"> | boolean
-    createdAt?: DateTimeFilter<"Job"> | Date | string
-    updatedAt?: DateTimeFilter<"Job"> | Date | string
+    AND?: jobWhereInput | jobWhereInput[]
+    OR?: jobWhereInput[]
+    NOT?: jobWhereInput | jobWhereInput[]
+    title?: StringFilter<"job"> | string
+    company?: StringFilter<"job"> | string
+    description?: StringFilter<"job"> | string
+    requirements?: JsonFilter<"job">
+    location?: StringFilter<"job"> | string
+    salaryRange?: StringNullableFilter<"job"> | string | null
+    jobType?: StringFilter<"job"> | string
+    category?: StringFilter<"job"> | string
+    isActive?: BoolFilter<"job"> | boolean
+    createdAt?: DateTimeFilter<"job"> | Date | string
+    updatedAt?: DateTimeFilter<"job"> | Date | string
   }, "id">
 
-  export type JobOrderByWithAggregationInput = {
+  export type jobOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
     company?: SortOrder
@@ -35530,27 +35336,221 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: JobCountOrderByAggregateInput
-    _max?: JobMaxOrderByAggregateInput
-    _min?: JobMinOrderByAggregateInput
+    _count?: jobCountOrderByAggregateInput
+    _max?: jobMaxOrderByAggregateInput
+    _min?: jobMinOrderByAggregateInput
   }
 
-  export type JobScalarWhereWithAggregatesInput = {
-    AND?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[]
-    OR?: JobScalarWhereWithAggregatesInput[]
-    NOT?: JobScalarWhereWithAggregatesInput | JobScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Job"> | string
-    title?: StringWithAggregatesFilter<"Job"> | string
-    company?: StringWithAggregatesFilter<"Job"> | string
-    description?: StringWithAggregatesFilter<"Job"> | string
-    requirements?: JsonWithAggregatesFilter<"Job">
-    location?: StringWithAggregatesFilter<"Job"> | string
-    salaryRange?: StringNullableWithAggregatesFilter<"Job"> | string | null
-    jobType?: StringWithAggregatesFilter<"Job"> | string
-    category?: StringWithAggregatesFilter<"Job"> | string
-    isActive?: BoolWithAggregatesFilter<"Job"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Job"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"Job"> | Date | string
+  export type jobScalarWhereWithAggregatesInput = {
+    AND?: jobScalarWhereWithAggregatesInput | jobScalarWhereWithAggregatesInput[]
+    OR?: jobScalarWhereWithAggregatesInput[]
+    NOT?: jobScalarWhereWithAggregatesInput | jobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"job"> | string
+    title?: StringWithAggregatesFilter<"job"> | string
+    company?: StringWithAggregatesFilter<"job"> | string
+    description?: StringWithAggregatesFilter<"job"> | string
+    requirements?: JsonWithAggregatesFilter<"job">
+    location?: StringWithAggregatesFilter<"job"> | string
+    salaryRange?: StringNullableWithAggregatesFilter<"job"> | string | null
+    jobType?: StringWithAggregatesFilter<"job"> | string
+    category?: StringWithAggregatesFilter<"job"> | string
+    isActive?: BoolWithAggregatesFilter<"job"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"job"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"job"> | Date | string
+  }
+
+  export type jobmatchingWhereInput = {
+    AND?: jobmatchingWhereInput | jobmatchingWhereInput[]
+    OR?: jobmatchingWhereInput[]
+    NOT?: jobmatchingWhereInput | jobmatchingWhereInput[]
+    id?: StringFilter<"jobmatching"> | string
+    userId?: IntFilter<"jobmatching"> | number
+    cvReviewId?: StringNullableFilter<"jobmatching"> | string | null
+    dreamJob?: StringFilter<"jobmatching"> | string
+    matches?: JsonFilter<"jobmatching">
+    aiAnalysis?: JsonFilter<"jobmatching">
+    createdAt?: DateTimeFilter<"jobmatching"> | Date | string
+    updatedAt?: DateTimeFilter<"jobmatching"> | Date | string
+    cvreview?: XOR<CVReviewNullableScalarRelationFilter, CVReviewWhereInput> | null
+    users?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type jobmatchingOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cvReviewId?: SortOrderInput | SortOrder
+    dreamJob?: SortOrder
+    matches?: SortOrder
+    aiAnalysis?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    cvreview?: CVReviewOrderByWithRelationInput
+    users?: UserOrderByWithRelationInput
+    _relevance?: jobmatchingOrderByRelevanceInput
+  }
+
+  export type jobmatchingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: jobmatchingWhereInput | jobmatchingWhereInput[]
+    OR?: jobmatchingWhereInput[]
+    NOT?: jobmatchingWhereInput | jobmatchingWhereInput[]
+    userId?: IntFilter<"jobmatching"> | number
+    cvReviewId?: StringNullableFilter<"jobmatching"> | string | null
+    dreamJob?: StringFilter<"jobmatching"> | string
+    matches?: JsonFilter<"jobmatching">
+    aiAnalysis?: JsonFilter<"jobmatching">
+    createdAt?: DateTimeFilter<"jobmatching"> | Date | string
+    updatedAt?: DateTimeFilter<"jobmatching"> | Date | string
+    cvreview?: XOR<CVReviewNullableScalarRelationFilter, CVReviewWhereInput> | null
+    users?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type jobmatchingOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cvReviewId?: SortOrderInput | SortOrder
+    dreamJob?: SortOrder
+    matches?: SortOrder
+    aiAnalysis?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: jobmatchingCountOrderByAggregateInput
+    _avg?: jobmatchingAvgOrderByAggregateInput
+    _max?: jobmatchingMaxOrderByAggregateInput
+    _min?: jobmatchingMinOrderByAggregateInput
+    _sum?: jobmatchingSumOrderByAggregateInput
+  }
+
+  export type jobmatchingScalarWhereWithAggregatesInput = {
+    AND?: jobmatchingScalarWhereWithAggregatesInput | jobmatchingScalarWhereWithAggregatesInput[]
+    OR?: jobmatchingScalarWhereWithAggregatesInput[]
+    NOT?: jobmatchingScalarWhereWithAggregatesInput | jobmatchingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"jobmatching"> | string
+    userId?: IntWithAggregatesFilter<"jobmatching"> | number
+    cvReviewId?: StringNullableWithAggregatesFilter<"jobmatching"> | string | null
+    dreamJob?: StringWithAggregatesFilter<"jobmatching"> | string
+    matches?: JsonWithAggregatesFilter<"jobmatching">
+    aiAnalysis?: JsonWithAggregatesFilter<"jobmatching">
+    createdAt?: DateTimeWithAggregatesFilter<"jobmatching"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"jobmatching"> | Date | string
+  }
+
+  export type notificationWhereInput = {
+    AND?: notificationWhereInput | notificationWhereInput[]
+    OR?: notificationWhereInput[]
+    NOT?: notificationWhereInput | notificationWhereInput[]
+    id?: IntFilter<"notification"> | number
+    userId?: IntFilter<"notification"> | number
+    title?: StringFilter<"notification"> | string
+    body?: StringFilter<"notification"> | string
+    type?: StringNullableFilter<"notification"> | string | null
+    isRead?: BoolFilter<"notification"> | boolean
+    createdAt?: DateTimeFilter<"notification"> | Date | string
+    users?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type notificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    type?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    users?: UserOrderByWithRelationInput
+    _relevance?: notificationOrderByRelevanceInput
+  }
+
+  export type notificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: notificationWhereInput | notificationWhereInput[]
+    OR?: notificationWhereInput[]
+    NOT?: notificationWhereInput | notificationWhereInput[]
+    userId?: IntFilter<"notification"> | number
+    title?: StringFilter<"notification"> | string
+    body?: StringFilter<"notification"> | string
+    type?: StringNullableFilter<"notification"> | string | null
+    isRead?: BoolFilter<"notification"> | boolean
+    createdAt?: DateTimeFilter<"notification"> | Date | string
+    users?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type notificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    type?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    _count?: notificationCountOrderByAggregateInput
+    _avg?: notificationAvgOrderByAggregateInput
+    _max?: notificationMaxOrderByAggregateInput
+    _min?: notificationMinOrderByAggregateInput
+    _sum?: notificationSumOrderByAggregateInput
+  }
+
+  export type notificationScalarWhereWithAggregatesInput = {
+    AND?: notificationScalarWhereWithAggregatesInput | notificationScalarWhereWithAggregatesInput[]
+    OR?: notificationScalarWhereWithAggregatesInput[]
+    NOT?: notificationScalarWhereWithAggregatesInput | notificationScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"notification"> | number
+    userId?: IntWithAggregatesFilter<"notification"> | number
+    title?: StringWithAggregatesFilter<"notification"> | string
+    body?: StringWithAggregatesFilter<"notification"> | string
+    type?: StringNullableWithAggregatesFilter<"notification"> | string | null
+    isRead?: BoolWithAggregatesFilter<"notification"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"notification"> | Date | string
+  }
+
+  export type roadmapmatcherWhereInput = {
+    AND?: roadmapmatcherWhereInput | roadmapmatcherWhereInput[]
+    OR?: roadmapmatcherWhereInput[]
+    NOT?: roadmapmatcherWhereInput | roadmapmatcherWhereInput[]
+    id?: IntFilter<"roadmapmatcher"> | number
+    keyword?: StringFilter<"roadmapmatcher"> | string
+    roadmapId?: IntFilter<"roadmapmatcher"> | number
+    matchField?: StringFilter<"roadmapmatcher"> | string
+  }
+
+  export type roadmapmatcherOrderByWithRelationInput = {
+    id?: SortOrder
+    keyword?: SortOrder
+    roadmapId?: SortOrder
+    matchField?: SortOrder
+    _relevance?: roadmapmatcherOrderByRelevanceInput
+  }
+
+  export type roadmapmatcherWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: roadmapmatcherWhereInput | roadmapmatcherWhereInput[]
+    OR?: roadmapmatcherWhereInput[]
+    NOT?: roadmapmatcherWhereInput | roadmapmatcherWhereInput[]
+    keyword?: StringFilter<"roadmapmatcher"> | string
+    roadmapId?: IntFilter<"roadmapmatcher"> | number
+    matchField?: StringFilter<"roadmapmatcher"> | string
+  }, "id">
+
+  export type roadmapmatcherOrderByWithAggregationInput = {
+    id?: SortOrder
+    keyword?: SortOrder
+    roadmapId?: SortOrder
+    matchField?: SortOrder
+    _count?: roadmapmatcherCountOrderByAggregateInput
+    _avg?: roadmapmatcherAvgOrderByAggregateInput
+    _max?: roadmapmatcherMaxOrderByAggregateInput
+    _min?: roadmapmatcherMinOrderByAggregateInput
+    _sum?: roadmapmatcherSumOrderByAggregateInput
+  }
+
+  export type roadmapmatcherScalarWhereWithAggregatesInput = {
+    AND?: roadmapmatcherScalarWhereWithAggregatesInput | roadmapmatcherScalarWhereWithAggregatesInput[]
+    OR?: roadmapmatcherScalarWhereWithAggregatesInput[]
+    NOT?: roadmapmatcherScalarWhereWithAggregatesInput | roadmapmatcherScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"roadmapmatcher"> | number
+    keyword?: StringWithAggregatesFilter<"roadmapmatcher"> | string
+    roadmapId?: IntWithAggregatesFilter<"roadmapmatcher"> | number
+    matchField?: StringWithAggregatesFilter<"roadmapmatcher"> | string
   }
 
   export type UserCreateInput = {
@@ -35574,17 +35574,17 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -35609,17 +35609,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -35643,17 +35643,17 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -35678,17 +35678,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -35739,52 +35739,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type RoadmapMatcherCreateInput = {
-    keyword: string
-    roadmapId: number
-    matchField: string
-  }
-
-  export type RoadmapMatcherUncheckedCreateInput = {
-    id?: number
-    keyword: string
-    roadmapId: number
-    matchField: string
-  }
-
-  export type RoadmapMatcherUpdateInput = {
-    keyword?: StringFieldUpdateOperationsInput | string
-    roadmapId?: IntFieldUpdateOperationsInput | number
-    matchField?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type RoadmapMatcherUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    keyword?: StringFieldUpdateOperationsInput | string
-    roadmapId?: IntFieldUpdateOperationsInput | number
-    matchField?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type RoadmapMatcherCreateManyInput = {
-    id?: number
-    keyword: string
-    roadmapId: number
-    matchField: string
-  }
-
-  export type RoadmapMatcherUpdateManyMutationInput = {
-    keyword?: StringFieldUpdateOperationsInput | string
-    roadmapId?: IntFieldUpdateOperationsInput | number
-    matchField?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type RoadmapMatcherUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    keyword?: StringFieldUpdateOperationsInput | string
-    roadmapId?: IntFieldUpdateOperationsInput | number
-    matchField?: StringFieldUpdateOperationsInput | string
   }
 
   export type AssessmentCreateInput = {
@@ -35925,8 +35879,8 @@ export namespace Prisma {
     comment?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCoursereviewInput
     course: CourseCreateNestedOneWithoutCoursereviewInput
+    user: UserCreateNestedOneWithoutCoursereviewInput
   }
 
   export type CourseReviewUncheckedCreateInput = {
@@ -35944,8 +35898,8 @@ export namespace Prisma {
     comment?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCoursereviewNestedInput
     course?: CourseUpdateOneRequiredWithoutCoursereviewNestedInput
+    user?: UserUpdateOneRequiredWithoutCoursereviewNestedInput
   }
 
   export type CourseReviewUncheckedUpdateInput = {
@@ -36148,9 +36102,9 @@ export namespace Prisma {
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
-    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
     users: UserCreateNestedOneWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionUncheckedCreateInput = {
@@ -36181,9 +36135,9 @@ export namespace Prisma {
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
-    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
     users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionUncheckedUpdateInput = {
@@ -36312,6 +36266,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
@@ -36319,7 +36274,6 @@ export namespace Prisma {
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateInput = {
@@ -36334,6 +36288,7 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
@@ -36341,7 +36296,6 @@ export namespace Prisma {
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUpdateInput = {
@@ -36355,6 +36309,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
@@ -36362,7 +36317,6 @@ export namespace Prisma {
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateInput = {
@@ -36377,6 +36331,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
@@ -36384,7 +36339,6 @@ export namespace Prisma {
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseCreateManyInput = {
@@ -36549,9 +36503,6 @@ export namespace Prisma {
     fileName: string
     filePath?: string | null
     fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -36565,8 +36516,11 @@ export namespace Prisma {
     suggestions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
     user: UserCreateNestedOneWithoutCvreviewInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutCvReviewInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutCvreviewInput
   }
 
   export type CVReviewUncheckedCreateInput = {
@@ -36575,9 +36529,6 @@ export namespace Prisma {
     fileName: string
     filePath?: string | null
     fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -36591,7 +36542,10 @@ export namespace Prisma {
     suggestions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutCvReviewInput
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutCvreviewInput
   }
 
   export type CVReviewUpdateInput = {
@@ -36599,9 +36553,6 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36615,8 +36566,11 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutCvreviewNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutCvReviewNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutCvreviewNestedInput
   }
 
   export type CVReviewUncheckedUpdateInput = {
@@ -36625,9 +36579,6 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36641,7 +36592,10 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutCvReviewNestedInput
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutCvreviewNestedInput
   }
 
   export type CVReviewCreateManyInput = {
@@ -36650,9 +36604,6 @@ export namespace Prisma {
     fileName: string
     filePath?: string | null
     fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -36666,6 +36617,9 @@ export namespace Prisma {
     suggestions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
   }
 
   export type CVReviewUpdateManyMutationInput = {
@@ -36673,9 +36627,6 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36689,6 +36640,9 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CVReviewUncheckedUpdateManyInput = {
@@ -36697,9 +36651,6 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -36713,6 +36664,9 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EnrollmentCreateInput = {
@@ -36931,72 +36885,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NotificationCreateInput = {
-    title: string
-    body: string
-    type?: string | null
-    isRead?: boolean
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutNotificationInput
-  }
-
-  export type NotificationUncheckedCreateInput = {
-    id?: number
-    userId: number
-    title: string
-    body: string
-    type?: string | null
-    isRead?: boolean
-    createdAt?: Date | string
-  }
-
-  export type NotificationUpdateInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    body?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    isRead?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutNotificationNestedInput
-  }
-
-  export type NotificationUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    body?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    isRead?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationCreateManyInput = {
-    id?: number
-    userId: number
-    title: string
-    body: string
-    type?: string | null
-    isRead?: boolean
-    createdAt?: Date | string
-  }
-
-  export type NotificationUpdateManyMutationInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    body?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    isRead?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    body?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    isRead?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type PaymentCreateInput = {
     amount: number
     paymentStatus: string
@@ -37006,9 +36894,9 @@ export namespace Prisma {
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
-    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -37039,9 +36927,9 @@ export namespace Prisma {
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
-    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -37349,8 +37237,8 @@ export namespace Prisma {
   export type UserRoadmapCreateInput = {
     isUnlocked: boolean
     unlockedAt?: Date | string | null
-    roadmap: RoadmapCreateNestedOneWithoutUserroadmapInput
     payment?: PaymentCreateNestedOneWithoutUserroadmapInput
+    roadmap: RoadmapCreateNestedOneWithoutUserroadmapInput
     users: UserCreateNestedOneWithoutUserroadmapInput
   }
 
@@ -37366,8 +37254,8 @@ export namespace Prisma {
   export type UserRoadmapUpdateInput = {
     isUnlocked?: BoolFieldUpdateOperationsInput | boolean
     unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    roadmap?: RoadmapUpdateOneRequiredWithoutUserroadmapNestedInput
     payment?: PaymentUpdateOneWithoutUserroadmapNestedInput
+    roadmap?: RoadmapUpdateOneRequiredWithoutUserroadmapNestedInput
     users?: UserUpdateOneRequiredWithoutUserroadmapNestedInput
   }
 
@@ -37462,40 +37350,145 @@ export namespace Prisma {
     isUsed?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type JobMatchingCreateInput = {
-    id?: string
+  export type jobCreateInput = {
+    id: string
+    title: string
+    company: string
+    description: string
+    requirements: JsonNullValueInput | InputJsonValue
+    location: string
+    salaryRange?: string | null
+    jobType: string
+    category: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt: Date | string
+  }
+
+  export type jobUncheckedCreateInput = {
+    id: string
+    title: string
+    company: string
+    description: string
+    requirements: JsonNullValueInput | InputJsonValue
+    location: string
+    salaryRange?: string | null
+    jobType: string
+    category: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt: Date | string
+  }
+
+  export type jobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirements?: JsonNullValueInput | InputJsonValue
+    location?: StringFieldUpdateOperationsInput | string
+    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
+    jobType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type jobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirements?: JsonNullValueInput | InputJsonValue
+    location?: StringFieldUpdateOperationsInput | string
+    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
+    jobType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type jobCreateManyInput = {
+    id: string
+    title: string
+    company: string
+    description: string
+    requirements: JsonNullValueInput | InputJsonValue
+    location: string
+    salaryRange?: string | null
+    jobType: string
+    category: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt: Date | string
+  }
+
+  export type jobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirements?: JsonNullValueInput | InputJsonValue
+    location?: StringFieldUpdateOperationsInput | string
+    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
+    jobType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type jobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    company?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    requirements?: JsonNullValueInput | InputJsonValue
+    location?: StringFieldUpdateOperationsInput | string
+    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
+    jobType?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type jobmatchingCreateInput = {
+    id: string
     dreamJob: string
     matches: JsonNullValueInput | InputJsonValue
     aiAnalysis: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutJobmatchingInput
-    cvReview?: CVReviewCreateNestedOneWithoutJobmatchingInput
+    updatedAt: Date | string
+    cvreview?: CVReviewCreateNestedOneWithoutJobmatchingInput
+    users: UserCreateNestedOneWithoutJobmatchingInput
   }
 
-  export type JobMatchingUncheckedCreateInput = {
-    id?: string
+  export type jobmatchingUncheckedCreateInput = {
+    id: string
     userId: number
     cvReviewId?: string | null
     dreamJob: string
     matches: JsonNullValueInput | InputJsonValue
     aiAnalysis: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
-  export type JobMatchingUpdateInput = {
+  export type jobmatchingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     dreamJob?: StringFieldUpdateOperationsInput | string
     matches?: JsonNullValueInput | InputJsonValue
     aiAnalysis?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutJobmatchingNestedInput
-    cvReview?: CVReviewUpdateOneWithoutJobmatchingNestedInput
+    cvreview?: CVReviewUpdateOneWithoutJobmatchingNestedInput
+    users?: UserUpdateOneRequiredWithoutJobmatchingNestedInput
   }
 
-  export type JobMatchingUncheckedUpdateInput = {
+  export type jobmatchingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     cvReviewId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37506,18 +37499,18 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobMatchingCreateManyInput = {
-    id?: string
+  export type jobmatchingCreateManyInput = {
+    id: string
     userId: number
     cvReviewId?: string | null
     dreamJob: string
     matches: JsonNullValueInput | InputJsonValue
     aiAnalysis: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
-  export type JobMatchingUpdateManyMutationInput = {
+  export type jobmatchingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     dreamJob?: StringFieldUpdateOperationsInput | string
     matches?: JsonNullValueInput | InputJsonValue
@@ -37526,7 +37519,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobMatchingUncheckedUpdateManyInput = {
+  export type jobmatchingUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     cvReviewId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37537,109 +37530,116 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobCreateInput = {
-    id?: string
+  export type notificationCreateInput = {
     title: string
-    company: string
-    description: string
-    requirements: JsonNullValueInput | InputJsonValue
-    location: string
-    salaryRange?: string | null
-    jobType: string
-    category: string
-    isActive?: boolean
+    body: string
+    type?: string | null
+    isRead?: boolean
     createdAt?: Date | string
-    updatedAt?: Date | string
+    users: UserCreateNestedOneWithoutNotificationInput
   }
 
-  export type JobUncheckedCreateInput = {
-    id?: string
+  export type notificationUncheckedCreateInput = {
+    id?: number
+    userId: number
     title: string
-    company: string
-    description: string
-    requirements: JsonNullValueInput | InputJsonValue
-    location: string
-    salaryRange?: string | null
-    jobType: string
-    category: string
-    isActive?: boolean
+    body: string
+    type?: string | null
+    isRead?: boolean
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type JobUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type notificationUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
-    company?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    requirements?: JsonNullValueInput | InputJsonValue
-    location?: StringFieldUpdateOperationsInput | string
-    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
-    jobType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    body?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateOneRequiredWithoutNotificationNestedInput
   }
 
-  export type JobUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type notificationUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
-    company?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    requirements?: JsonNullValueInput | InputJsonValue
-    location?: StringFieldUpdateOperationsInput | string
-    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
-    jobType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    body?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobCreateManyInput = {
-    id?: string
+  export type notificationCreateManyInput = {
+    id?: number
+    userId: number
     title: string
-    company: string
-    description: string
-    requirements: JsonNullValueInput | InputJsonValue
-    location: string
-    salaryRange?: string | null
-    jobType: string
-    category: string
-    isActive?: boolean
+    body: string
+    type?: string | null
+    isRead?: boolean
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type JobUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type notificationUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
-    company?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    requirements?: JsonNullValueInput | InputJsonValue
-    location?: StringFieldUpdateOperationsInput | string
-    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
-    jobType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    body?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
+  export type notificationUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
-    company?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    requirements?: JsonNullValueInput | InputJsonValue
-    location?: StringFieldUpdateOperationsInput | string
-    salaryRange?: NullableStringFieldUpdateOperationsInput | string | null
-    jobType?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    body?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type roadmapmatcherCreateInput = {
+    keyword: string
+    roadmapId: number
+    matchField: string
+  }
+
+  export type roadmapmatcherUncheckedCreateInput = {
+    id?: number
+    keyword: string
+    roadmapId: number
+    matchField: string
+  }
+
+  export type roadmapmatcherUpdateInput = {
+    keyword?: StringFieldUpdateOperationsInput | string
+    roadmapId?: IntFieldUpdateOperationsInput | number
+    matchField?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type roadmapmatcherUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    keyword?: StringFieldUpdateOperationsInput | string
+    roadmapId?: IntFieldUpdateOperationsInput | number
+    matchField?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type roadmapmatcherCreateManyInput = {
+    id?: number
+    keyword: string
+    roadmapId: number
+    matchField: string
+  }
+
+  export type roadmapmatcherUpdateManyMutationInput = {
+    keyword?: StringFieldUpdateOperationsInput | string
+    roadmapId?: IntFieldUpdateOperationsInput | number
+    matchField?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type roadmapmatcherUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    keyword?: StringFieldUpdateOperationsInput | string
+    roadmapId?: IntFieldUpdateOperationsInput | number
+    matchField?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -37753,16 +37753,16 @@ export namespace Prisma {
     none?: CourseProgressWhereInput
   }
 
+  export type CourseReviewListRelationFilter = {
+    every?: CourseReviewWhereInput
+    some?: CourseReviewWhereInput
+    none?: CourseReviewWhereInput
+  }
+
   export type CVReviewListRelationFilter = {
     every?: CVReviewWhereInput
     some?: CVReviewWhereInput
     none?: CVReviewWhereInput
-  }
-
-  export type JobMatchingListRelationFilter = {
-    every?: JobMatchingWhereInput
-    some?: JobMatchingWhereInput
-    none?: JobMatchingWhereInput
   }
 
   export type EnrollmentListRelationFilter = {
@@ -37777,6 +37777,12 @@ export namespace Prisma {
     none?: JobMatchWhereInput
   }
 
+  export type JobmatchingListRelationFilter = {
+    every?: jobmatchingWhereInput
+    some?: jobmatchingWhereInput
+    none?: jobmatchingWhereInput
+  }
+
   export type LessonProgressListRelationFilter = {
     every?: LessonProgressWhereInput
     some?: LessonProgressWhereInput
@@ -37784,9 +37790,9 @@ export namespace Prisma {
   }
 
   export type NotificationListRelationFilter = {
-    every?: NotificationWhereInput
-    some?: NotificationWhereInput
-    none?: NotificationWhereInput
+    every?: notificationWhereInput
+    some?: notificationWhereInput
+    none?: notificationWhereInput
   }
 
   export type PaymentListRelationFilter = {
@@ -37811,12 +37817,6 @@ export namespace Prisma {
     every?: VoucherWhereInput
     some?: VoucherWhereInput
     none?: VoucherWhereInput
-  }
-
-  export type CourseReviewListRelationFilter = {
-    every?: CourseReviewWhereInput
-    some?: CourseReviewWhereInput
-    none?: CourseReviewWhereInput
   }
 
   export type SortOrderInput = {
@@ -37848,11 +37848,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type CVReviewOrderByRelationAggregateInput = {
+  export type CourseReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type JobMatchingOrderByRelationAggregateInput = {
+  export type CVReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -37864,11 +37864,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type jobmatchingOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type LessonProgressOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type NotificationOrderByRelationAggregateInput = {
+  export type notificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -37885,10 +37889,6 @@ export namespace Prisma {
   }
 
   export type VoucherOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CourseReviewOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -38045,43 +38045,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type RoadmapMatcherOrderByRelevanceInput = {
-    fields: RoadmapMatcherOrderByRelevanceFieldEnum | RoadmapMatcherOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type RoadmapMatcherCountOrderByAggregateInput = {
-    id?: SortOrder
-    keyword?: SortOrder
-    roadmapId?: SortOrder
-    matchField?: SortOrder
-  }
-
-  export type RoadmapMatcherAvgOrderByAggregateInput = {
-    id?: SortOrder
-    roadmapId?: SortOrder
-  }
-
-  export type RoadmapMatcherMaxOrderByAggregateInput = {
-    id?: SortOrder
-    keyword?: SortOrder
-    roadmapId?: SortOrder
-    matchField?: SortOrder
-  }
-
-  export type RoadmapMatcherMinOrderByAggregateInput = {
-    id?: SortOrder
-    keyword?: SortOrder
-    roadmapId?: SortOrder
-    matchField?: SortOrder
-  }
-
-  export type RoadmapMatcherSumOrderByAggregateInput = {
-    id?: SortOrder
-    roadmapId?: SortOrder
   }
 
   export type UserScalarRelationFilter = {
@@ -38756,9 +38719,6 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrder
     fileSize?: SortOrder
-    b2FileId?: SortOrder
-    b2FileName?: SortOrder
-    b2FileUrl?: SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -38772,6 +38732,9 @@ export namespace Prisma {
     suggestions?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2FileUrl?: SortOrder
   }
 
   export type CVReviewAvgOrderByAggregateInput = {
@@ -38792,9 +38755,6 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrder
     fileSize?: SortOrder
-    b2FileId?: SortOrder
-    b2FileName?: SortOrder
-    b2FileUrl?: SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -38806,6 +38766,9 @@ export namespace Prisma {
     writingQuality?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2FileUrl?: SortOrder
   }
 
   export type CVReviewMinOrderByAggregateInput = {
@@ -38814,9 +38777,6 @@ export namespace Prisma {
     fileName?: SortOrder
     filePath?: SortOrder
     fileSize?: SortOrder
-    b2FileId?: SortOrder
-    b2FileName?: SortOrder
-    b2FileUrl?: SortOrder
     extractedText?: SortOrder
     careerField?: SortOrder
     relevancyRate?: SortOrder
@@ -38828,6 +38788,9 @@ export namespace Prisma {
     writingQuality?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2FileUrl?: SortOrder
   }
 
   export type CVReviewSumOrderByAggregateInput = {
@@ -39056,50 +39019,9 @@ export namespace Prisma {
     lessonId?: SortOrder
   }
 
-  export type NotificationOrderByRelevanceInput = {
-    fields: NotificationOrderByRelevanceFieldEnum | NotificationOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type NotificationCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    title?: SortOrder
-    body?: SortOrder
-    type?: SortOrder
-    isRead?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type NotificationAvgOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-  }
-
-  export type NotificationMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    title?: SortOrder
-    body?: SortOrder
-    type?: SortOrder
-    isRead?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type NotificationMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    title?: SortOrder
-    body?: SortOrder
-    type?: SortOrder
-    isRead?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type NotificationSumOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
+  export type CounselingSessionNullableScalarRelationFilter = {
+    is?: CounselingSessionWhereInput | null
+    isNot?: CounselingSessionWhereInput | null
   }
 
   export type CourseNullableScalarRelationFilter = {
@@ -39110,11 +39032,6 @@ export namespace Prisma {
   export type RoadmapNullableScalarRelationFilter = {
     is?: RoadmapWhereInput | null
     isNot?: RoadmapWhereInput | null
-  }
-
-  export type CounselingSessionNullableScalarRelationFilter = {
-    is?: CounselingSessionWhereInput | null
-    isNot?: CounselingSessionWhereInput | null
   }
 
   export type PaymentOrderByRelevanceInput = {
@@ -39445,61 +39362,13 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
-  export type CVReviewNullableScalarRelationFilter = {
-    is?: CVReviewWhereInput | null
-    isNot?: CVReviewWhereInput | null
-  }
-
-  export type JobMatchingOrderByRelevanceInput = {
-    fields: JobMatchingOrderByRelevanceFieldEnum | JobMatchingOrderByRelevanceFieldEnum[]
+  export type jobOrderByRelevanceInput = {
+    fields: jobOrderByRelevanceFieldEnum | jobOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type JobMatchingCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    cvReviewId?: SortOrder
-    dreamJob?: SortOrder
-    matches?: SortOrder
-    aiAnalysis?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type JobMatchingAvgOrderByAggregateInput = {
-    userId?: SortOrder
-  }
-
-  export type JobMatchingMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    cvReviewId?: SortOrder
-    dreamJob?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type JobMatchingMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    cvReviewId?: SortOrder
-    dreamJob?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type JobMatchingSumOrderByAggregateInput = {
-    userId?: SortOrder
-  }
-
-  export type JobOrderByRelevanceInput = {
-    fields: JobOrderByRelevanceFieldEnum | JobOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type JobCountOrderByAggregateInput = {
+  export type jobCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     company?: SortOrder
@@ -39514,7 +39383,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type JobMaxOrderByAggregateInput = {
+  export type jobMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     company?: SortOrder
@@ -39528,7 +39397,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type JobMinOrderByAggregateInput = {
+  export type jobMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     company?: SortOrder
@@ -39540,6 +39409,137 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type CVReviewNullableScalarRelationFilter = {
+    is?: CVReviewWhereInput | null
+    isNot?: CVReviewWhereInput | null
+  }
+
+  export type jobmatchingOrderByRelevanceInput = {
+    fields: jobmatchingOrderByRelevanceFieldEnum | jobmatchingOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type jobmatchingCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cvReviewId?: SortOrder
+    dreamJob?: SortOrder
+    matches?: SortOrder
+    aiAnalysis?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type jobmatchingAvgOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type jobmatchingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cvReviewId?: SortOrder
+    dreamJob?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type jobmatchingMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cvReviewId?: SortOrder
+    dreamJob?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type jobmatchingSumOrderByAggregateInput = {
+    userId?: SortOrder
+  }
+
+  export type notificationOrderByRelevanceInput = {
+    fields: notificationOrderByRelevanceFieldEnum | notificationOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type notificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type notificationAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type notificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type notificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    body?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type notificationSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type roadmapmatcherOrderByRelevanceInput = {
+    fields: roadmapmatcherOrderByRelevanceFieldEnum | roadmapmatcherOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type roadmapmatcherCountOrderByAggregateInput = {
+    id?: SortOrder
+    keyword?: SortOrder
+    roadmapId?: SortOrder
+    matchField?: SortOrder
+  }
+
+  export type roadmapmatcherAvgOrderByAggregateInput = {
+    id?: SortOrder
+    roadmapId?: SortOrder
+  }
+
+  export type roadmapmatcherMaxOrderByAggregateInput = {
+    id?: SortOrder
+    keyword?: SortOrder
+    roadmapId?: SortOrder
+    matchField?: SortOrder
+  }
+
+  export type roadmapmatcherMinOrderByAggregateInput = {
+    id?: SortOrder
+    keyword?: SortOrder
+    roadmapId?: SortOrder
+    matchField?: SortOrder
+  }
+
+  export type roadmapmatcherSumOrderByAggregateInput = {
+    id?: SortOrder
+    roadmapId?: SortOrder
   }
 
   export type AssessmentCreateNestedManyWithoutUsersInput = {
@@ -39590,18 +39590,18 @@ export namespace Prisma {
     connect?: CourseProgressWhereUniqueInput | CourseProgressWhereUniqueInput[]
   }
 
+  export type CourseReviewCreateNestedManyWithoutUserInput = {
+    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
+    createMany?: CourseReviewCreateManyUserInputEnvelope
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+  }
+
   export type CVReviewCreateNestedManyWithoutUserInput = {
     create?: XOR<CVReviewCreateWithoutUserInput, CVReviewUncheckedCreateWithoutUserInput> | CVReviewCreateWithoutUserInput[] | CVReviewUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CVReviewCreateOrConnectWithoutUserInput | CVReviewCreateOrConnectWithoutUserInput[]
     createMany?: CVReviewCreateManyUserInputEnvelope
     connect?: CVReviewWhereUniqueInput | CVReviewWhereUniqueInput[]
-  }
-
-  export type JobMatchingCreateNestedManyWithoutUserInput = {
-    create?: XOR<JobMatchingCreateWithoutUserInput, JobMatchingUncheckedCreateWithoutUserInput> | JobMatchingCreateWithoutUserInput[] | JobMatchingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutUserInput | JobMatchingCreateOrConnectWithoutUserInput[]
-    createMany?: JobMatchingCreateManyUserInputEnvelope
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
   }
 
   export type EnrollmentCreateNestedManyWithoutUsersInput = {
@@ -39618,6 +39618,13 @@ export namespace Prisma {
     connect?: JobMatchWhereUniqueInput | JobMatchWhereUniqueInput[]
   }
 
+  export type jobmatchingCreateNestedManyWithoutUsersInput = {
+    create?: XOR<jobmatchingCreateWithoutUsersInput, jobmatchingUncheckedCreateWithoutUsersInput> | jobmatchingCreateWithoutUsersInput[] | jobmatchingUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutUsersInput | jobmatchingCreateOrConnectWithoutUsersInput[]
+    createMany?: jobmatchingCreateManyUsersInputEnvelope
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+  }
+
   export type LessonProgressCreateNestedManyWithoutUsersInput = {
     create?: XOR<LessonProgressCreateWithoutUsersInput, LessonProgressUncheckedCreateWithoutUsersInput> | LessonProgressCreateWithoutUsersInput[] | LessonProgressUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: LessonProgressCreateOrConnectWithoutUsersInput | LessonProgressCreateOrConnectWithoutUsersInput[]
@@ -39625,11 +39632,11 @@ export namespace Prisma {
     connect?: LessonProgressWhereUniqueInput | LessonProgressWhereUniqueInput[]
   }
 
-  export type NotificationCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  export type notificationCreateNestedManyWithoutUsersInput = {
+    create?: XOR<notificationCreateWithoutUsersInput, notificationUncheckedCreateWithoutUsersInput> | notificationCreateWithoutUsersInput[] | notificationUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: notificationCreateOrConnectWithoutUsersInput | notificationCreateOrConnectWithoutUsersInput[]
+    createMany?: notificationCreateManyUsersInputEnvelope
+    connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
   }
 
   export type PaymentCreateNestedManyWithoutUsersInput = {
@@ -39658,13 +39665,6 @@ export namespace Prisma {
     connectOrCreate?: VoucherCreateOrConnectWithoutUsersInput | VoucherCreateOrConnectWithoutUsersInput[]
     createMany?: VoucherCreateManyUsersInputEnvelope
     connect?: VoucherWhereUniqueInput | VoucherWhereUniqueInput[]
-  }
-
-  export type CourseReviewCreateNestedManyWithoutUserInput = {
-    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
-    createMany?: CourseReviewCreateManyUserInputEnvelope
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
   }
 
   export type AssessmentUncheckedCreateNestedManyWithoutUsersInput = {
@@ -39715,18 +39715,18 @@ export namespace Prisma {
     connect?: CourseProgressWhereUniqueInput | CourseProgressWhereUniqueInput[]
   }
 
+  export type CourseReviewUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
+    createMany?: CourseReviewCreateManyUserInputEnvelope
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+  }
+
   export type CVReviewUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<CVReviewCreateWithoutUserInput, CVReviewUncheckedCreateWithoutUserInput> | CVReviewCreateWithoutUserInput[] | CVReviewUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CVReviewCreateOrConnectWithoutUserInput | CVReviewCreateOrConnectWithoutUserInput[]
     createMany?: CVReviewCreateManyUserInputEnvelope
     connect?: CVReviewWhereUniqueInput | CVReviewWhereUniqueInput[]
-  }
-
-  export type JobMatchingUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<JobMatchingCreateWithoutUserInput, JobMatchingUncheckedCreateWithoutUserInput> | JobMatchingCreateWithoutUserInput[] | JobMatchingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutUserInput | JobMatchingCreateOrConnectWithoutUserInput[]
-    createMany?: JobMatchingCreateManyUserInputEnvelope
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
   }
 
   export type EnrollmentUncheckedCreateNestedManyWithoutUsersInput = {
@@ -39743,6 +39743,13 @@ export namespace Prisma {
     connect?: JobMatchWhereUniqueInput | JobMatchWhereUniqueInput[]
   }
 
+  export type jobmatchingUncheckedCreateNestedManyWithoutUsersInput = {
+    create?: XOR<jobmatchingCreateWithoutUsersInput, jobmatchingUncheckedCreateWithoutUsersInput> | jobmatchingCreateWithoutUsersInput[] | jobmatchingUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutUsersInput | jobmatchingCreateOrConnectWithoutUsersInput[]
+    createMany?: jobmatchingCreateManyUsersInputEnvelope
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+  }
+
   export type LessonProgressUncheckedCreateNestedManyWithoutUsersInput = {
     create?: XOR<LessonProgressCreateWithoutUsersInput, LessonProgressUncheckedCreateWithoutUsersInput> | LessonProgressCreateWithoutUsersInput[] | LessonProgressUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: LessonProgressCreateOrConnectWithoutUsersInput | LessonProgressCreateOrConnectWithoutUsersInput[]
@@ -39750,11 +39757,11 @@ export namespace Prisma {
     connect?: LessonProgressWhereUniqueInput | LessonProgressWhereUniqueInput[]
   }
 
-  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  export type notificationUncheckedCreateNestedManyWithoutUsersInput = {
+    create?: XOR<notificationCreateWithoutUsersInput, notificationUncheckedCreateWithoutUsersInput> | notificationCreateWithoutUsersInput[] | notificationUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: notificationCreateOrConnectWithoutUsersInput | notificationCreateOrConnectWithoutUsersInput[]
+    createMany?: notificationCreateManyUsersInputEnvelope
+    connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
   }
 
   export type PaymentUncheckedCreateNestedManyWithoutUsersInput = {
@@ -39783,13 +39790,6 @@ export namespace Prisma {
     connectOrCreate?: VoucherCreateOrConnectWithoutUsersInput | VoucherCreateOrConnectWithoutUsersInput[]
     createMany?: VoucherCreateManyUsersInputEnvelope
     connect?: VoucherWhereUniqueInput | VoucherWhereUniqueInput[]
-  }
-
-  export type CourseReviewUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
-    createMany?: CourseReviewCreateManyUserInputEnvelope
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -39906,6 +39906,20 @@ export namespace Prisma {
     deleteMany?: CourseProgressScalarWhereInput | CourseProgressScalarWhereInput[]
   }
 
+  export type CourseReviewUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
+    upsert?: CourseReviewUpsertWithWhereUniqueWithoutUserInput | CourseReviewUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CourseReviewCreateManyUserInputEnvelope
+    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    update?: CourseReviewUpdateWithWhereUniqueWithoutUserInput | CourseReviewUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CourseReviewUpdateManyWithWhereWithoutUserInput | CourseReviewUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
+  }
+
   export type CVReviewUpdateManyWithoutUserNestedInput = {
     create?: XOR<CVReviewCreateWithoutUserInput, CVReviewUncheckedCreateWithoutUserInput> | CVReviewCreateWithoutUserInput[] | CVReviewUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CVReviewCreateOrConnectWithoutUserInput | CVReviewCreateOrConnectWithoutUserInput[]
@@ -39918,20 +39932,6 @@ export namespace Prisma {
     update?: CVReviewUpdateWithWhereUniqueWithoutUserInput | CVReviewUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: CVReviewUpdateManyWithWhereWithoutUserInput | CVReviewUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: CVReviewScalarWhereInput | CVReviewScalarWhereInput[]
-  }
-
-  export type JobMatchingUpdateManyWithoutUserNestedInput = {
-    create?: XOR<JobMatchingCreateWithoutUserInput, JobMatchingUncheckedCreateWithoutUserInput> | JobMatchingCreateWithoutUserInput[] | JobMatchingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutUserInput | JobMatchingCreateOrConnectWithoutUserInput[]
-    upsert?: JobMatchingUpsertWithWhereUniqueWithoutUserInput | JobMatchingUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: JobMatchingCreateManyUserInputEnvelope
-    set?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    disconnect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    delete?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    update?: JobMatchingUpdateWithWhereUniqueWithoutUserInput | JobMatchingUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: JobMatchingUpdateManyWithWhereWithoutUserInput | JobMatchingUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: JobMatchingScalarWhereInput | JobMatchingScalarWhereInput[]
   }
 
   export type EnrollmentUpdateManyWithoutUsersNestedInput = {
@@ -39962,6 +39962,20 @@ export namespace Prisma {
     deleteMany?: JobMatchScalarWhereInput | JobMatchScalarWhereInput[]
   }
 
+  export type jobmatchingUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<jobmatchingCreateWithoutUsersInput, jobmatchingUncheckedCreateWithoutUsersInput> | jobmatchingCreateWithoutUsersInput[] | jobmatchingUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutUsersInput | jobmatchingCreateOrConnectWithoutUsersInput[]
+    upsert?: jobmatchingUpsertWithWhereUniqueWithoutUsersInput | jobmatchingUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: jobmatchingCreateManyUsersInputEnvelope
+    set?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    disconnect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    delete?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    update?: jobmatchingUpdateWithWhereUniqueWithoutUsersInput | jobmatchingUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: jobmatchingUpdateManyWithWhereWithoutUsersInput | jobmatchingUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: jobmatchingScalarWhereInput | jobmatchingScalarWhereInput[]
+  }
+
   export type LessonProgressUpdateManyWithoutUsersNestedInput = {
     create?: XOR<LessonProgressCreateWithoutUsersInput, LessonProgressUncheckedCreateWithoutUsersInput> | LessonProgressCreateWithoutUsersInput[] | LessonProgressUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: LessonProgressCreateOrConnectWithoutUsersInput | LessonProgressCreateOrConnectWithoutUsersInput[]
@@ -39976,18 +39990,18 @@ export namespace Prisma {
     deleteMany?: LessonProgressScalarWhereInput | LessonProgressScalarWhereInput[]
   }
 
-  export type NotificationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  export type notificationUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<notificationCreateWithoutUsersInput, notificationUncheckedCreateWithoutUsersInput> | notificationCreateWithoutUsersInput[] | notificationUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: notificationCreateOrConnectWithoutUsersInput | notificationCreateOrConnectWithoutUsersInput[]
+    upsert?: notificationUpsertWithWhereUniqueWithoutUsersInput | notificationUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: notificationCreateManyUsersInputEnvelope
+    set?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    disconnect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    delete?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    update?: notificationUpdateWithWhereUniqueWithoutUsersInput | notificationUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: notificationUpdateManyWithWhereWithoutUsersInput | notificationUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: notificationScalarWhereInput | notificationScalarWhereInput[]
   }
 
   export type PaymentUpdateManyWithoutUsersNestedInput = {
@@ -40044,20 +40058,6 @@ export namespace Prisma {
     update?: VoucherUpdateWithWhereUniqueWithoutUsersInput | VoucherUpdateWithWhereUniqueWithoutUsersInput[]
     updateMany?: VoucherUpdateManyWithWhereWithoutUsersInput | VoucherUpdateManyWithWhereWithoutUsersInput[]
     deleteMany?: VoucherScalarWhereInput | VoucherScalarWhereInput[]
-  }
-
-  export type CourseReviewUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
-    upsert?: CourseReviewUpsertWithWhereUniqueWithoutUserInput | CourseReviewUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CourseReviewCreateManyUserInputEnvelope
-    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    update?: CourseReviewUpdateWithWhereUniqueWithoutUserInput | CourseReviewUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CourseReviewUpdateManyWithWhereWithoutUserInput | CourseReviewUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -40162,6 +40162,20 @@ export namespace Prisma {
     deleteMany?: CourseProgressScalarWhereInput | CourseProgressScalarWhereInput[]
   }
 
+  export type CourseReviewUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
+    upsert?: CourseReviewUpsertWithWhereUniqueWithoutUserInput | CourseReviewUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CourseReviewCreateManyUserInputEnvelope
+    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    update?: CourseReviewUpdateWithWhereUniqueWithoutUserInput | CourseReviewUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CourseReviewUpdateManyWithWhereWithoutUserInput | CourseReviewUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
+  }
+
   export type CVReviewUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<CVReviewCreateWithoutUserInput, CVReviewUncheckedCreateWithoutUserInput> | CVReviewCreateWithoutUserInput[] | CVReviewUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CVReviewCreateOrConnectWithoutUserInput | CVReviewCreateOrConnectWithoutUserInput[]
@@ -40174,20 +40188,6 @@ export namespace Prisma {
     update?: CVReviewUpdateWithWhereUniqueWithoutUserInput | CVReviewUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: CVReviewUpdateManyWithWhereWithoutUserInput | CVReviewUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: CVReviewScalarWhereInput | CVReviewScalarWhereInput[]
-  }
-
-  export type JobMatchingUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<JobMatchingCreateWithoutUserInput, JobMatchingUncheckedCreateWithoutUserInput> | JobMatchingCreateWithoutUserInput[] | JobMatchingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutUserInput | JobMatchingCreateOrConnectWithoutUserInput[]
-    upsert?: JobMatchingUpsertWithWhereUniqueWithoutUserInput | JobMatchingUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: JobMatchingCreateManyUserInputEnvelope
-    set?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    disconnect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    delete?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    update?: JobMatchingUpdateWithWhereUniqueWithoutUserInput | JobMatchingUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: JobMatchingUpdateManyWithWhereWithoutUserInput | JobMatchingUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: JobMatchingScalarWhereInput | JobMatchingScalarWhereInput[]
   }
 
   export type EnrollmentUncheckedUpdateManyWithoutUsersNestedInput = {
@@ -40218,6 +40218,20 @@ export namespace Prisma {
     deleteMany?: JobMatchScalarWhereInput | JobMatchScalarWhereInput[]
   }
 
+  export type jobmatchingUncheckedUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<jobmatchingCreateWithoutUsersInput, jobmatchingUncheckedCreateWithoutUsersInput> | jobmatchingCreateWithoutUsersInput[] | jobmatchingUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutUsersInput | jobmatchingCreateOrConnectWithoutUsersInput[]
+    upsert?: jobmatchingUpsertWithWhereUniqueWithoutUsersInput | jobmatchingUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: jobmatchingCreateManyUsersInputEnvelope
+    set?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    disconnect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    delete?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    update?: jobmatchingUpdateWithWhereUniqueWithoutUsersInput | jobmatchingUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: jobmatchingUpdateManyWithWhereWithoutUsersInput | jobmatchingUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: jobmatchingScalarWhereInput | jobmatchingScalarWhereInput[]
+  }
+
   export type LessonProgressUncheckedUpdateManyWithoutUsersNestedInput = {
     create?: XOR<LessonProgressCreateWithoutUsersInput, LessonProgressUncheckedCreateWithoutUsersInput> | LessonProgressCreateWithoutUsersInput[] | LessonProgressUncheckedCreateWithoutUsersInput[]
     connectOrCreate?: LessonProgressCreateOrConnectWithoutUsersInput | LessonProgressCreateOrConnectWithoutUsersInput[]
@@ -40232,18 +40246,18 @@ export namespace Prisma {
     deleteMany?: LessonProgressScalarWhereInput | LessonProgressScalarWhereInput[]
   }
 
-  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  export type notificationUncheckedUpdateManyWithoutUsersNestedInput = {
+    create?: XOR<notificationCreateWithoutUsersInput, notificationUncheckedCreateWithoutUsersInput> | notificationCreateWithoutUsersInput[] | notificationUncheckedCreateWithoutUsersInput[]
+    connectOrCreate?: notificationCreateOrConnectWithoutUsersInput | notificationCreateOrConnectWithoutUsersInput[]
+    upsert?: notificationUpsertWithWhereUniqueWithoutUsersInput | notificationUpsertWithWhereUniqueWithoutUsersInput[]
+    createMany?: notificationCreateManyUsersInputEnvelope
+    set?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    disconnect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    delete?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+    update?: notificationUpdateWithWhereUniqueWithoutUsersInput | notificationUpdateWithWhereUniqueWithoutUsersInput[]
+    updateMany?: notificationUpdateManyWithWhereWithoutUsersInput | notificationUpdateManyWithWhereWithoutUsersInput[]
+    deleteMany?: notificationScalarWhereInput | notificationScalarWhereInput[]
   }
 
   export type PaymentUncheckedUpdateManyWithoutUsersNestedInput = {
@@ -40302,20 +40316,6 @@ export namespace Prisma {
     deleteMany?: VoucherScalarWhereInput | VoucherScalarWhereInput[]
   }
 
-  export type CourseReviewUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput> | CourseReviewCreateWithoutUserInput[] | CourseReviewUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutUserInput | CourseReviewCreateOrConnectWithoutUserInput[]
-    upsert?: CourseReviewUpsertWithWhereUniqueWithoutUserInput | CourseReviewUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CourseReviewCreateManyUserInputEnvelope
-    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    update?: CourseReviewUpdateWithWhereUniqueWithoutUserInput | CourseReviewUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CourseReviewUpdateManyWithWhereWithoutUserInput | CourseReviewUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutAssessmentInput = {
     create?: XOR<UserCreateWithoutAssessmentInput, UserUncheckedCreateWithoutAssessmentInput>
     connectOrCreate?: UserCreateOrConnectWithoutAssessmentInput
@@ -40330,24 +40330,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAssessmentInput, UserUpdateWithoutAssessmentInput>, UserUncheckedUpdateWithoutAssessmentInput>
   }
 
-  export type UserCreateNestedOneWithoutCoursereviewInput = {
-    create?: XOR<UserCreateWithoutCoursereviewInput, UserUncheckedCreateWithoutCoursereviewInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCoursereviewInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type CourseCreateNestedOneWithoutCoursereviewInput = {
     create?: XOR<CourseCreateWithoutCoursereviewInput, CourseUncheckedCreateWithoutCoursereviewInput>
     connectOrCreate?: CourseCreateOrConnectWithoutCoursereviewInput
     connect?: CourseWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutCoursereviewNestedInput = {
+  export type UserCreateNestedOneWithoutCoursereviewInput = {
     create?: XOR<UserCreateWithoutCoursereviewInput, UserUncheckedCreateWithoutCoursereviewInput>
     connectOrCreate?: UserCreateOrConnectWithoutCoursereviewInput
-    upsert?: UserUpsertWithoutCoursereviewInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCoursereviewInput, UserUpdateWithoutCoursereviewInput>, UserUncheckedUpdateWithoutCoursereviewInput>
   }
 
   export type CourseUpdateOneRequiredWithoutCoursereviewNestedInput = {
@@ -40356,6 +40348,14 @@ export namespace Prisma {
     upsert?: CourseUpsertWithoutCoursereviewInput
     connect?: CourseWhereUniqueInput
     update?: XOR<XOR<CourseUpdateToOneWithWhereWithoutCoursereviewInput, CourseUpdateWithoutCoursereviewInput>, CourseUncheckedUpdateWithoutCoursereviewInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCoursereviewNestedInput = {
+    create?: XOR<UserCreateWithoutCoursereviewInput, UserUncheckedCreateWithoutCoursereviewInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCoursereviewInput
+    upsert?: UserUpsertWithoutCoursereviewInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCoursereviewInput, UserUpdateWithoutCoursereviewInput>, UserUncheckedUpdateWithoutCoursereviewInput>
   }
 
   export type CourseCreateNestedManyWithoutCategoryInput = {
@@ -40463,13 +40463,6 @@ export namespace Prisma {
     connect?: ChatMessageWhereUniqueInput | ChatMessageWhereUniqueInput[]
   }
 
-  export type PaymentCreateNestedManyWithoutCounselingSessionInput = {
-    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
-    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
-    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
-    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-  }
-
   export type CounselorCreateNestedOneWithoutCounselingsessionInput = {
     create?: XOR<CounselorCreateWithoutCounselingsessionInput, CounselorUncheckedCreateWithoutCounselingsessionInput>
     connectOrCreate?: CounselorCreateOrConnectWithoutCounselingsessionInput
@@ -40480,6 +40473,13 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutCounselingsessionInput, UserUncheckedCreateWithoutCounselingsessionInput>
     connectOrCreate?: UserCreateOrConnectWithoutCounselingsessionInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type PaymentCreateNestedManyWithoutCounselingSessionInput = {
+    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
+    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
   export type ChatMessageUncheckedCreateNestedManyWithoutCounselingsessionInput = {
@@ -40522,20 +40522,6 @@ export namespace Prisma {
     deleteMany?: ChatMessageScalarWhereInput | ChatMessageScalarWhereInput[]
   }
 
-  export type PaymentUpdateManyWithoutCounselingSessionNestedInput = {
-    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
-    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
-    upsert?: PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput | PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput[]
-    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
-    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
-    update?: PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput | PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput[]
-    updateMany?: PaymentUpdateManyWithWhereWithoutCounselingSessionInput | PaymentUpdateManyWithWhereWithoutCounselingSessionInput[]
-    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
-  }
-
   export type CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput = {
     create?: XOR<CounselorCreateWithoutCounselingsessionInput, CounselorUncheckedCreateWithoutCounselingsessionInput>
     connectOrCreate?: CounselorCreateOrConnectWithoutCounselingsessionInput
@@ -40550,6 +40536,20 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutCounselingsessionInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCounselingsessionInput, UserUpdateWithoutCounselingsessionInput>, UserUncheckedUpdateWithoutCounselingsessionInput>
+  }
+
+  export type PaymentUpdateManyWithoutCounselingSessionNestedInput = {
+    create?: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput> | PaymentCreateWithoutCounselingSessionInput[] | PaymentUncheckedCreateWithoutCounselingSessionInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutCounselingSessionInput | PaymentCreateOrConnectWithoutCounselingSessionInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput | PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput[]
+    createMany?: PaymentCreateManyCounselingSessionInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput | PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutCounselingSessionInput | PaymentUpdateManyWithWhereWithoutCounselingSessionInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
   export type ChatMessageUncheckedUpdateManyWithoutCounselingsessionNestedInput = {
@@ -40662,6 +40662,13 @@ export namespace Prisma {
     connect?: CourseProgressWhereUniqueInput | CourseProgressWhereUniqueInput[]
   }
 
+  export type CourseReviewCreateNestedManyWithoutCourseInput = {
+    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
+    createMany?: CourseReviewCreateManyCourseInputEnvelope
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+  }
+
   export type coursevideoCreateNestedManyWithoutCourseInput = {
     create?: XOR<coursevideoCreateWithoutCourseInput, coursevideoUncheckedCreateWithoutCourseInput> | coursevideoCreateWithoutCourseInput[] | coursevideoUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: coursevideoCreateOrConnectWithoutCourseInput | coursevideoCreateOrConnectWithoutCourseInput[]
@@ -40711,13 +40718,6 @@ export namespace Prisma {
     connect?: RoadmapCourseWhereUniqueInput | RoadmapCourseWhereUniqueInput[]
   }
 
-  export type CourseReviewCreateNestedManyWithoutCourseInput = {
-    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
-    createMany?: CourseReviewCreateManyCourseInputEnvelope
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-  }
-
   export type CertificateUncheckedCreateNestedManyWithoutCourseInput = {
     create?: XOR<CertificateCreateWithoutCourseInput, CertificateUncheckedCreateWithoutCourseInput> | CertificateCreateWithoutCourseInput[] | CertificateUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CertificateCreateOrConnectWithoutCourseInput | CertificateCreateOrConnectWithoutCourseInput[]
@@ -40730,6 +40730,13 @@ export namespace Prisma {
     connectOrCreate?: CourseProgressCreateOrConnectWithoutCourseInput | CourseProgressCreateOrConnectWithoutCourseInput[]
     createMany?: CourseProgressCreateManyCourseInputEnvelope
     connect?: CourseProgressWhereUniqueInput | CourseProgressWhereUniqueInput[]
+  }
+
+  export type CourseReviewUncheckedCreateNestedManyWithoutCourseInput = {
+    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
+    createMany?: CourseReviewCreateManyCourseInputEnvelope
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
   }
 
   export type coursevideoUncheckedCreateNestedManyWithoutCourseInput = {
@@ -40781,13 +40788,6 @@ export namespace Prisma {
     connect?: RoadmapCourseWhereUniqueInput | RoadmapCourseWhereUniqueInput[]
   }
 
-  export type CourseReviewUncheckedCreateNestedManyWithoutCourseInput = {
-    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
-    createMany?: CourseReviewCreateManyCourseInputEnvelope
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-  }
-
   export type CertificateUpdateManyWithoutCourseNestedInput = {
     create?: XOR<CertificateCreateWithoutCourseInput, CertificateUncheckedCreateWithoutCourseInput> | CertificateCreateWithoutCourseInput[] | CertificateUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CertificateCreateOrConnectWithoutCourseInput | CertificateCreateOrConnectWithoutCourseInput[]
@@ -40830,6 +40830,20 @@ export namespace Prisma {
     update?: CourseProgressUpdateWithWhereUniqueWithoutCourseInput | CourseProgressUpdateWithWhereUniqueWithoutCourseInput[]
     updateMany?: CourseProgressUpdateManyWithWhereWithoutCourseInput | CourseProgressUpdateManyWithWhereWithoutCourseInput[]
     deleteMany?: CourseProgressScalarWhereInput | CourseProgressScalarWhereInput[]
+  }
+
+  export type CourseReviewUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
+    upsert?: CourseReviewUpsertWithWhereUniqueWithoutCourseInput | CourseReviewUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: CourseReviewCreateManyCourseInputEnvelope
+    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    update?: CourseReviewUpdateWithWhereUniqueWithoutCourseInput | CourseReviewUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: CourseReviewUpdateManyWithWhereWithoutCourseInput | CourseReviewUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
   }
 
   export type coursevideoUpdateManyWithoutCourseNestedInput = {
@@ -40930,20 +40944,6 @@ export namespace Prisma {
     deleteMany?: RoadmapCourseScalarWhereInput | RoadmapCourseScalarWhereInput[]
   }
 
-  export type CourseReviewUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
-    upsert?: CourseReviewUpsertWithWhereUniqueWithoutCourseInput | CourseReviewUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: CourseReviewCreateManyCourseInputEnvelope
-    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    update?: CourseReviewUpdateWithWhereUniqueWithoutCourseInput | CourseReviewUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: CourseReviewUpdateManyWithWhereWithoutCourseInput | CourseReviewUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
-  }
-
   export type CertificateUncheckedUpdateManyWithoutCourseNestedInput = {
     create?: XOR<CertificateCreateWithoutCourseInput, CertificateUncheckedCreateWithoutCourseInput> | CertificateCreateWithoutCourseInput[] | CertificateUncheckedCreateWithoutCourseInput[]
     connectOrCreate?: CertificateCreateOrConnectWithoutCourseInput | CertificateCreateOrConnectWithoutCourseInput[]
@@ -40970,6 +40970,20 @@ export namespace Prisma {
     update?: CourseProgressUpdateWithWhereUniqueWithoutCourseInput | CourseProgressUpdateWithWhereUniqueWithoutCourseInput[]
     updateMany?: CourseProgressUpdateManyWithWhereWithoutCourseInput | CourseProgressUpdateManyWithWhereWithoutCourseInput[]
     deleteMany?: CourseProgressScalarWhereInput | CourseProgressScalarWhereInput[]
+  }
+
+  export type CourseReviewUncheckedUpdateManyWithoutCourseNestedInput = {
+    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
+    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
+    upsert?: CourseReviewUpsertWithWhereUniqueWithoutCourseInput | CourseReviewUpsertWithWhereUniqueWithoutCourseInput[]
+    createMany?: CourseReviewCreateManyCourseInputEnvelope
+    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
+    update?: CourseReviewUpdateWithWhereUniqueWithoutCourseInput | CourseReviewUpdateWithWhereUniqueWithoutCourseInput[]
+    updateMany?: CourseReviewUpdateManyWithWhereWithoutCourseInput | CourseReviewUpdateManyWithWhereWithoutCourseInput[]
+    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
   }
 
   export type coursevideoUncheckedUpdateManyWithoutCourseNestedInput = {
@@ -41070,20 +41084,6 @@ export namespace Prisma {
     deleteMany?: RoadmapCourseScalarWhereInput | RoadmapCourseScalarWhereInput[]
   }
 
-  export type CourseReviewUncheckedUpdateManyWithoutCourseNestedInput = {
-    create?: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput> | CourseReviewCreateWithoutCourseInput[] | CourseReviewUncheckedCreateWithoutCourseInput[]
-    connectOrCreate?: CourseReviewCreateOrConnectWithoutCourseInput | CourseReviewCreateOrConnectWithoutCourseInput[]
-    upsert?: CourseReviewUpsertWithWhereUniqueWithoutCourseInput | CourseReviewUpsertWithWhereUniqueWithoutCourseInput[]
-    createMany?: CourseReviewCreateManyCourseInputEnvelope
-    set?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    disconnect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    delete?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    connect?: CourseReviewWhereUniqueInput | CourseReviewWhereUniqueInput[]
-    update?: CourseReviewUpdateWithWhereUniqueWithoutCourseInput | CourseReviewUpdateWithWhereUniqueWithoutCourseInput[]
-    updateMany?: CourseReviewUpdateManyWithWhereWithoutCourseInput | CourseReviewUpdateManyWithWhereWithoutCourseInput[]
-    deleteMany?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
-  }
-
   export type CourseCreateNestedOneWithoutCourseprogressInput = {
     create?: XOR<CourseCreateWithoutCourseprogressInput, CourseUncheckedCreateWithoutCourseprogressInput>
     connectOrCreate?: CourseCreateOrConnectWithoutCourseprogressInput
@@ -41132,18 +41132,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type JobMatchingCreateNestedManyWithoutCvReviewInput = {
-    create?: XOR<JobMatchingCreateWithoutCvReviewInput, JobMatchingUncheckedCreateWithoutCvReviewInput> | JobMatchingCreateWithoutCvReviewInput[] | JobMatchingUncheckedCreateWithoutCvReviewInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutCvReviewInput | JobMatchingCreateOrConnectWithoutCvReviewInput[]
-    createMany?: JobMatchingCreateManyCvReviewInputEnvelope
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
+  export type jobmatchingCreateNestedManyWithoutCvreviewInput = {
+    create?: XOR<jobmatchingCreateWithoutCvreviewInput, jobmatchingUncheckedCreateWithoutCvreviewInput> | jobmatchingCreateWithoutCvreviewInput[] | jobmatchingUncheckedCreateWithoutCvreviewInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutCvreviewInput | jobmatchingCreateOrConnectWithoutCvreviewInput[]
+    createMany?: jobmatchingCreateManyCvreviewInputEnvelope
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
   }
 
-  export type JobMatchingUncheckedCreateNestedManyWithoutCvReviewInput = {
-    create?: XOR<JobMatchingCreateWithoutCvReviewInput, JobMatchingUncheckedCreateWithoutCvReviewInput> | JobMatchingCreateWithoutCvReviewInput[] | JobMatchingUncheckedCreateWithoutCvReviewInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutCvReviewInput | JobMatchingCreateOrConnectWithoutCvReviewInput[]
-    createMany?: JobMatchingCreateManyCvReviewInputEnvelope
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
+  export type jobmatchingUncheckedCreateNestedManyWithoutCvreviewInput = {
+    create?: XOR<jobmatchingCreateWithoutCvreviewInput, jobmatchingUncheckedCreateWithoutCvreviewInput> | jobmatchingCreateWithoutCvreviewInput[] | jobmatchingUncheckedCreateWithoutCvreviewInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutCvreviewInput | jobmatchingCreateOrConnectWithoutCvreviewInput[]
+    createMany?: jobmatchingCreateManyCvreviewInputEnvelope
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -41162,32 +41162,32 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCvreviewInput, UserUpdateWithoutCvreviewInput>, UserUncheckedUpdateWithoutCvreviewInput>
   }
 
-  export type JobMatchingUpdateManyWithoutCvReviewNestedInput = {
-    create?: XOR<JobMatchingCreateWithoutCvReviewInput, JobMatchingUncheckedCreateWithoutCvReviewInput> | JobMatchingCreateWithoutCvReviewInput[] | JobMatchingUncheckedCreateWithoutCvReviewInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutCvReviewInput | JobMatchingCreateOrConnectWithoutCvReviewInput[]
-    upsert?: JobMatchingUpsertWithWhereUniqueWithoutCvReviewInput | JobMatchingUpsertWithWhereUniqueWithoutCvReviewInput[]
-    createMany?: JobMatchingCreateManyCvReviewInputEnvelope
-    set?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    disconnect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    delete?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    update?: JobMatchingUpdateWithWhereUniqueWithoutCvReviewInput | JobMatchingUpdateWithWhereUniqueWithoutCvReviewInput[]
-    updateMany?: JobMatchingUpdateManyWithWhereWithoutCvReviewInput | JobMatchingUpdateManyWithWhereWithoutCvReviewInput[]
-    deleteMany?: JobMatchingScalarWhereInput | JobMatchingScalarWhereInput[]
+  export type jobmatchingUpdateManyWithoutCvreviewNestedInput = {
+    create?: XOR<jobmatchingCreateWithoutCvreviewInput, jobmatchingUncheckedCreateWithoutCvreviewInput> | jobmatchingCreateWithoutCvreviewInput[] | jobmatchingUncheckedCreateWithoutCvreviewInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutCvreviewInput | jobmatchingCreateOrConnectWithoutCvreviewInput[]
+    upsert?: jobmatchingUpsertWithWhereUniqueWithoutCvreviewInput | jobmatchingUpsertWithWhereUniqueWithoutCvreviewInput[]
+    createMany?: jobmatchingCreateManyCvreviewInputEnvelope
+    set?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    disconnect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    delete?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    update?: jobmatchingUpdateWithWhereUniqueWithoutCvreviewInput | jobmatchingUpdateWithWhereUniqueWithoutCvreviewInput[]
+    updateMany?: jobmatchingUpdateManyWithWhereWithoutCvreviewInput | jobmatchingUpdateManyWithWhereWithoutCvreviewInput[]
+    deleteMany?: jobmatchingScalarWhereInput | jobmatchingScalarWhereInput[]
   }
 
-  export type JobMatchingUncheckedUpdateManyWithoutCvReviewNestedInput = {
-    create?: XOR<JobMatchingCreateWithoutCvReviewInput, JobMatchingUncheckedCreateWithoutCvReviewInput> | JobMatchingCreateWithoutCvReviewInput[] | JobMatchingUncheckedCreateWithoutCvReviewInput[]
-    connectOrCreate?: JobMatchingCreateOrConnectWithoutCvReviewInput | JobMatchingCreateOrConnectWithoutCvReviewInput[]
-    upsert?: JobMatchingUpsertWithWhereUniqueWithoutCvReviewInput | JobMatchingUpsertWithWhereUniqueWithoutCvReviewInput[]
-    createMany?: JobMatchingCreateManyCvReviewInputEnvelope
-    set?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    disconnect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    delete?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    connect?: JobMatchingWhereUniqueInput | JobMatchingWhereUniqueInput[]
-    update?: JobMatchingUpdateWithWhereUniqueWithoutCvReviewInput | JobMatchingUpdateWithWhereUniqueWithoutCvReviewInput[]
-    updateMany?: JobMatchingUpdateManyWithWhereWithoutCvReviewInput | JobMatchingUpdateManyWithWhereWithoutCvReviewInput[]
-    deleteMany?: JobMatchingScalarWhereInput | JobMatchingScalarWhereInput[]
+  export type jobmatchingUncheckedUpdateManyWithoutCvreviewNestedInput = {
+    create?: XOR<jobmatchingCreateWithoutCvreviewInput, jobmatchingUncheckedCreateWithoutCvreviewInput> | jobmatchingCreateWithoutCvreviewInput[] | jobmatchingUncheckedCreateWithoutCvreviewInput[]
+    connectOrCreate?: jobmatchingCreateOrConnectWithoutCvreviewInput | jobmatchingCreateOrConnectWithoutCvreviewInput[]
+    upsert?: jobmatchingUpsertWithWhereUniqueWithoutCvreviewInput | jobmatchingUpsertWithWhereUniqueWithoutCvreviewInput[]
+    createMany?: jobmatchingCreateManyCvreviewInputEnvelope
+    set?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    disconnect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    delete?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    connect?: jobmatchingWhereUniqueInput | jobmatchingWhereUniqueInput[]
+    update?: jobmatchingUpdateWithWhereUniqueWithoutCvreviewInput | jobmatchingUpdateWithWhereUniqueWithoutCvreviewInput[]
+    updateMany?: jobmatchingUpdateManyWithWhereWithoutCvreviewInput | jobmatchingUpdateManyWithWhereWithoutCvreviewInput[]
+    deleteMany?: jobmatchingScalarWhereInput | jobmatchingScalarWhereInput[]
   }
 
   export type CourseCreateNestedOneWithoutEnrollmentInput = {
@@ -41332,25 +41332,17 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLessonprogressInput, UserUpdateWithoutLessonprogressInput>, UserUncheckedUpdateWithoutLessonprogressInput>
   }
 
-  export type UserCreateNestedOneWithoutNotificationInput = {
-    create?: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNotificationInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutNotificationNestedInput = {
-    create?: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
-    connectOrCreate?: UserCreateOrConnectWithoutNotificationInput
-    upsert?: UserUpsertWithoutNotificationInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationInput, UserUpdateWithoutNotificationInput>, UserUncheckedUpdateWithoutNotificationInput>
-  }
-
   export type EnrollmentCreateNestedManyWithoutPaymentInput = {
     create?: XOR<EnrollmentCreateWithoutPaymentInput, EnrollmentUncheckedCreateWithoutPaymentInput> | EnrollmentCreateWithoutPaymentInput[] | EnrollmentUncheckedCreateWithoutPaymentInput[]
     connectOrCreate?: EnrollmentCreateOrConnectWithoutPaymentInput | EnrollmentCreateOrConnectWithoutPaymentInput[]
     createMany?: EnrollmentCreateManyPaymentInputEnvelope
     connect?: EnrollmentWhereUniqueInput | EnrollmentWhereUniqueInput[]
+  }
+
+  export type CounselingSessionCreateNestedOneWithoutPaymentInput = {
+    create?: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
+    connectOrCreate?: CounselingSessionCreateOrConnectWithoutPaymentInput
+    connect?: CounselingSessionWhereUniqueInput
   }
 
   export type CourseCreateNestedOneWithoutPaymentInput = {
@@ -41363,12 +41355,6 @@ export namespace Prisma {
     create?: XOR<RoadmapCreateWithoutPaymentInput, RoadmapUncheckedCreateWithoutPaymentInput>
     connectOrCreate?: RoadmapCreateOrConnectWithoutPaymentInput
     connect?: RoadmapWhereUniqueInput
-  }
-
-  export type CounselingSessionCreateNestedOneWithoutPaymentInput = {
-    create?: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
-    connectOrCreate?: CounselingSessionCreateOrConnectWithoutPaymentInput
-    connect?: CounselingSessionWhereUniqueInput
   }
 
   export type UserCreateNestedOneWithoutPaymentInput = {
@@ -41412,6 +41398,16 @@ export namespace Prisma {
     deleteMany?: EnrollmentScalarWhereInput | EnrollmentScalarWhereInput[]
   }
 
+  export type CounselingSessionUpdateOneWithoutPaymentNestedInput = {
+    create?: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
+    connectOrCreate?: CounselingSessionCreateOrConnectWithoutPaymentInput
+    upsert?: CounselingSessionUpsertWithoutPaymentInput
+    disconnect?: CounselingSessionWhereInput | boolean
+    delete?: CounselingSessionWhereInput | boolean
+    connect?: CounselingSessionWhereUniqueInput
+    update?: XOR<XOR<CounselingSessionUpdateToOneWithWhereWithoutPaymentInput, CounselingSessionUpdateWithoutPaymentInput>, CounselingSessionUncheckedUpdateWithoutPaymentInput>
+  }
+
   export type CourseUpdateOneWithoutPaymentNestedInput = {
     create?: XOR<CourseCreateWithoutPaymentInput, CourseUncheckedCreateWithoutPaymentInput>
     connectOrCreate?: CourseCreateOrConnectWithoutPaymentInput
@@ -41430,16 +41426,6 @@ export namespace Prisma {
     delete?: RoadmapWhereInput | boolean
     connect?: RoadmapWhereUniqueInput
     update?: XOR<XOR<RoadmapUpdateToOneWithWhereWithoutPaymentInput, RoadmapUpdateWithoutPaymentInput>, RoadmapUncheckedUpdateWithoutPaymentInput>
-  }
-
-  export type CounselingSessionUpdateOneWithoutPaymentNestedInput = {
-    create?: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
-    connectOrCreate?: CounselingSessionCreateOrConnectWithoutPaymentInput
-    upsert?: CounselingSessionUpsertWithoutPaymentInput
-    disconnect?: CounselingSessionWhereInput | boolean
-    delete?: CounselingSessionWhereInput | boolean
-    connect?: CounselingSessionWhereUniqueInput
-    update?: XOR<XOR<CounselingSessionUpdateToOneWithWhereWithoutPaymentInput, CounselingSessionUpdateWithoutPaymentInput>, CounselingSessionUncheckedUpdateWithoutPaymentInput>
   }
 
   export type UserUpdateOneRequiredWithoutPaymentNestedInput = {
@@ -41744,30 +41730,22 @@ export namespace Prisma {
     update?: XOR<XOR<RoadmapUpdateToOneWithWhereWithoutRoadmapcourseInput, RoadmapUpdateWithoutRoadmapcourseInput>, RoadmapUncheckedUpdateWithoutRoadmapcourseInput>
   }
 
-  export type RoadmapCreateNestedOneWithoutUserroadmapInput = {
-    create?: XOR<RoadmapCreateWithoutUserroadmapInput, RoadmapUncheckedCreateWithoutUserroadmapInput>
-    connectOrCreate?: RoadmapCreateOrConnectWithoutUserroadmapInput
-    connect?: RoadmapWhereUniqueInput
-  }
-
   export type PaymentCreateNestedOneWithoutUserroadmapInput = {
     create?: XOR<PaymentCreateWithoutUserroadmapInput, PaymentUncheckedCreateWithoutUserroadmapInput>
     connectOrCreate?: PaymentCreateOrConnectWithoutUserroadmapInput
     connect?: PaymentWhereUniqueInput
   }
 
+  export type RoadmapCreateNestedOneWithoutUserroadmapInput = {
+    create?: XOR<RoadmapCreateWithoutUserroadmapInput, RoadmapUncheckedCreateWithoutUserroadmapInput>
+    connectOrCreate?: RoadmapCreateOrConnectWithoutUserroadmapInput
+    connect?: RoadmapWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutUserroadmapInput = {
     create?: XOR<UserCreateWithoutUserroadmapInput, UserUncheckedCreateWithoutUserroadmapInput>
     connectOrCreate?: UserCreateOrConnectWithoutUserroadmapInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type RoadmapUpdateOneRequiredWithoutUserroadmapNestedInput = {
-    create?: XOR<RoadmapCreateWithoutUserroadmapInput, RoadmapUncheckedCreateWithoutUserroadmapInput>
-    connectOrCreate?: RoadmapCreateOrConnectWithoutUserroadmapInput
-    upsert?: RoadmapUpsertWithoutUserroadmapInput
-    connect?: RoadmapWhereUniqueInput
-    update?: XOR<XOR<RoadmapUpdateToOneWithWhereWithoutUserroadmapInput, RoadmapUpdateWithoutUserroadmapInput>, RoadmapUncheckedUpdateWithoutUserroadmapInput>
   }
 
   export type PaymentUpdateOneWithoutUserroadmapNestedInput = {
@@ -41778,6 +41756,14 @@ export namespace Prisma {
     delete?: PaymentWhereInput | boolean
     connect?: PaymentWhereUniqueInput
     update?: XOR<XOR<PaymentUpdateToOneWithWhereWithoutUserroadmapInput, PaymentUpdateWithoutUserroadmapInput>, PaymentUncheckedUpdateWithoutUserroadmapInput>
+  }
+
+  export type RoadmapUpdateOneRequiredWithoutUserroadmapNestedInput = {
+    create?: XOR<RoadmapCreateWithoutUserroadmapInput, RoadmapUncheckedCreateWithoutUserroadmapInput>
+    connectOrCreate?: RoadmapCreateOrConnectWithoutUserroadmapInput
+    upsert?: RoadmapUpsertWithoutUserroadmapInput
+    connect?: RoadmapWhereUniqueInput
+    update?: XOR<XOR<RoadmapUpdateToOneWithWhereWithoutUserroadmapInput, RoadmapUpdateWithoutUserroadmapInput>, RoadmapUncheckedUpdateWithoutUserroadmapInput>
   }
 
   export type UserUpdateOneRequiredWithoutUserroadmapNestedInput = {
@@ -41802,24 +41788,16 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVoucherInput, UserUpdateWithoutVoucherInput>, UserUncheckedUpdateWithoutVoucherInput>
   }
 
-  export type UserCreateNestedOneWithoutJobmatchingInput = {
-    create?: XOR<UserCreateWithoutJobmatchingInput, UserUncheckedCreateWithoutJobmatchingInput>
-    connectOrCreate?: UserCreateOrConnectWithoutJobmatchingInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type CVReviewCreateNestedOneWithoutJobmatchingInput = {
     create?: XOR<CVReviewCreateWithoutJobmatchingInput, CVReviewUncheckedCreateWithoutJobmatchingInput>
     connectOrCreate?: CVReviewCreateOrConnectWithoutJobmatchingInput
     connect?: CVReviewWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutJobmatchingNestedInput = {
+  export type UserCreateNestedOneWithoutJobmatchingInput = {
     create?: XOR<UserCreateWithoutJobmatchingInput, UserUncheckedCreateWithoutJobmatchingInput>
     connectOrCreate?: UserCreateOrConnectWithoutJobmatchingInput
-    upsert?: UserUpsertWithoutJobmatchingInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutJobmatchingInput, UserUpdateWithoutJobmatchingInput>, UserUncheckedUpdateWithoutJobmatchingInput>
   }
 
   export type CVReviewUpdateOneWithoutJobmatchingNestedInput = {
@@ -41830,6 +41808,28 @@ export namespace Prisma {
     delete?: CVReviewWhereInput | boolean
     connect?: CVReviewWhereUniqueInput
     update?: XOR<XOR<CVReviewUpdateToOneWithWhereWithoutJobmatchingInput, CVReviewUpdateWithoutJobmatchingInput>, CVReviewUncheckedUpdateWithoutJobmatchingInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutJobmatchingNestedInput = {
+    create?: XOR<UserCreateWithoutJobmatchingInput, UserUncheckedCreateWithoutJobmatchingInput>
+    connectOrCreate?: UserCreateOrConnectWithoutJobmatchingInput
+    upsert?: UserUpsertWithoutJobmatchingInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutJobmatchingInput, UserUpdateWithoutJobmatchingInput>, UserUncheckedUpdateWithoutJobmatchingInput>
+  }
+
+  export type UserCreateNestedOneWithoutNotificationInput = {
+    create?: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationInput
+    upsert?: UserUpsertWithoutNotificationInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationInput, UserUpdateWithoutNotificationInput>, UserUncheckedUpdateWithoutNotificationInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -42187,8 +42187,8 @@ export namespace Prisma {
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
-    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionUncheckedCreateWithoutUsersInput = {
@@ -42247,6 +42247,7 @@ export namespace Prisma {
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
@@ -42254,7 +42255,6 @@ export namespace Prisma {
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutUsersInput = {
@@ -42268,6 +42268,7 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
@@ -42275,7 +42276,6 @@ export namespace Prisma {
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutUsersInput = {
@@ -42313,14 +42313,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CourseReviewCreateWithoutUserInput = {
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    course: CourseCreateNestedOneWithoutCoursereviewInput
+  }
+
+  export type CourseReviewUncheckedCreateWithoutUserInput = {
+    id?: number
+    courseId: number
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CourseReviewCreateOrConnectWithoutUserInput = {
+    where: CourseReviewWhereUniqueInput
+    create: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput>
+  }
+
+  export type CourseReviewCreateManyUserInputEnvelope = {
+    data: CourseReviewCreateManyUserInput | CourseReviewCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CVReviewCreateWithoutUserInput = {
     id?: string
     fileName: string
     filePath?: string | null
     fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -42334,7 +42358,10 @@ export namespace Prisma {
     suggestions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    jobmatching?: JobMatchingCreateNestedManyWithoutCvReviewInput
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
+    jobmatching?: jobmatchingCreateNestedManyWithoutCvreviewInput
   }
 
   export type CVReviewUncheckedCreateWithoutUserInput = {
@@ -42342,9 +42369,6 @@ export namespace Prisma {
     fileName: string
     filePath?: string | null
     fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -42358,7 +42382,10 @@ export namespace Prisma {
     suggestions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutCvReviewInput
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutCvreviewInput
   }
 
   export type CVReviewCreateOrConnectWithoutUserInput = {
@@ -42368,36 +42395,6 @@ export namespace Prisma {
 
   export type CVReviewCreateManyUserInputEnvelope = {
     data: CVReviewCreateManyUserInput | CVReviewCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type JobMatchingCreateWithoutUserInput = {
-    id?: string
-    dreamJob: string
-    matches: JsonNullValueInput | InputJsonValue
-    aiAnalysis: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    cvReview?: CVReviewCreateNestedOneWithoutJobmatchingInput
-  }
-
-  export type JobMatchingUncheckedCreateWithoutUserInput = {
-    id?: string
-    cvReviewId?: string | null
-    dreamJob: string
-    matches: JsonNullValueInput | InputJsonValue
-    aiAnalysis: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type JobMatchingCreateOrConnectWithoutUserInput = {
-    where: JobMatchingWhereUniqueInput
-    create: XOR<JobMatchingCreateWithoutUserInput, JobMatchingUncheckedCreateWithoutUserInput>
-  }
-
-  export type JobMatchingCreateManyUserInputEnvelope = {
-    data: JobMatchingCreateManyUserInput | JobMatchingCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -42449,6 +42446,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type jobmatchingCreateWithoutUsersInput = {
+    id: string
+    dreamJob: string
+    matches: JsonNullValueInput | InputJsonValue
+    aiAnalysis: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt: Date | string
+    cvreview?: CVReviewCreateNestedOneWithoutJobmatchingInput
+  }
+
+  export type jobmatchingUncheckedCreateWithoutUsersInput = {
+    id: string
+    cvReviewId?: string | null
+    dreamJob: string
+    matches: JsonNullValueInput | InputJsonValue
+    aiAnalysis: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt: Date | string
+  }
+
+  export type jobmatchingCreateOrConnectWithoutUsersInput = {
+    where: jobmatchingWhereUniqueInput
+    create: XOR<jobmatchingCreateWithoutUsersInput, jobmatchingUncheckedCreateWithoutUsersInput>
+  }
+
+  export type jobmatchingCreateManyUsersInputEnvelope = {
+    data: jobmatchingCreateManyUsersInput | jobmatchingCreateManyUsersInput[]
+    skipDuplicates?: boolean
+  }
+
   export type LessonProgressCreateWithoutUsersInput = {
     isCompleted?: boolean
     updatedAt: Date | string
@@ -42472,7 +42499,7 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type NotificationCreateWithoutUserInput = {
+  export type notificationCreateWithoutUsersInput = {
     title: string
     body: string
     type?: string | null
@@ -42480,7 +42507,7 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type NotificationUncheckedCreateWithoutUserInput = {
+  export type notificationUncheckedCreateWithoutUsersInput = {
     id?: number
     title: string
     body: string
@@ -42489,13 +42516,13 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type NotificationCreateOrConnectWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  export type notificationCreateOrConnectWithoutUsersInput = {
+    where: notificationWhereUniqueInput
+    create: XOR<notificationCreateWithoutUsersInput, notificationUncheckedCreateWithoutUsersInput>
   }
 
-  export type NotificationCreateManyUserInputEnvelope = {
-    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+  export type notificationCreateManyUsersInputEnvelope = {
+    data: notificationCreateManyUsersInput | notificationCreateManyUsersInput[]
     skipDuplicates?: boolean
   }
 
@@ -42508,9 +42535,9 @@ export namespace Prisma {
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
-    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
 
@@ -42574,8 +42601,8 @@ export namespace Prisma {
   export type UserRoadmapCreateWithoutUsersInput = {
     isUnlocked: boolean
     unlockedAt?: Date | string | null
-    roadmap: RoadmapCreateNestedOneWithoutUserroadmapInput
     payment?: PaymentCreateNestedOneWithoutUserroadmapInput
+    roadmap: RoadmapCreateNestedOneWithoutUserroadmapInput
   }
 
   export type UserRoadmapUncheckedCreateWithoutUsersInput = {
@@ -42618,33 +42645,6 @@ export namespace Prisma {
 
   export type VoucherCreateManyUsersInputEnvelope = {
     data: VoucherCreateManyUsersInput | VoucherCreateManyUsersInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CourseReviewCreateWithoutUserInput = {
-    rating: number
-    comment?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    course: CourseCreateNestedOneWithoutCoursereviewInput
-  }
-
-  export type CourseReviewUncheckedCreateWithoutUserInput = {
-    id?: number
-    courseId: number
-    rating: number
-    comment?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CourseReviewCreateOrConnectWithoutUserInput = {
-    where: CourseReviewWhereUniqueInput
-    create: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput>
-  }
-
-  export type CourseReviewCreateManyUserInputEnvelope = {
-    data: CourseReviewCreateManyUserInput | CourseReviewCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -42855,6 +42855,35 @@ export namespace Prisma {
     isCompleted?: BoolFilter<"CourseProgress"> | boolean
   }
 
+  export type CourseReviewUpsertWithWhereUniqueWithoutUserInput = {
+    where: CourseReviewWhereUniqueInput
+    update: XOR<CourseReviewUpdateWithoutUserInput, CourseReviewUncheckedUpdateWithoutUserInput>
+    create: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput>
+  }
+
+  export type CourseReviewUpdateWithWhereUniqueWithoutUserInput = {
+    where: CourseReviewWhereUniqueInput
+    data: XOR<CourseReviewUpdateWithoutUserInput, CourseReviewUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CourseReviewUpdateManyWithWhereWithoutUserInput = {
+    where: CourseReviewScalarWhereInput
+    data: XOR<CourseReviewUpdateManyMutationInput, CourseReviewUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CourseReviewScalarWhereInput = {
+    AND?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
+    OR?: CourseReviewScalarWhereInput[]
+    NOT?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
+    id?: IntFilter<"CourseReview"> | number
+    userId?: IntFilter<"CourseReview"> | number
+    courseId?: IntFilter<"CourseReview"> | number
+    rating?: IntFilter<"CourseReview"> | number
+    comment?: StringNullableFilter<"CourseReview"> | string | null
+    createdAt?: DateTimeFilter<"CourseReview"> | Date | string
+    updatedAt?: DateTimeFilter<"CourseReview"> | Date | string
+  }
+
   export type CVReviewUpsertWithWhereUniqueWithoutUserInput = {
     where: CVReviewWhereUniqueInput
     update: XOR<CVReviewUpdateWithoutUserInput, CVReviewUncheckedUpdateWithoutUserInput>
@@ -42880,9 +42909,6 @@ export namespace Prisma {
     fileName?: StringFilter<"CVReview"> | string
     filePath?: StringNullableFilter<"CVReview"> | string | null
     fileSize?: IntFilter<"CVReview"> | number
-    b2FileId?: StringNullableFilter<"CVReview"> | string | null
-    b2FileName?: StringNullableFilter<"CVReview"> | string | null
-    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
     extractedText?: StringFilter<"CVReview"> | string
     careerField?: StringFilter<"CVReview"> | string
     relevancyRate?: FloatFilter<"CVReview"> | number
@@ -42896,36 +42922,9 @@ export namespace Prisma {
     suggestions?: JsonFilter<"CVReview">
     createdAt?: DateTimeFilter<"CVReview"> | Date | string
     updatedAt?: DateTimeFilter<"CVReview"> | Date | string
-  }
-
-  export type JobMatchingUpsertWithWhereUniqueWithoutUserInput = {
-    where: JobMatchingWhereUniqueInput
-    update: XOR<JobMatchingUpdateWithoutUserInput, JobMatchingUncheckedUpdateWithoutUserInput>
-    create: XOR<JobMatchingCreateWithoutUserInput, JobMatchingUncheckedCreateWithoutUserInput>
-  }
-
-  export type JobMatchingUpdateWithWhereUniqueWithoutUserInput = {
-    where: JobMatchingWhereUniqueInput
-    data: XOR<JobMatchingUpdateWithoutUserInput, JobMatchingUncheckedUpdateWithoutUserInput>
-  }
-
-  export type JobMatchingUpdateManyWithWhereWithoutUserInput = {
-    where: JobMatchingScalarWhereInput
-    data: XOR<JobMatchingUpdateManyMutationInput, JobMatchingUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type JobMatchingScalarWhereInput = {
-    AND?: JobMatchingScalarWhereInput | JobMatchingScalarWhereInput[]
-    OR?: JobMatchingScalarWhereInput[]
-    NOT?: JobMatchingScalarWhereInput | JobMatchingScalarWhereInput[]
-    id?: StringFilter<"JobMatching"> | string
-    userId?: IntFilter<"JobMatching"> | number
-    cvReviewId?: StringNullableFilter<"JobMatching"> | string | null
-    dreamJob?: StringFilter<"JobMatching"> | string
-    matches?: JsonFilter<"JobMatching">
-    aiAnalysis?: JsonFilter<"JobMatching">
-    createdAt?: DateTimeFilter<"JobMatching"> | Date | string
-    updatedAt?: DateTimeFilter<"JobMatching"> | Date | string
+    b2FileId?: StringNullableFilter<"CVReview"> | string | null
+    b2FileName?: StringNullableFilter<"CVReview"> | string | null
+    b2FileUrl?: StringNullableFilter<"CVReview"> | string | null
   }
 
   export type EnrollmentUpsertWithWhereUniqueWithoutUsersInput = {
@@ -42983,6 +42982,36 @@ export namespace Prisma {
     generatedAt?: DateTimeFilter<"JobMatch"> | Date | string
   }
 
+  export type jobmatchingUpsertWithWhereUniqueWithoutUsersInput = {
+    where: jobmatchingWhereUniqueInput
+    update: XOR<jobmatchingUpdateWithoutUsersInput, jobmatchingUncheckedUpdateWithoutUsersInput>
+    create: XOR<jobmatchingCreateWithoutUsersInput, jobmatchingUncheckedCreateWithoutUsersInput>
+  }
+
+  export type jobmatchingUpdateWithWhereUniqueWithoutUsersInput = {
+    where: jobmatchingWhereUniqueInput
+    data: XOR<jobmatchingUpdateWithoutUsersInput, jobmatchingUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type jobmatchingUpdateManyWithWhereWithoutUsersInput = {
+    where: jobmatchingScalarWhereInput
+    data: XOR<jobmatchingUpdateManyMutationInput, jobmatchingUncheckedUpdateManyWithoutUsersInput>
+  }
+
+  export type jobmatchingScalarWhereInput = {
+    AND?: jobmatchingScalarWhereInput | jobmatchingScalarWhereInput[]
+    OR?: jobmatchingScalarWhereInput[]
+    NOT?: jobmatchingScalarWhereInput | jobmatchingScalarWhereInput[]
+    id?: StringFilter<"jobmatching"> | string
+    userId?: IntFilter<"jobmatching"> | number
+    cvReviewId?: StringNullableFilter<"jobmatching"> | string | null
+    dreamJob?: StringFilter<"jobmatching"> | string
+    matches?: JsonFilter<"jobmatching">
+    aiAnalysis?: JsonFilter<"jobmatching">
+    createdAt?: DateTimeFilter<"jobmatching"> | Date | string
+    updatedAt?: DateTimeFilter<"jobmatching"> | Date | string
+  }
+
   export type LessonProgressUpsertWithWhereUniqueWithoutUsersInput = {
     where: LessonProgressWhereUniqueInput
     update: XOR<LessonProgressUpdateWithoutUsersInput, LessonProgressUncheckedUpdateWithoutUsersInput>
@@ -43010,33 +43039,33 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"LessonProgress"> | Date | string
   }
 
-  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  export type notificationUpsertWithWhereUniqueWithoutUsersInput = {
+    where: notificationWhereUniqueInput
+    update: XOR<notificationUpdateWithoutUsersInput, notificationUncheckedUpdateWithoutUsersInput>
+    create: XOR<notificationCreateWithoutUsersInput, notificationUncheckedCreateWithoutUsersInput>
   }
 
-  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  export type notificationUpdateWithWhereUniqueWithoutUsersInput = {
+    where: notificationWhereUniqueInput
+    data: XOR<notificationUpdateWithoutUsersInput, notificationUncheckedUpdateWithoutUsersInput>
   }
 
-  export type NotificationUpdateManyWithWhereWithoutUserInput = {
-    where: NotificationScalarWhereInput
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  export type notificationUpdateManyWithWhereWithoutUsersInput = {
+    where: notificationScalarWhereInput
+    data: XOR<notificationUpdateManyMutationInput, notificationUncheckedUpdateManyWithoutUsersInput>
   }
 
-  export type NotificationScalarWhereInput = {
-    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    OR?: NotificationScalarWhereInput[]
-    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    id?: IntFilter<"Notification"> | number
-    userId?: IntFilter<"Notification"> | number
-    title?: StringFilter<"Notification"> | string
-    body?: StringFilter<"Notification"> | string
-    type?: StringNullableFilter<"Notification"> | string | null
-    isRead?: BoolFilter<"Notification"> | boolean
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  export type notificationScalarWhereInput = {
+    AND?: notificationScalarWhereInput | notificationScalarWhereInput[]
+    OR?: notificationScalarWhereInput[]
+    NOT?: notificationScalarWhereInput | notificationScalarWhereInput[]
+    id?: IntFilter<"notification"> | number
+    userId?: IntFilter<"notification"> | number
+    title?: StringFilter<"notification"> | string
+    body?: StringFilter<"notification"> | string
+    type?: StringNullableFilter<"notification"> | string | null
+    isRead?: BoolFilter<"notification"> | boolean
+    createdAt?: DateTimeFilter<"notification"> | Date | string
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutUsersInput = {
@@ -43160,35 +43189,6 @@ export namespace Prisma {
     isUsed?: BoolFilter<"Voucher"> | boolean
   }
 
-  export type CourseReviewUpsertWithWhereUniqueWithoutUserInput = {
-    where: CourseReviewWhereUniqueInput
-    update: XOR<CourseReviewUpdateWithoutUserInput, CourseReviewUncheckedUpdateWithoutUserInput>
-    create: XOR<CourseReviewCreateWithoutUserInput, CourseReviewUncheckedCreateWithoutUserInput>
-  }
-
-  export type CourseReviewUpdateWithWhereUniqueWithoutUserInput = {
-    where: CourseReviewWhereUniqueInput
-    data: XOR<CourseReviewUpdateWithoutUserInput, CourseReviewUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CourseReviewUpdateManyWithWhereWithoutUserInput = {
-    where: CourseReviewScalarWhereInput
-    data: XOR<CourseReviewUpdateManyMutationInput, CourseReviewUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type CourseReviewScalarWhereInput = {
-    AND?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
-    OR?: CourseReviewScalarWhereInput[]
-    NOT?: CourseReviewScalarWhereInput | CourseReviewScalarWhereInput[]
-    id?: IntFilter<"CourseReview"> | number
-    userId?: IntFilter<"CourseReview"> | number
-    courseId?: IntFilter<"CourseReview"> | number
-    rating?: IntFilter<"CourseReview"> | number
-    comment?: StringNullableFilter<"CourseReview"> | string | null
-    createdAt?: DateTimeFilter<"CourseReview"> | Date | string
-    updatedAt?: DateTimeFilter<"CourseReview"> | Date | string
-  }
-
   export type UserCreateWithoutAssessmentInput = {
     firstName?: string | null
     lastName?: string | null
@@ -43209,17 +43209,17 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAssessmentInput = {
@@ -43243,17 +43243,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAssessmentInput = {
@@ -43292,17 +43292,17 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAssessmentInput = {
@@ -43326,89 +43326,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutCoursereviewInput = {
-    firstName?: string | null
-    lastName?: string | null
-    email: string
-    password: string
-    phoneNumber?: string | null
-    address?: string | null
-    gender?: string | null
-    birthDate?: Date | string | null
-    role?: $Enums.Role
-    profilePicture?: string | null
-    createdAt?: Date | string
-    resetToken?: string | null
-    resetTokenExpiry?: Date | string | null
-    assessment?: AssessmentCreateNestedManyWithoutUsersInput
-    certificate?: CertificateCreateNestedManyWithoutUsersInput
-    chatmessage?: ChatMessageCreateNestedManyWithoutUsersInput
-    counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
-    counselor?: CounselorCreateNestedOneWithoutUsersInput
-    course?: CourseCreateNestedManyWithoutUsersInput
-    courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
-    cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
-    enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
-    jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
-    lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
-    payment?: PaymentCreateNestedManyWithoutUsersInput
-    quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
-    userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
-    voucher?: VoucherCreateNestedManyWithoutUsersInput
-  }
-
-  export type UserUncheckedCreateWithoutCoursereviewInput = {
-    id?: number
-    firstName?: string | null
-    lastName?: string | null
-    email: string
-    password: string
-    phoneNumber?: string | null
-    address?: string | null
-    gender?: string | null
-    birthDate?: Date | string | null
-    role?: $Enums.Role
-    profilePicture?: string | null
-    createdAt?: Date | string
-    resetToken?: string | null
-    resetTokenExpiry?: Date | string | null
-    assessment?: AssessmentUncheckedCreateNestedManyWithoutUsersInput
-    certificate?: CertificateUncheckedCreateNestedManyWithoutUsersInput
-    chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutUsersInput
-    counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
-    counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
-    course?: CourseUncheckedCreateNestedManyWithoutUsersInput
-    courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
-    cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
-    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
-    jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
-    lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
-    quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
-    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
-    voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-  }
-
-  export type UserCreateOrConnectWithoutCoursereviewInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCoursereviewInput, UserUncheckedCreateWithoutCoursereviewInput>
   }
 
   export type CourseCreateWithoutCoursereviewInput = {
@@ -43457,82 +43385,76 @@ export namespace Prisma {
     create: XOR<CourseCreateWithoutCoursereviewInput, CourseUncheckedCreateWithoutCoursereviewInput>
   }
 
-  export type UserUpsertWithoutCoursereviewInput = {
-    update: XOR<UserUpdateWithoutCoursereviewInput, UserUncheckedUpdateWithoutCoursereviewInput>
+  export type UserCreateWithoutCoursereviewInput = {
+    firstName?: string | null
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    address?: string | null
+    gender?: string | null
+    birthDate?: Date | string | null
+    role?: $Enums.Role
+    profilePicture?: string | null
+    createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
+    assessment?: AssessmentCreateNestedManyWithoutUsersInput
+    certificate?: CertificateCreateNestedManyWithoutUsersInput
+    chatmessage?: ChatMessageCreateNestedManyWithoutUsersInput
+    counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
+    counselor?: CounselorCreateNestedOneWithoutUsersInput
+    course?: CourseCreateNestedManyWithoutUsersInput
+    courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    cvreview?: CVReviewCreateNestedManyWithoutUserInput
+    enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
+    jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
+    lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
+    payment?: PaymentCreateNestedManyWithoutUsersInput
+    quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
+    userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
+    voucher?: VoucherCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutCoursereviewInput = {
+    id?: number
+    firstName?: string | null
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    address?: string | null
+    gender?: string | null
+    birthDate?: Date | string | null
+    role?: $Enums.Role
+    profilePicture?: string | null
+    createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
+    assessment?: AssessmentUncheckedCreateNestedManyWithoutUsersInput
+    certificate?: CertificateUncheckedCreateNestedManyWithoutUsersInput
+    chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutUsersInput
+    counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
+    counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
+    course?: CourseUncheckedCreateNestedManyWithoutUsersInput
+    courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
+    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
+    jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
+    lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
+    quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
+    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
+    voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserCreateOrConnectWithoutCoursereviewInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutCoursereviewInput, UserUncheckedCreateWithoutCoursereviewInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCoursereviewInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCoursereviewInput, UserUncheckedUpdateWithoutCoursereviewInput>
-  }
-
-  export type UserUpdateWithoutCoursereviewInput = {
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
-    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assessment?: AssessmentUpdateManyWithoutUsersNestedInput
-    certificate?: CertificateUpdateManyWithoutUsersNestedInput
-    chatmessage?: ChatMessageUpdateManyWithoutUsersNestedInput
-    counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
-    counselor?: CounselorUpdateOneWithoutUsersNestedInput
-    course?: CourseUpdateManyWithoutUsersNestedInput
-    courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
-    cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
-    enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
-    jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
-    lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
-    payment?: PaymentUpdateManyWithoutUsersNestedInput
-    quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
-    userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
-    voucher?: VoucherUpdateManyWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCoursereviewInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
-    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assessment?: AssessmentUncheckedUpdateManyWithoutUsersNestedInput
-    certificate?: CertificateUncheckedUpdateManyWithoutUsersNestedInput
-    chatmessage?: ChatMessageUncheckedUpdateManyWithoutUsersNestedInput
-    counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
-    counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
-    course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
-    courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
-    cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
-    enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
-    jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
-    lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
-    quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
-    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
-    voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type CourseUpsertWithoutCoursereviewInput = {
@@ -43587,6 +43509,84 @@ export namespace Prisma {
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
   }
 
+  export type UserUpsertWithoutCoursereviewInput = {
+    update: XOR<UserUpdateWithoutCoursereviewInput, UserUncheckedUpdateWithoutCoursereviewInput>
+    create: XOR<UserCreateWithoutCoursereviewInput, UserUncheckedCreateWithoutCoursereviewInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCoursereviewInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCoursereviewInput, UserUncheckedUpdateWithoutCoursereviewInput>
+  }
+
+  export type UserUpdateWithoutCoursereviewInput = {
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assessment?: AssessmentUpdateManyWithoutUsersNestedInput
+    certificate?: CertificateUpdateManyWithoutUsersNestedInput
+    chatmessage?: ChatMessageUpdateManyWithoutUsersNestedInput
+    counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
+    counselor?: CounselorUpdateOneWithoutUsersNestedInput
+    course?: CourseUpdateManyWithoutUsersNestedInput
+    courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    cvreview?: CVReviewUpdateManyWithoutUserNestedInput
+    enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
+    jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
+    lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
+    payment?: PaymentUpdateManyWithoutUsersNestedInput
+    quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
+    userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
+    voucher?: VoucherUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCoursereviewInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assessment?: AssessmentUncheckedUpdateManyWithoutUsersNestedInput
+    certificate?: CertificateUncheckedUpdateManyWithoutUsersNestedInput
+    chatmessage?: ChatMessageUncheckedUpdateManyWithoutUsersNestedInput
+    counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
+    counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
+    course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
+    courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
+    enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
+    lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
+    quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
+    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
+    voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
   export type CourseCreateWithoutCategoryInput = {
     title: string
     description: string
@@ -43597,6 +43597,7 @@ export namespace Prisma {
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
@@ -43604,7 +43605,6 @@ export namespace Prisma {
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutCategoryInput = {
@@ -43618,6 +43618,7 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
@@ -43625,7 +43626,6 @@ export namespace Prisma {
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutCategoryInput = {
@@ -43664,6 +43664,7 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
@@ -43671,7 +43672,6 @@ export namespace Prisma {
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutCertificateInput = {
@@ -43685,6 +43685,7 @@ export namespace Prisma {
     createdById: number
     createdAt?: Date | string
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
@@ -43692,7 +43693,6 @@ export namespace Prisma {
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutCertificateInput = {
@@ -43720,17 +43720,17 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCertificateInput = {
@@ -43754,17 +43754,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCertificateInput = {
@@ -43793,6 +43793,7 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
@@ -43800,7 +43801,6 @@ export namespace Prisma {
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutCertificateInput = {
@@ -43814,6 +43814,7 @@ export namespace Prisma {
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
@@ -43821,7 +43822,6 @@ export namespace Prisma {
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserUpsertWithoutCertificateInput = {
@@ -43855,17 +43855,17 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCertificateInput = {
@@ -43889,17 +43889,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutChatmessageInput = {
@@ -43922,17 +43922,17 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatmessageInput = {
@@ -43956,17 +43956,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatmessageInput = {
@@ -43984,9 +43984,9 @@ export namespace Prisma {
     createdAt?: Date | string
     rating?: number | null
     feedback?: string | null
-    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     counselor: CounselorCreateNestedOneWithoutCounselingsessionInput
     users: UserCreateNestedOneWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionUncheckedCreateWithoutChatmessageInput = {
@@ -44041,17 +44041,17 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatmessageInput = {
@@ -44075,17 +44075,17 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CounselingSessionUpsertWithoutChatmessageInput = {
@@ -44109,9 +44109,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
-    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
     users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionUncheckedUpdateWithoutChatmessageInput = {
@@ -44150,47 +44150,6 @@ export namespace Prisma {
 
   export type ChatMessageCreateManyCounselingsessionInputEnvelope = {
     data: ChatMessageCreateManyCounselingsessionInput | ChatMessageCreateManyCounselingsessionInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type PaymentCreateWithoutCounselingSessionInput = {
-    amount: number
-    paymentStatus: string
-    status: string
-    paidAt?: Date | string | null
-    createdAt?: Date | string
-    orderId?: string | null
-    snapToken?: string | null
-    enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
-    course?: CourseCreateNestedOneWithoutPaymentInput
-    roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
-    users: UserCreateNestedOneWithoutPaymentInput
-    userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
-  }
-
-  export type PaymentUncheckedCreateWithoutCounselingSessionInput = {
-    id?: number
-    userId: number
-    courseId?: number | null
-    roadmapId?: number | null
-    amount: number
-    paymentStatus: string
-    status: string
-    paidAt?: Date | string | null
-    createdAt?: Date | string
-    orderId?: string | null
-    snapToken?: string | null
-    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutPaymentInput
-    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutPaymentInput
-  }
-
-  export type PaymentCreateOrConnectWithoutCounselingSessionInput = {
-    where: PaymentWhereUniqueInput
-    create: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput>
-  }
-
-  export type PaymentCreateManyCounselingSessionInputEnvelope = {
-    data: PaymentCreateManyCounselingSessionInput | PaymentCreateManyCounselingSessionInput[]
     skipDuplicates?: boolean
   }
 
@@ -44234,17 +44193,17 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCounselingsessionInput = {
@@ -44268,22 +44227,63 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCounselingsessionInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutCounselingsessionInput, UserUncheckedCreateWithoutCounselingsessionInput>
+  }
+
+  export type PaymentCreateWithoutCounselingSessionInput = {
+    amount: number
+    paymentStatus: string
+    status: string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    orderId?: string | null
+    snapToken?: string | null
+    enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
+    course?: CourseCreateNestedOneWithoutPaymentInput
+    roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
+    users: UserCreateNestedOneWithoutPaymentInput
+    userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateWithoutCounselingSessionInput = {
+    id?: number
+    userId: number
+    courseId?: number | null
+    roadmapId?: number | null
+    amount: number
+    paymentStatus: string
+    status: string
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    orderId?: string | null
+    snapToken?: string | null
+    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutPaymentInput
+    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentCreateOrConnectWithoutCounselingSessionInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput>
+  }
+
+  export type PaymentCreateManyCounselingSessionInputEnvelope = {
+    data: PaymentCreateManyCounselingSessionInput | PaymentCreateManyCounselingSessionInput[]
+    skipDuplicates?: boolean
   }
 
   export type ChatMessageUpsertWithWhereUniqueWithoutCounselingsessionInput = {
@@ -44300,22 +44300,6 @@ export namespace Prisma {
   export type ChatMessageUpdateManyWithWhereWithoutCounselingsessionInput = {
     where: ChatMessageScalarWhereInput
     data: XOR<ChatMessageUpdateManyMutationInput, ChatMessageUncheckedUpdateManyWithoutCounselingsessionInput>
-  }
-
-  export type PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput = {
-    where: PaymentWhereUniqueInput
-    update: XOR<PaymentUpdateWithoutCounselingSessionInput, PaymentUncheckedUpdateWithoutCounselingSessionInput>
-    create: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput>
-  }
-
-  export type PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput = {
-    where: PaymentWhereUniqueInput
-    data: XOR<PaymentUpdateWithoutCounselingSessionInput, PaymentUncheckedUpdateWithoutCounselingSessionInput>
-  }
-
-  export type PaymentUpdateManyWithWhereWithoutCounselingSessionInput = {
-    where: PaymentScalarWhereInput
-    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutCounselingSessionInput>
   }
 
   export type CounselorUpsertWithoutCounselingsessionInput = {
@@ -44375,17 +44359,17 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCounselingsessionInput = {
@@ -44409,17 +44393,33 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PaymentUpsertWithWhereUniqueWithoutCounselingSessionInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutCounselingSessionInput, PaymentUncheckedUpdateWithoutCounselingSessionInput>
+    create: XOR<PaymentCreateWithoutCounselingSessionInput, PaymentUncheckedCreateWithoutCounselingSessionInput>
+  }
+
+  export type PaymentUpdateWithWhereUniqueWithoutCounselingSessionInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutCounselingSessionInput, PaymentUncheckedUpdateWithoutCounselingSessionInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutCounselingSessionInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutCounselingSessionInput>
   }
 
   export type CounselingSessionCreateWithoutCounselorInput = {
@@ -44433,8 +44433,8 @@ export namespace Prisma {
     rating?: number | null
     feedback?: string | null
     chatmessage?: ChatMessageCreateNestedManyWithoutCounselingsessionInput
-    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
     users: UserCreateNestedOneWithoutCounselingsessionInput
+    payment?: PaymentCreateNestedManyWithoutCounselingSessionInput
   }
 
   export type CounselingSessionUncheckedCreateWithoutCounselorInput = {
@@ -44483,17 +44483,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCounselorInput = {
@@ -44517,17 +44517,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCounselorInput = {
@@ -44582,17 +44582,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCounselorInput = {
@@ -44616,17 +44616,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CertificateCreateWithoutCourseInput = {
@@ -44690,17 +44690,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCourseInput = {
@@ -44724,17 +44724,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCourseInput = {
@@ -44764,6 +44764,33 @@ export namespace Prisma {
 
   export type CourseProgressCreateManyCourseInputEnvelope = {
     data: CourseProgressCreateManyCourseInput | CourseProgressCreateManyCourseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CourseReviewCreateWithoutCourseInput = {
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCoursereviewInput
+  }
+
+  export type CourseReviewUncheckedCreateWithoutCourseInput = {
+    id?: number
+    userId: number
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CourseReviewCreateOrConnectWithoutCourseInput = {
+    where: CourseReviewWhereUniqueInput
+    create: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput>
+  }
+
+  export type CourseReviewCreateManyCourseInputEnvelope = {
+    data: CourseReviewCreateManyCourseInput | CourseReviewCreateManyCourseInput[]
     skipDuplicates?: boolean
   }
 
@@ -44853,8 +44880,8 @@ export namespace Prisma {
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
-    roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
     counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
+    roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -44964,33 +44991,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CourseReviewCreateWithoutCourseInput = {
-    rating: number
-    comment?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCoursereviewInput
-  }
-
-  export type CourseReviewUncheckedCreateWithoutCourseInput = {
-    id?: number
-    userId: number
-    rating: number
-    comment?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CourseReviewCreateOrConnectWithoutCourseInput = {
-    where: CourseReviewWhereUniqueInput
-    create: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput>
-  }
-
-  export type CourseReviewCreateManyCourseInputEnvelope = {
-    data: CourseReviewCreateManyCourseInput | CourseReviewCreateManyCourseInput[]
-    skipDuplicates?: boolean
-  }
-
   export type CertificateUpsertWithWhereUniqueWithoutCourseInput = {
     where: CertificateWhereUniqueInput
     update: XOR<CertificateUpdateWithoutCourseInput, CertificateUncheckedUpdateWithoutCourseInput>
@@ -45058,17 +45058,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCourseInput = {
@@ -45092,17 +45092,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CourseProgressUpsertWithWhereUniqueWithoutCourseInput = {
@@ -45119,6 +45119,22 @@ export namespace Prisma {
   export type CourseProgressUpdateManyWithWhereWithoutCourseInput = {
     where: CourseProgressScalarWhereInput
     data: XOR<CourseProgressUpdateManyMutationInput, CourseProgressUncheckedUpdateManyWithoutCourseInput>
+  }
+
+  export type CourseReviewUpsertWithWhereUniqueWithoutCourseInput = {
+    where: CourseReviewWhereUniqueInput
+    update: XOR<CourseReviewUpdateWithoutCourseInput, CourseReviewUncheckedUpdateWithoutCourseInput>
+    create: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput>
+  }
+
+  export type CourseReviewUpdateWithWhereUniqueWithoutCourseInput = {
+    where: CourseReviewWhereUniqueInput
+    data: XOR<CourseReviewUpdateWithoutCourseInput, CourseReviewUncheckedUpdateWithoutCourseInput>
+  }
+
+  export type CourseReviewUpdateManyWithWhereWithoutCourseInput = {
+    where: CourseReviewScalarWhereInput
+    data: XOR<CourseReviewUpdateManyMutationInput, CourseReviewUncheckedUpdateManyWithoutCourseInput>
   }
 
   export type coursevideoUpsertWithWhereUniqueWithoutCourseInput = {
@@ -45279,22 +45295,6 @@ export namespace Prisma {
     order?: IntFilter<"RoadmapCourse"> | number
   }
 
-  export type CourseReviewUpsertWithWhereUniqueWithoutCourseInput = {
-    where: CourseReviewWhereUniqueInput
-    update: XOR<CourseReviewUpdateWithoutCourseInput, CourseReviewUncheckedUpdateWithoutCourseInput>
-    create: XOR<CourseReviewCreateWithoutCourseInput, CourseReviewUncheckedCreateWithoutCourseInput>
-  }
-
-  export type CourseReviewUpdateWithWhereUniqueWithoutCourseInput = {
-    where: CourseReviewWhereUniqueInput
-    data: XOR<CourseReviewUpdateWithoutCourseInput, CourseReviewUncheckedUpdateWithoutCourseInput>
-  }
-
-  export type CourseReviewUpdateManyWithWhereWithoutCourseInput = {
-    where: CourseReviewScalarWhereInput
-    data: XOR<CourseReviewUpdateManyMutationInput, CourseReviewUncheckedUpdateManyWithoutCourseInput>
-  }
-
   export type CourseCreateWithoutCourseprogressInput = {
     title: string
     description: string
@@ -45305,6 +45305,7 @@ export namespace Prisma {
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
@@ -45312,7 +45313,6 @@ export namespace Prisma {
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutCourseprogressInput = {
@@ -45326,6 +45326,7 @@ export namespace Prisma {
     createdById: number
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
@@ -45333,7 +45334,6 @@ export namespace Prisma {
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutCourseprogressInput = {
@@ -45361,17 +45361,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCourseprogressInput = {
@@ -45395,17 +45395,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCourseprogressInput = {
@@ -45434,6 +45434,7 @@ export namespace Prisma {
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
@@ -45441,7 +45442,6 @@ export namespace Prisma {
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutCourseprogressInput = {
@@ -45455,6 +45455,7 @@ export namespace Prisma {
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
@@ -45462,7 +45463,6 @@ export namespace Prisma {
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserUpsertWithoutCourseprogressInput = {
@@ -45496,17 +45496,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCourseprogressInput = {
@@ -45530,17 +45530,17 @@ export namespace Prisma {
     counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CourseCreateWithoutCoursevideoInput = {
@@ -45554,13 +45554,13 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
     payment?: PaymentCreateNestedManyWithoutCourseInput
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutCoursevideoInput = {
@@ -45575,13 +45575,13 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
     payment?: PaymentUncheckedCreateNestedManyWithoutCourseInput
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutCoursevideoInput = {
@@ -45611,13 +45611,13 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
     payment?: PaymentUpdateManyWithoutCourseNestedInput
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutCoursevideoInput = {
@@ -45632,13 +45632,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutCourseNestedInput
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type UserCreateWithoutCvreviewInput = {
@@ -45662,16 +45662,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCvreviewInput = {
@@ -45696,16 +45696,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCvreviewInput = {
@@ -45713,33 +45713,33 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutCvreviewInput, UserUncheckedCreateWithoutCvreviewInput>
   }
 
-  export type JobMatchingCreateWithoutCvReviewInput = {
-    id?: string
+  export type jobmatchingCreateWithoutCvreviewInput = {
+    id: string
     dreamJob: string
     matches: JsonNullValueInput | InputJsonValue
     aiAnalysis: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutJobmatchingInput
+    updatedAt: Date | string
+    users: UserCreateNestedOneWithoutJobmatchingInput
   }
 
-  export type JobMatchingUncheckedCreateWithoutCvReviewInput = {
-    id?: string
+  export type jobmatchingUncheckedCreateWithoutCvreviewInput = {
+    id: string
     userId: number
     dreamJob: string
     matches: JsonNullValueInput | InputJsonValue
     aiAnalysis: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
-  export type JobMatchingCreateOrConnectWithoutCvReviewInput = {
-    where: JobMatchingWhereUniqueInput
-    create: XOR<JobMatchingCreateWithoutCvReviewInput, JobMatchingUncheckedCreateWithoutCvReviewInput>
+  export type jobmatchingCreateOrConnectWithoutCvreviewInput = {
+    where: jobmatchingWhereUniqueInput
+    create: XOR<jobmatchingCreateWithoutCvreviewInput, jobmatchingUncheckedCreateWithoutCvreviewInput>
   }
 
-  export type JobMatchingCreateManyCvReviewInputEnvelope = {
-    data: JobMatchingCreateManyCvReviewInput | JobMatchingCreateManyCvReviewInput[]
+  export type jobmatchingCreateManyCvreviewInputEnvelope = {
+    data: jobmatchingCreateManyCvreviewInput | jobmatchingCreateManyCvreviewInput[]
     skipDuplicates?: boolean
   }
 
@@ -45775,16 +45775,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCvreviewInput = {
@@ -45809,32 +45809,32 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type JobMatchingUpsertWithWhereUniqueWithoutCvReviewInput = {
-    where: JobMatchingWhereUniqueInput
-    update: XOR<JobMatchingUpdateWithoutCvReviewInput, JobMatchingUncheckedUpdateWithoutCvReviewInput>
-    create: XOR<JobMatchingCreateWithoutCvReviewInput, JobMatchingUncheckedCreateWithoutCvReviewInput>
+  export type jobmatchingUpsertWithWhereUniqueWithoutCvreviewInput = {
+    where: jobmatchingWhereUniqueInput
+    update: XOR<jobmatchingUpdateWithoutCvreviewInput, jobmatchingUncheckedUpdateWithoutCvreviewInput>
+    create: XOR<jobmatchingCreateWithoutCvreviewInput, jobmatchingUncheckedCreateWithoutCvreviewInput>
   }
 
-  export type JobMatchingUpdateWithWhereUniqueWithoutCvReviewInput = {
-    where: JobMatchingWhereUniqueInput
-    data: XOR<JobMatchingUpdateWithoutCvReviewInput, JobMatchingUncheckedUpdateWithoutCvReviewInput>
+  export type jobmatchingUpdateWithWhereUniqueWithoutCvreviewInput = {
+    where: jobmatchingWhereUniqueInput
+    data: XOR<jobmatchingUpdateWithoutCvreviewInput, jobmatchingUncheckedUpdateWithoutCvreviewInput>
   }
 
-  export type JobMatchingUpdateManyWithWhereWithoutCvReviewInput = {
-    where: JobMatchingScalarWhereInput
-    data: XOR<JobMatchingUpdateManyMutationInput, JobMatchingUncheckedUpdateManyWithoutCvReviewInput>
+  export type jobmatchingUpdateManyWithWhereWithoutCvreviewInput = {
+    where: jobmatchingScalarWhereInput
+    data: XOR<jobmatchingUpdateManyMutationInput, jobmatchingUncheckedUpdateManyWithoutCvreviewInput>
   }
 
   export type CourseCreateWithoutEnrollmentInput = {
@@ -45848,13 +45848,13 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
     payment?: PaymentCreateNestedManyWithoutCourseInput
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutEnrollmentInput = {
@@ -45869,13 +45869,13 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
     payment?: PaymentUncheckedCreateNestedManyWithoutCourseInput
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutEnrollmentInput = {
@@ -45891,9 +45891,9 @@ export namespace Prisma {
     createdAt?: Date | string
     orderId?: string | null
     snapToken?: string | null
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
-    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -45940,16 +45940,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEnrollmentInput = {
@@ -45974,16 +45974,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEnrollmentInput = {
@@ -46013,13 +46013,13 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
     payment?: PaymentUpdateManyWithoutCourseNestedInput
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutEnrollmentInput = {
@@ -46034,13 +46034,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutCourseNestedInput
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type PaymentUpsertWithoutEnrollmentInput = {
@@ -46062,9 +46062,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
-    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -46117,16 +46117,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEnrollmentInput = {
@@ -46151,16 +46151,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutJobmatchInput = {
@@ -46184,16 +46184,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutJobmatchInput = {
@@ -46218,16 +46218,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutJobmatchInput = {
@@ -46267,16 +46267,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutJobmatchInput = {
@@ -46301,16 +46301,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CourseCreateWithoutLessonInput = {
@@ -46324,13 +46324,13 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     payment?: PaymentCreateNestedManyWithoutCourseInput
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutLessonInput = {
@@ -46345,13 +46345,13 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     payment?: PaymentUncheckedCreateNestedManyWithoutCourseInput
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutLessonInput = {
@@ -46404,13 +46404,13 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     payment?: PaymentUpdateManyWithoutCourseNestedInput
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutLessonInput = {
@@ -46425,13 +46425,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutCourseNestedInput
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type LessonProgressUpsertWithWhereUniqueWithoutLessonInput = {
@@ -46491,16 +46491,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLessonprogressInput = {
@@ -46525,16 +46525,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLessonprogressInput = {
@@ -46600,16 +46600,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLessonprogressInput = {
@@ -46634,166 +46634,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutNotificationInput = {
-    firstName?: string | null
-    lastName?: string | null
-    email: string
-    password: string
-    phoneNumber?: string | null
-    address?: string | null
-    gender?: string | null
-    birthDate?: Date | string | null
-    role?: $Enums.Role
-    profilePicture?: string | null
-    createdAt?: Date | string
-    resetToken?: string | null
-    resetTokenExpiry?: Date | string | null
-    assessment?: AssessmentCreateNestedManyWithoutUsersInput
-    certificate?: CertificateCreateNestedManyWithoutUsersInput
-    chatmessage?: ChatMessageCreateNestedManyWithoutUsersInput
-    counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
-    counselor?: CounselorCreateNestedOneWithoutUsersInput
-    course?: CourseCreateNestedManyWithoutUsersInput
-    courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
-    cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
-    enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
-    jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
-    lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    payment?: PaymentCreateNestedManyWithoutUsersInput
-    quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
-    userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
-    voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutNotificationInput = {
-    id?: number
-    firstName?: string | null
-    lastName?: string | null
-    email: string
-    password: string
-    phoneNumber?: string | null
-    address?: string | null
-    gender?: string | null
-    birthDate?: Date | string | null
-    role?: $Enums.Role
-    profilePicture?: string | null
-    createdAt?: Date | string
-    resetToken?: string | null
-    resetTokenExpiry?: Date | string | null
-    assessment?: AssessmentUncheckedCreateNestedManyWithoutUsersInput
-    certificate?: CertificateUncheckedCreateNestedManyWithoutUsersInput
-    chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutUsersInput
-    counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
-    counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
-    course?: CourseUncheckedCreateNestedManyWithoutUsersInput
-    courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
-    cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
-    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
-    jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
-    lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
-    quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
-    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
-    voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutNotificationInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
-  }
-
-  export type UserUpsertWithoutNotificationInput = {
-    update: XOR<UserUpdateWithoutNotificationInput, UserUncheckedUpdateWithoutNotificationInput>
-    create: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutNotificationInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutNotificationInput, UserUncheckedUpdateWithoutNotificationInput>
-  }
-
-  export type UserUpdateWithoutNotificationInput = {
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
-    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assessment?: AssessmentUpdateManyWithoutUsersNestedInput
-    certificate?: CertificateUpdateManyWithoutUsersNestedInput
-    chatmessage?: ChatMessageUpdateManyWithoutUsersNestedInput
-    counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
-    counselor?: CounselorUpdateOneWithoutUsersNestedInput
-    course?: CourseUpdateManyWithoutUsersNestedInput
-    courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
-    cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
-    enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
-    jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
-    lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    payment?: PaymentUpdateManyWithoutUsersNestedInput
-    quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
-    userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
-    voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutNotificationInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    gender?: NullableStringFieldUpdateOperationsInput | string | null
-    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
-    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    assessment?: AssessmentUncheckedUpdateManyWithoutUsersNestedInput
-    certificate?: CertificateUncheckedUpdateManyWithoutUsersNestedInput
-    chatmessage?: ChatMessageUncheckedUpdateManyWithoutUsersNestedInput
-    counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
-    counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
-    course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
-    courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
-    cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
-    enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
-    jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
-    lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
-    quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
-    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
-    voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EnrollmentCreateWithoutPaymentInput = {
@@ -46819,74 +46669,6 @@ export namespace Prisma {
   export type EnrollmentCreateManyPaymentInputEnvelope = {
     data: EnrollmentCreateManyPaymentInput | EnrollmentCreateManyPaymentInput[]
     skipDuplicates?: boolean
-  }
-
-  export type CourseCreateWithoutPaymentInput = {
-    title: string
-    description: string
-    thumbnail: string
-    isPaid: boolean
-    price: number
-    createdAt?: Date | string
-    certificate?: CertificateCreateNestedManyWithoutCourseInput
-    category: CategoryCreateNestedOneWithoutCourseInput
-    users: UserCreateNestedOneWithoutCourseInput
-    courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
-    coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
-    enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
-    lesson?: lessonCreateNestedManyWithoutCourseInput
-    quiz?: quizCreateNestedManyWithoutCourseInput
-    quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
-    roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseUncheckedCreateWithoutPaymentInput = {
-    id?: number
-    title: string
-    description: string
-    thumbnail: string
-    categoryId: number
-    isPaid: boolean
-    price: number
-    createdById: number
-    createdAt?: Date | string
-    certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
-    courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
-    coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
-    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
-    lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
-    quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
-    quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
-    roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
-  }
-
-  export type CourseCreateOrConnectWithoutPaymentInput = {
-    where: CourseWhereUniqueInput
-    create: XOR<CourseCreateWithoutPaymentInput, CourseUncheckedCreateWithoutPaymentInput>
-  }
-
-  export type RoadmapCreateWithoutPaymentInput = {
-    name: string
-    description: string
-    rewardVoucher: string
-    roadmapcourse?: RoadmapCourseCreateNestedManyWithoutRoadmapInput
-    userroadmap?: UserRoadmapCreateNestedManyWithoutRoadmapInput
-  }
-
-  export type RoadmapUncheckedCreateWithoutPaymentInput = {
-    id?: number
-    name: string
-    description: string
-    rewardVoucher: string
-    roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutRoadmapInput
-    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutRoadmapInput
-  }
-
-  export type RoadmapCreateOrConnectWithoutPaymentInput = {
-    where: RoadmapWhereUniqueInput
-    create: XOR<RoadmapCreateWithoutPaymentInput, RoadmapUncheckedCreateWithoutPaymentInput>
   }
 
   export type CounselingSessionCreateWithoutPaymentInput = {
@@ -46925,6 +46707,74 @@ export namespace Prisma {
     create: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
   }
 
+  export type CourseCreateWithoutPaymentInput = {
+    title: string
+    description: string
+    thumbnail: string
+    isPaid: boolean
+    price: number
+    createdAt?: Date | string
+    certificate?: CertificateCreateNestedManyWithoutCourseInput
+    category: CategoryCreateNestedOneWithoutCourseInput
+    users: UserCreateNestedOneWithoutCourseInput
+    courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
+    coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
+    enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
+    lesson?: lessonCreateNestedManyWithoutCourseInput
+    quiz?: quizCreateNestedManyWithoutCourseInput
+    quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
+    roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseUncheckedCreateWithoutPaymentInput = {
+    id?: number
+    title: string
+    description: string
+    thumbnail: string
+    categoryId: number
+    isPaid: boolean
+    price: number
+    createdById: number
+    createdAt?: Date | string
+    certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
+    courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
+    coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
+    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
+    lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
+    quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
+    quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
+    roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
+  }
+
+  export type CourseCreateOrConnectWithoutPaymentInput = {
+    where: CourseWhereUniqueInput
+    create: XOR<CourseCreateWithoutPaymentInput, CourseUncheckedCreateWithoutPaymentInput>
+  }
+
+  export type RoadmapCreateWithoutPaymentInput = {
+    name: string
+    description: string
+    rewardVoucher: string
+    roadmapcourse?: RoadmapCourseCreateNestedManyWithoutRoadmapInput
+    userroadmap?: UserRoadmapCreateNestedManyWithoutRoadmapInput
+  }
+
+  export type RoadmapUncheckedCreateWithoutPaymentInput = {
+    id?: number
+    name: string
+    description: string
+    rewardVoucher: string
+    roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutRoadmapInput
+    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutRoadmapInput
+  }
+
+  export type RoadmapCreateOrConnectWithoutPaymentInput = {
+    where: RoadmapWhereUniqueInput
+    create: XOR<RoadmapCreateWithoutPaymentInput, RoadmapUncheckedCreateWithoutPaymentInput>
+  }
+
   export type UserCreateWithoutPaymentInput = {
     firstName?: string | null
     lastName?: string | null
@@ -46946,16 +46796,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentInput = {
@@ -46980,16 +46830,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentInput = {
@@ -47038,86 +46888,6 @@ export namespace Prisma {
     data: XOR<EnrollmentUpdateManyMutationInput, EnrollmentUncheckedUpdateManyWithoutPaymentInput>
   }
 
-  export type CourseUpsertWithoutPaymentInput = {
-    update: XOR<CourseUpdateWithoutPaymentInput, CourseUncheckedUpdateWithoutPaymentInput>
-    create: XOR<CourseCreateWithoutPaymentInput, CourseUncheckedCreateWithoutPaymentInput>
-    where?: CourseWhereInput
-  }
-
-  export type CourseUpdateToOneWithWhereWithoutPaymentInput = {
-    where?: CourseWhereInput
-    data: XOR<CourseUpdateWithoutPaymentInput, CourseUncheckedUpdateWithoutPaymentInput>
-  }
-
-  export type CourseUpdateWithoutPaymentInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
-    isPaid?: BoolFieldUpdateOperationsInput | boolean
-    price?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    certificate?: CertificateUpdateManyWithoutCourseNestedInput
-    category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
-    users?: UserUpdateOneRequiredWithoutCourseNestedInput
-    courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
-    coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
-    enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
-    lesson?: lessonUpdateManyWithoutCourseNestedInput
-    quiz?: quizUpdateManyWithoutCourseNestedInput
-    quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
-    roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
-  }
-
-  export type CourseUncheckedUpdateWithoutPaymentInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    thumbnail?: StringFieldUpdateOperationsInput | string
-    categoryId?: IntFieldUpdateOperationsInput | number
-    isPaid?: BoolFieldUpdateOperationsInput | boolean
-    price?: IntFieldUpdateOperationsInput | number
-    createdById?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
-    courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
-    coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
-    enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
-    lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
-    quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
-    quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
-    roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
-  }
-
-  export type RoadmapUpsertWithoutPaymentInput = {
-    update: XOR<RoadmapUpdateWithoutPaymentInput, RoadmapUncheckedUpdateWithoutPaymentInput>
-    create: XOR<RoadmapCreateWithoutPaymentInput, RoadmapUncheckedCreateWithoutPaymentInput>
-    where?: RoadmapWhereInput
-  }
-
-  export type RoadmapUpdateToOneWithWhereWithoutPaymentInput = {
-    where?: RoadmapWhereInput
-    data: XOR<RoadmapUpdateWithoutPaymentInput, RoadmapUncheckedUpdateWithoutPaymentInput>
-  }
-
-  export type RoadmapUpdateWithoutPaymentInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    rewardVoucher?: StringFieldUpdateOperationsInput | string
-    roadmapcourse?: RoadmapCourseUpdateManyWithoutRoadmapNestedInput
-    userroadmap?: UserRoadmapUpdateManyWithoutRoadmapNestedInput
-  }
-
-  export type RoadmapUncheckedUpdateWithoutPaymentInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    rewardVoucher?: StringFieldUpdateOperationsInput | string
-    roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutRoadmapNestedInput
-    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutRoadmapNestedInput
-  }
-
   export type CounselingSessionUpsertWithoutPaymentInput = {
     update: XOR<CounselingSessionUpdateWithoutPaymentInput, CounselingSessionUncheckedUpdateWithoutPaymentInput>
     create: XOR<CounselingSessionCreateWithoutPaymentInput, CounselingSessionUncheckedCreateWithoutPaymentInput>
@@ -47160,6 +46930,86 @@ export namespace Prisma {
     chatmessage?: ChatMessageUncheckedUpdateManyWithoutCounselingsessionNestedInput
   }
 
+  export type CourseUpsertWithoutPaymentInput = {
+    update: XOR<CourseUpdateWithoutPaymentInput, CourseUncheckedUpdateWithoutPaymentInput>
+    create: XOR<CourseCreateWithoutPaymentInput, CourseUncheckedCreateWithoutPaymentInput>
+    where?: CourseWhereInput
+  }
+
+  export type CourseUpdateToOneWithWhereWithoutPaymentInput = {
+    where?: CourseWhereInput
+    data: XOR<CourseUpdateWithoutPaymentInput, CourseUncheckedUpdateWithoutPaymentInput>
+  }
+
+  export type CourseUpdateWithoutPaymentInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificate?: CertificateUpdateManyWithoutCourseNestedInput
+    category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
+    users?: UserUpdateOneRequiredWithoutCourseNestedInput
+    courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
+    coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
+    enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
+    lesson?: lessonUpdateManyWithoutCourseNestedInput
+    quiz?: quizUpdateManyWithoutCourseNestedInput
+    quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
+    roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
+  }
+
+  export type CourseUncheckedUpdateWithoutPaymentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    thumbnail?: StringFieldUpdateOperationsInput | string
+    categoryId?: IntFieldUpdateOperationsInput | number
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    price?: IntFieldUpdateOperationsInput | number
+    createdById?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
+    courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
+    coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
+    enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
+    lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
+    quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
+    quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
+    roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
+  }
+
+  export type RoadmapUpsertWithoutPaymentInput = {
+    update: XOR<RoadmapUpdateWithoutPaymentInput, RoadmapUncheckedUpdateWithoutPaymentInput>
+    create: XOR<RoadmapCreateWithoutPaymentInput, RoadmapUncheckedCreateWithoutPaymentInput>
+    where?: RoadmapWhereInput
+  }
+
+  export type RoadmapUpdateToOneWithWhereWithoutPaymentInput = {
+    where?: RoadmapWhereInput
+    data: XOR<RoadmapUpdateWithoutPaymentInput, RoadmapUncheckedUpdateWithoutPaymentInput>
+  }
+
+  export type RoadmapUpdateWithoutPaymentInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    rewardVoucher?: StringFieldUpdateOperationsInput | string
+    roadmapcourse?: RoadmapCourseUpdateManyWithoutRoadmapNestedInput
+    userroadmap?: UserRoadmapUpdateManyWithoutRoadmapNestedInput
+  }
+
+  export type RoadmapUncheckedUpdateWithoutPaymentInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    rewardVoucher?: StringFieldUpdateOperationsInput | string
+    roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutRoadmapNestedInput
+    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutRoadmapNestedInput
+  }
+
   export type UserUpsertWithoutPaymentInput = {
     update: XOR<UserUpdateWithoutPaymentInput, UserUncheckedUpdateWithoutPaymentInput>
     create: XOR<UserCreateWithoutPaymentInput, UserUncheckedCreateWithoutPaymentInput>
@@ -47192,16 +47042,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentInput = {
@@ -47226,16 +47076,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserRoadmapUpsertWithWhereUniqueWithoutPaymentInput = {
@@ -47265,13 +47115,13 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
     payment?: PaymentCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutQuizInput = {
@@ -47286,13 +47136,13 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
     payment?: PaymentUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutQuizInput = {
@@ -47353,13 +47203,13 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
     payment?: PaymentUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutQuizInput = {
@@ -47374,13 +47224,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type QuizSubmissionUpsertWithWhereUniqueWithoutQuizInput = {
@@ -47410,13 +47260,13 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
     payment?: PaymentCreateNestedManyWithoutCourseInput
     quiz?: quizCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutQuizsubmissionInput = {
@@ -47431,13 +47281,13 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
     payment?: PaymentUncheckedCreateNestedManyWithoutCourseInput
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutQuizsubmissionInput = {
@@ -47488,16 +47338,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutQuizsubmissionInput = {
@@ -47522,16 +47372,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutQuizsubmissionInput = {
@@ -47561,13 +47411,13 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
     payment?: PaymentUpdateManyWithoutCourseNestedInput
     quiz?: quizUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutQuizsubmissionInput = {
@@ -47582,13 +47432,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutCourseNestedInput
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type quizUpsertWithoutQuizsubmissionInput = {
@@ -47651,16 +47501,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizsubmissionInput = {
@@ -47685,16 +47535,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PaymentCreateWithoutRoadmapInput = {
@@ -47706,8 +47556,8 @@ export namespace Prisma {
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
-    course?: CourseCreateNestedOneWithoutPaymentInput
     counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
+    course?: CourseCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutPaymentInput
   }
@@ -47843,13 +47693,13 @@ export namespace Prisma {
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentCreateNestedManyWithoutCourseInput
     lesson?: lessonCreateNestedManyWithoutCourseInput
     payment?: PaymentCreateNestedManyWithoutCourseInput
     quiz?: quizCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewCreateNestedManyWithoutCourseInput
   }
 
   export type CourseUncheckedCreateWithoutRoadmapcourseInput = {
@@ -47864,13 +47714,13 @@ export namespace Prisma {
     createdAt?: Date | string
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutCourseInput
     lesson?: lessonUncheckedCreateNestedManyWithoutCourseInput
     payment?: PaymentUncheckedCreateNestedManyWithoutCourseInput
     quiz?: quizUncheckedCreateNestedManyWithoutCourseInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutCourseInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
   }
 
   export type CourseCreateOrConnectWithoutRoadmapcourseInput = {
@@ -47922,13 +47772,13 @@ export namespace Prisma {
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
     payment?: PaymentUpdateManyWithoutCourseNestedInput
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutRoadmapcourseInput = {
@@ -47943,13 +47793,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutCourseNestedInput
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type RoadmapUpsertWithoutRoadmapcourseInput = {
@@ -47980,28 +47830,6 @@ export namespace Prisma {
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutRoadmapNestedInput
   }
 
-  export type RoadmapCreateWithoutUserroadmapInput = {
-    name: string
-    description: string
-    rewardVoucher: string
-    payment?: PaymentCreateNestedManyWithoutRoadmapInput
-    roadmapcourse?: RoadmapCourseCreateNestedManyWithoutRoadmapInput
-  }
-
-  export type RoadmapUncheckedCreateWithoutUserroadmapInput = {
-    id?: number
-    name: string
-    description: string
-    rewardVoucher: string
-    payment?: PaymentUncheckedCreateNestedManyWithoutRoadmapInput
-    roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutRoadmapInput
-  }
-
-  export type RoadmapCreateOrConnectWithoutUserroadmapInput = {
-    where: RoadmapWhereUniqueInput
-    create: XOR<RoadmapCreateWithoutUserroadmapInput, RoadmapUncheckedCreateWithoutUserroadmapInput>
-  }
-
   export type PaymentCreateWithoutUserroadmapInput = {
     amount: number
     paymentStatus: string
@@ -48011,9 +47839,9 @@ export namespace Prisma {
     orderId?: string | null
     snapToken?: string | null
     enrollment?: EnrollmentCreateNestedManyWithoutPaymentInput
+    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     course?: CourseCreateNestedOneWithoutPaymentInput
     roadmap?: RoadmapCreateNestedOneWithoutPaymentInput
-    counselingSession?: CounselingSessionCreateNestedOneWithoutPaymentInput
     users: UserCreateNestedOneWithoutPaymentInput
   }
 
@@ -48038,6 +47866,28 @@ export namespace Prisma {
     create: XOR<PaymentCreateWithoutUserroadmapInput, PaymentUncheckedCreateWithoutUserroadmapInput>
   }
 
+  export type RoadmapCreateWithoutUserroadmapInput = {
+    name: string
+    description: string
+    rewardVoucher: string
+    payment?: PaymentCreateNestedManyWithoutRoadmapInput
+    roadmapcourse?: RoadmapCourseCreateNestedManyWithoutRoadmapInput
+  }
+
+  export type RoadmapUncheckedCreateWithoutUserroadmapInput = {
+    id?: number
+    name: string
+    description: string
+    rewardVoucher: string
+    payment?: PaymentUncheckedCreateNestedManyWithoutRoadmapInput
+    roadmapcourse?: RoadmapCourseUncheckedCreateNestedManyWithoutRoadmapInput
+  }
+
+  export type RoadmapCreateOrConnectWithoutUserroadmapInput = {
+    where: RoadmapWhereUniqueInput
+    create: XOR<RoadmapCreateWithoutUserroadmapInput, RoadmapUncheckedCreateWithoutUserroadmapInput>
+  }
+
   export type UserCreateWithoutUserroadmapInput = {
     firstName?: string | null
     lastName?: string | null
@@ -48059,16 +47909,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserroadmapInput = {
@@ -48093,21 +47943,63 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserroadmapInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutUserroadmapInput, UserUncheckedCreateWithoutUserroadmapInput>
+  }
+
+  export type PaymentUpsertWithoutUserroadmapInput = {
+    update: XOR<PaymentUpdateWithoutUserroadmapInput, PaymentUncheckedUpdateWithoutUserroadmapInput>
+    create: XOR<PaymentCreateWithoutUserroadmapInput, PaymentUncheckedCreateWithoutUserroadmapInput>
+    where?: PaymentWhereInput
+  }
+
+  export type PaymentUpdateToOneWithWhereWithoutUserroadmapInput = {
+    where?: PaymentWhereInput
+    data: XOR<PaymentUpdateWithoutUserroadmapInput, PaymentUncheckedUpdateWithoutUserroadmapInput>
+  }
+
+  export type PaymentUpdateWithoutUserroadmapInput = {
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
+    course?: CourseUpdateOneWithoutPaymentNestedInput
+    roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
+    users?: UserUpdateOneRequiredWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutUserroadmapInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    courseId?: NullableIntFieldUpdateOperationsInput | number | null
+    roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
+    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: IntFieldUpdateOperationsInput | number
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderId?: NullableStringFieldUpdateOperationsInput | string | null
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    enrollment?: EnrollmentUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type RoadmapUpsertWithoutUserroadmapInput = {
@@ -48136,48 +48028,6 @@ export namespace Prisma {
     rewardVoucher?: StringFieldUpdateOperationsInput | string
     payment?: PaymentUncheckedUpdateManyWithoutRoadmapNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutRoadmapNestedInput
-  }
-
-  export type PaymentUpsertWithoutUserroadmapInput = {
-    update: XOR<PaymentUpdateWithoutUserroadmapInput, PaymentUncheckedUpdateWithoutUserroadmapInput>
-    create: XOR<PaymentCreateWithoutUserroadmapInput, PaymentUncheckedCreateWithoutUserroadmapInput>
-    where?: PaymentWhereInput
-  }
-
-  export type PaymentUpdateToOneWithWhereWithoutUserroadmapInput = {
-    where?: PaymentWhereInput
-    data: XOR<PaymentUpdateWithoutUserroadmapInput, PaymentUncheckedUpdateWithoutUserroadmapInput>
-  }
-
-  export type PaymentUpdateWithoutUserroadmapInput = {
-    amount?: IntFieldUpdateOperationsInput | number
-    paymentStatus?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orderId?: NullableStringFieldUpdateOperationsInput | string | null
-    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
-    enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
-    course?: CourseUpdateOneWithoutPaymentNestedInput
-    roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
-    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
-    users?: UserUpdateOneRequiredWithoutPaymentNestedInput
-  }
-
-  export type PaymentUncheckedUpdateWithoutUserroadmapInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    courseId?: NullableIntFieldUpdateOperationsInput | number | null
-    roadmapId?: NullableIntFieldUpdateOperationsInput | number | null
-    counselingSessionId?: NullableIntFieldUpdateOperationsInput | number | null
-    amount?: IntFieldUpdateOperationsInput | number
-    paymentStatus?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orderId?: NullableStringFieldUpdateOperationsInput | string | null
-    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
-    enrollment?: EnrollmentUncheckedUpdateManyWithoutPaymentNestedInput
   }
 
   export type UserUpsertWithoutUserroadmapInput = {
@@ -48212,16 +48062,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserroadmapInput = {
@@ -48246,16 +48096,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutVoucherInput = {
@@ -48279,16 +48129,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVoucherInput = {
@@ -48313,16 +48163,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
-    jobmatching?: JobMatchingUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVoucherInput = {
@@ -48362,16 +48212,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVoucherInput = {
@@ -48396,16 +48246,69 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CVReviewCreateWithoutJobmatchingInput = {
+    id?: string
+    fileName: string
+    filePath?: string | null
+    fileSize: number
+    extractedText: string
+    careerField: string
+    relevancyRate: number
+    targetedJobRate: number
+    overallScore: number
+    relevantSkill: number
+    workExperience: number
+    consistency: number
+    writingQuality: number
+    aiAnalysis: JsonNullValueInput | InputJsonValue
+    suggestions: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
+    user: UserCreateNestedOneWithoutCvreviewInput
+  }
+
+  export type CVReviewUncheckedCreateWithoutJobmatchingInput = {
+    id?: string
+    userId: number
+    fileName: string
+    filePath?: string | null
+    fileSize: number
+    extractedText: string
+    careerField: string
+    relevancyRate: number
+    targetedJobRate: number
+    overallScore: number
+    relevantSkill: number
+    workExperience: number
+    consistency: number
+    writingQuality: number
+    aiAnalysis: JsonNullValueInput | InputJsonValue
+    suggestions: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
+  }
+
+  export type CVReviewCreateOrConnectWithoutJobmatchingInput = {
+    where: CVReviewWhereUniqueInput
+    create: XOR<CVReviewCreateWithoutJobmatchingInput, CVReviewUncheckedCreateWithoutJobmatchingInput>
   }
 
   export type UserCreateWithoutJobmatchingInput = {
@@ -48429,16 +48332,16 @@ export namespace Prisma {
     counselor?: CounselorCreateNestedOneWithoutUsersInput
     course?: CourseCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
     cvreview?: CVReviewCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
-    notification?: NotificationCreateNestedManyWithoutUserInput
+    notification?: notificationCreateNestedManyWithoutUsersInput
     payment?: PaymentCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
     voucher?: VoucherCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutJobmatchingInput = {
@@ -48463,16 +48366,16 @@ export namespace Prisma {
     counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
     course?: CourseUncheckedCreateNestedManyWithoutUsersInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
     cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
     enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
     jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
     lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
-    notification?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notification?: notificationUncheckedCreateNestedManyWithoutUsersInput
     payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
     quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
     userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
     voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
-    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutJobmatchingInput = {
@@ -48480,57 +48383,63 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutJobmatchingInput, UserUncheckedCreateWithoutJobmatchingInput>
   }
 
-  export type CVReviewCreateWithoutJobmatchingInput = {
-    id?: string
-    fileName: string
-    filePath?: string | null
-    fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
-    extractedText: string
-    careerField: string
-    relevancyRate: number
-    targetedJobRate: number
-    overallScore: number
-    relevantSkill: number
-    workExperience: number
-    consistency: number
-    writingQuality: number
-    aiAnalysis: JsonNullValueInput | InputJsonValue
-    suggestions: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutCvreviewInput
-  }
-
-  export type CVReviewUncheckedCreateWithoutJobmatchingInput = {
-    id?: string
-    userId: number
-    fileName: string
-    filePath?: string | null
-    fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
-    extractedText: string
-    careerField: string
-    relevancyRate: number
-    targetedJobRate: number
-    overallScore: number
-    relevantSkill: number
-    workExperience: number
-    consistency: number
-    writingQuality: number
-    aiAnalysis: JsonNullValueInput | InputJsonValue
-    suggestions: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CVReviewCreateOrConnectWithoutJobmatchingInput = {
-    where: CVReviewWhereUniqueInput
+  export type CVReviewUpsertWithoutJobmatchingInput = {
+    update: XOR<CVReviewUpdateWithoutJobmatchingInput, CVReviewUncheckedUpdateWithoutJobmatchingInput>
     create: XOR<CVReviewCreateWithoutJobmatchingInput, CVReviewUncheckedCreateWithoutJobmatchingInput>
+    where?: CVReviewWhereInput
+  }
+
+  export type CVReviewUpdateToOneWithWhereWithoutJobmatchingInput = {
+    where?: CVReviewWhereInput
+    data: XOR<CVReviewUpdateWithoutJobmatchingInput, CVReviewUncheckedUpdateWithoutJobmatchingInput>
+  }
+
+  export type CVReviewUpdateWithoutJobmatchingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileName?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: IntFieldUpdateOperationsInput | number
+    extractedText?: StringFieldUpdateOperationsInput | string
+    careerField?: StringFieldUpdateOperationsInput | string
+    relevancyRate?: FloatFieldUpdateOperationsInput | number
+    targetedJobRate?: FloatFieldUpdateOperationsInput | number
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    relevantSkill?: FloatFieldUpdateOperationsInput | number
+    workExperience?: FloatFieldUpdateOperationsInput | number
+    consistency?: FloatFieldUpdateOperationsInput | number
+    writingQuality?: FloatFieldUpdateOperationsInput | number
+    aiAnalysis?: JsonNullValueInput | InputJsonValue
+    suggestions?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutCvreviewNestedInput
+  }
+
+  export type CVReviewUncheckedUpdateWithoutJobmatchingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    fileName?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
+    fileSize?: IntFieldUpdateOperationsInput | number
+    extractedText?: StringFieldUpdateOperationsInput | string
+    careerField?: StringFieldUpdateOperationsInput | string
+    relevancyRate?: FloatFieldUpdateOperationsInput | number
+    targetedJobRate?: FloatFieldUpdateOperationsInput | number
+    overallScore?: FloatFieldUpdateOperationsInput | number
+    relevantSkill?: FloatFieldUpdateOperationsInput | number
+    workExperience?: FloatFieldUpdateOperationsInput | number
+    consistency?: FloatFieldUpdateOperationsInput | number
+    writingQuality?: FloatFieldUpdateOperationsInput | number
+    aiAnalysis?: JsonNullValueInput | InputJsonValue
+    suggestions?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpsertWithoutJobmatchingInput = {
@@ -48565,16 +48474,16 @@ export namespace Prisma {
     counselor?: CounselorUpdateOneWithoutUsersNestedInput
     course?: CourseUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUpdateManyWithoutUserNestedInput
+    notification?: notificationUpdateManyWithoutUsersNestedInput
     payment?: PaymentUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUpdateManyWithoutUsersNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutJobmatchingInput = {
@@ -48599,75 +48508,166 @@ export namespace Prisma {
     counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
     course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
     cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
     jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
     lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
-    notification?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notification?: notificationUncheckedUpdateManyWithoutUsersNestedInput
     payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
     userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
     voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserCreateWithoutNotificationInput = {
+    firstName?: string | null
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    address?: string | null
+    gender?: string | null
+    birthDate?: Date | string | null
+    role?: $Enums.Role
+    profilePicture?: string | null
+    createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
+    assessment?: AssessmentCreateNestedManyWithoutUsersInput
+    certificate?: CertificateCreateNestedManyWithoutUsersInput
+    chatmessage?: ChatMessageCreateNestedManyWithoutUsersInput
+    counselingsession?: CounselingSessionCreateNestedManyWithoutUsersInput
+    counselor?: CounselorCreateNestedOneWithoutUsersInput
+    course?: CourseCreateNestedManyWithoutUsersInput
+    courseprogress?: CourseProgressCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewCreateNestedManyWithoutUserInput
+    cvreview?: CVReviewCreateNestedManyWithoutUserInput
+    enrollment?: EnrollmentCreateNestedManyWithoutUsersInput
+    jobmatch?: JobMatchCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingCreateNestedManyWithoutUsersInput
+    lessonprogress?: LessonProgressCreateNestedManyWithoutUsersInput
+    payment?: PaymentCreateNestedManyWithoutUsersInput
+    quizsubmission?: QuizSubmissionCreateNestedManyWithoutUsersInput
+    userroadmap?: UserRoadmapCreateNestedManyWithoutUsersInput
+    voucher?: VoucherCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationInput = {
+    id?: number
+    firstName?: string | null
+    lastName?: string | null
+    email: string
+    password: string
+    phoneNumber?: string | null
+    address?: string | null
+    gender?: string | null
+    birthDate?: Date | string | null
+    role?: $Enums.Role
+    profilePicture?: string | null
+    createdAt?: Date | string
+    resetToken?: string | null
+    resetTokenExpiry?: Date | string | null
+    assessment?: AssessmentUncheckedCreateNestedManyWithoutUsersInput
+    certificate?: CertificateUncheckedCreateNestedManyWithoutUsersInput
+    chatmessage?: ChatMessageUncheckedCreateNestedManyWithoutUsersInput
+    counselingsession?: CounselingSessionUncheckedCreateNestedManyWithoutUsersInput
+    counselor?: CounselorUncheckedCreateNestedOneWithoutUsersInput
+    course?: CourseUncheckedCreateNestedManyWithoutUsersInput
+    courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutUsersInput
+    coursereview?: CourseReviewUncheckedCreateNestedManyWithoutUserInput
+    cvreview?: CVReviewUncheckedCreateNestedManyWithoutUserInput
+    enrollment?: EnrollmentUncheckedCreateNestedManyWithoutUsersInput
+    jobmatch?: JobMatchUncheckedCreateNestedManyWithoutUsersInput
+    jobmatching?: jobmatchingUncheckedCreateNestedManyWithoutUsersInput
+    lessonprogress?: LessonProgressUncheckedCreateNestedManyWithoutUsersInput
+    payment?: PaymentUncheckedCreateNestedManyWithoutUsersInput
+    quizsubmission?: QuizSubmissionUncheckedCreateNestedManyWithoutUsersInput
+    userroadmap?: UserRoadmapUncheckedCreateNestedManyWithoutUsersInput
+    voucher?: VoucherUncheckedCreateNestedManyWithoutUsersInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
+  }
+
+  export type UserUpsertWithoutNotificationInput = {
+    update: XOR<UserUpdateWithoutNotificationInput, UserUncheckedUpdateWithoutNotificationInput>
+    create: XOR<UserCreateWithoutNotificationInput, UserUncheckedCreateWithoutNotificationInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationInput, UserUncheckedUpdateWithoutNotificationInput>
+  }
+
+  export type UserUpdateWithoutNotificationInput = {
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assessment?: AssessmentUpdateManyWithoutUsersNestedInput
+    certificate?: CertificateUpdateManyWithoutUsersNestedInput
+    chatmessage?: ChatMessageUpdateManyWithoutUsersNestedInput
+    counselingsession?: CounselingSessionUpdateManyWithoutUsersNestedInput
+    counselor?: CounselorUpdateOneWithoutUsersNestedInput
+    course?: CourseUpdateManyWithoutUsersNestedInput
+    courseprogress?: CourseProgressUpdateManyWithoutUsersNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutUserNestedInput
+    cvreview?: CVReviewUpdateManyWithoutUserNestedInput
+    enrollment?: EnrollmentUpdateManyWithoutUsersNestedInput
+    jobmatch?: JobMatchUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUpdateManyWithoutUsersNestedInput
+    lessonprogress?: LessonProgressUpdateManyWithoutUsersNestedInput
+    payment?: PaymentUpdateManyWithoutUsersNestedInput
+    quizsubmission?: QuizSubmissionUpdateManyWithoutUsersNestedInput
+    userroadmap?: UserRoadmapUpdateManyWithoutUsersNestedInput
+    voucher?: VoucherUpdateManyWithoutUsersNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    profilePicture?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assessment?: AssessmentUncheckedUpdateManyWithoutUsersNestedInput
+    certificate?: CertificateUncheckedUpdateManyWithoutUsersNestedInput
+    chatmessage?: ChatMessageUncheckedUpdateManyWithoutUsersNestedInput
+    counselingsession?: CounselingSessionUncheckedUpdateManyWithoutUsersNestedInput
+    counselor?: CounselorUncheckedUpdateOneWithoutUsersNestedInput
+    course?: CourseUncheckedUpdateManyWithoutUsersNestedInput
+    courseprogress?: CourseProgressUncheckedUpdateManyWithoutUsersNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type CVReviewUpsertWithoutJobmatchingInput = {
-    update: XOR<CVReviewUpdateWithoutJobmatchingInput, CVReviewUncheckedUpdateWithoutJobmatchingInput>
-    create: XOR<CVReviewCreateWithoutJobmatchingInput, CVReviewUncheckedCreateWithoutJobmatchingInput>
-    where?: CVReviewWhereInput
-  }
-
-  export type CVReviewUpdateToOneWithWhereWithoutJobmatchingInput = {
-    where?: CVReviewWhereInput
-    data: XOR<CVReviewUpdateWithoutJobmatchingInput, CVReviewUncheckedUpdateWithoutJobmatchingInput>
-  }
-
-  export type CVReviewUpdateWithoutJobmatchingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: NullableStringFieldUpdateOperationsInput | string | null
-    fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    extractedText?: StringFieldUpdateOperationsInput | string
-    careerField?: StringFieldUpdateOperationsInput | string
-    relevancyRate?: FloatFieldUpdateOperationsInput | number
-    targetedJobRate?: FloatFieldUpdateOperationsInput | number
-    overallScore?: FloatFieldUpdateOperationsInput | number
-    relevantSkill?: FloatFieldUpdateOperationsInput | number
-    workExperience?: FloatFieldUpdateOperationsInput | number
-    consistency?: FloatFieldUpdateOperationsInput | number
-    writingQuality?: FloatFieldUpdateOperationsInput | number
-    aiAnalysis?: JsonNullValueInput | InputJsonValue
-    suggestions?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCvreviewNestedInput
-  }
-
-  export type CVReviewUncheckedUpdateWithoutJobmatchingInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: IntFieldUpdateOperationsInput | number
-    fileName?: StringFieldUpdateOperationsInput | string
-    filePath?: NullableStringFieldUpdateOperationsInput | string | null
-    fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    extractedText?: StringFieldUpdateOperationsInput | string
-    careerField?: StringFieldUpdateOperationsInput | string
-    relevancyRate?: FloatFieldUpdateOperationsInput | number
-    targetedJobRate?: FloatFieldUpdateOperationsInput | number
-    overallScore?: FloatFieldUpdateOperationsInput | number
-    relevantSkill?: FloatFieldUpdateOperationsInput | number
-    workExperience?: FloatFieldUpdateOperationsInput | number
-    consistency?: FloatFieldUpdateOperationsInput | number
-    writingQuality?: FloatFieldUpdateOperationsInput | number
-    aiAnalysis?: JsonNullValueInput | InputJsonValue
-    suggestions?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cvreview?: CVReviewUncheckedUpdateManyWithoutUserNestedInput
+    enrollment?: EnrollmentUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatch?: JobMatchUncheckedUpdateManyWithoutUsersNestedInput
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutUsersNestedInput
+    lessonprogress?: LessonProgressUncheckedUpdateManyWithoutUsersNestedInput
+    payment?: PaymentUncheckedUpdateManyWithoutUsersNestedInput
+    quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutUsersNestedInput
+    userroadmap?: UserRoadmapUncheckedUpdateManyWithoutUsersNestedInput
+    voucher?: VoucherUncheckedUpdateManyWithoutUsersNestedInput
   }
 
   export type AssessmentCreateManyUsersInput = {
@@ -48731,14 +48731,20 @@ export namespace Prisma {
     isCompleted: boolean
   }
 
+  export type CourseReviewCreateManyUserInput = {
+    id?: number
+    courseId: number
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CVReviewCreateManyUserInput = {
     id?: string
     fileName: string
     filePath?: string | null
     fileSize: number
-    b2FileId?: string | null
-    b2FileName?: string | null
-    b2FileUrl?: string | null
     extractedText: string
     careerField: string
     relevancyRate: number
@@ -48752,16 +48758,9 @@ export namespace Prisma {
     suggestions: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-  }
-
-  export type JobMatchingCreateManyUserInput = {
-    id?: string
-    cvReviewId?: string | null
-    dreamJob: string
-    matches: JsonNullValueInput | InputJsonValue
-    aiAnalysis: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2FileUrl?: string | null
   }
 
   export type EnrollmentCreateManyUsersInput = {
@@ -48779,6 +48778,16 @@ export namespace Prisma {
     generatedAt?: Date | string
   }
 
+  export type jobmatchingCreateManyUsersInput = {
+    id: string
+    cvReviewId?: string | null
+    dreamJob: string
+    matches: JsonNullValueInput | InputJsonValue
+    aiAnalysis: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt: Date | string
+  }
+
   export type LessonProgressCreateManyUsersInput = {
     id?: number
     lessonId: number
@@ -48786,7 +48795,7 @@ export namespace Prisma {
     updatedAt: Date | string
   }
 
-  export type NotificationCreateManyUserInput = {
+  export type notificationCreateManyUsersInput = {
     id?: number
     title: string
     body: string
@@ -48834,15 +48843,6 @@ export namespace Prisma {
     discount: number
     expiresAt: Date | string
     isUsed?: boolean
-  }
-
-  export type CourseReviewCreateManyUserInput = {
-    id?: number
-    courseId: number
-    rating: number
-    comment?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type AssessmentUpdateWithoutUsersInput = {
@@ -48937,8 +48937,8 @@ export namespace Prisma {
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
-    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     counselor?: CounselorUpdateOneRequiredWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionUncheckedUpdateWithoutUsersInput = {
@@ -48981,6 +48981,7 @@ export namespace Prisma {
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
@@ -48988,7 +48989,6 @@ export namespace Prisma {
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutUsersInput = {
@@ -49002,6 +49002,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
@@ -49009,7 +49010,6 @@ export namespace Prisma {
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateManyWithoutUsersInput = {
@@ -49046,14 +49046,37 @@ export namespace Prisma {
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type CourseReviewUpdateWithoutUserInput = {
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    course?: CourseUpdateOneRequiredWithoutCoursereviewNestedInput
+  }
+
+  export type CourseReviewUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    courseId?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseReviewUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    courseId?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CVReviewUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -49067,7 +49090,10 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobmatching?: JobMatchingUpdateManyWithoutCvReviewNestedInput
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    jobmatching?: jobmatchingUpdateManyWithoutCvreviewNestedInput
   }
 
   export type CVReviewUncheckedUpdateWithoutUserInput = {
@@ -49075,9 +49101,6 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -49091,7 +49114,10 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobmatching?: JobMatchingUncheckedUpdateManyWithoutCvReviewNestedInput
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    jobmatching?: jobmatchingUncheckedUpdateManyWithoutCvreviewNestedInput
   }
 
   export type CVReviewUncheckedUpdateManyWithoutUserInput = {
@@ -49099,9 +49125,6 @@ export namespace Prisma {
     fileName?: StringFieldUpdateOperationsInput | string
     filePath?: NullableStringFieldUpdateOperationsInput | string | null
     fileSize?: IntFieldUpdateOperationsInput | number
-    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
-    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
     extractedText?: StringFieldUpdateOperationsInput | string
     careerField?: StringFieldUpdateOperationsInput | string
     relevancyRate?: FloatFieldUpdateOperationsInput | number
@@ -49115,36 +49138,9 @@ export namespace Prisma {
     suggestions?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type JobMatchingUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    dreamJob?: StringFieldUpdateOperationsInput | string
-    matches?: JsonNullValueInput | InputJsonValue
-    aiAnalysis?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cvReview?: CVReviewUpdateOneWithoutJobmatchingNestedInput
-  }
-
-  export type JobMatchingUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cvReviewId?: NullableStringFieldUpdateOperationsInput | string | null
-    dreamJob?: StringFieldUpdateOperationsInput | string
-    matches?: JsonNullValueInput | InputJsonValue
-    aiAnalysis?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type JobMatchingUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cvReviewId?: NullableStringFieldUpdateOperationsInput | string | null
-    dreamJob?: StringFieldUpdateOperationsInput | string
-    matches?: JsonNullValueInput | InputJsonValue
-    aiAnalysis?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EnrollmentUpdateWithoutUsersInput = {
@@ -49190,6 +49186,36 @@ export namespace Prisma {
     generatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type jobmatchingUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    matches?: JsonNullValueInput | InputJsonValue
+    aiAnalysis?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cvreview?: CVReviewUpdateOneWithoutJobmatchingNestedInput
+  }
+
+  export type jobmatchingUncheckedUpdateWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cvReviewId?: NullableStringFieldUpdateOperationsInput | string | null
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    matches?: JsonNullValueInput | InputJsonValue
+    aiAnalysis?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type jobmatchingUncheckedUpdateManyWithoutUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cvReviewId?: NullableStringFieldUpdateOperationsInput | string | null
+    dreamJob?: StringFieldUpdateOperationsInput | string
+    matches?: JsonNullValueInput | InputJsonValue
+    aiAnalysis?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LessonProgressUpdateWithoutUsersInput = {
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49210,7 +49236,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NotificationUpdateWithoutUserInput = {
+  export type notificationUpdateWithoutUsersInput = {
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
     type?: NullableStringFieldUpdateOperationsInput | string | null
@@ -49218,7 +49244,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NotificationUncheckedUpdateWithoutUserInput = {
+  export type notificationUncheckedUpdateWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
@@ -49227,7 +49253,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+  export type notificationUncheckedUpdateManyWithoutUsersInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     body?: StringFieldUpdateOperationsInput | string
@@ -49245,9 +49271,9 @@ export namespace Prisma {
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
+    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     course?: CourseUpdateOneWithoutPaymentNestedInput
     roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
-    counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
 
@@ -49316,8 +49342,8 @@ export namespace Prisma {
   export type UserRoadmapUpdateWithoutUsersInput = {
     isUnlocked?: BoolFieldUpdateOperationsInput | boolean
     unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    roadmap?: RoadmapUpdateOneRequiredWithoutUserroadmapNestedInput
     payment?: PaymentUpdateOneWithoutUserroadmapNestedInput
+    roadmap?: RoadmapUpdateOneRequiredWithoutUserroadmapNestedInput
   }
 
   export type UserRoadmapUncheckedUpdateWithoutUsersInput = {
@@ -49359,32 +49385,6 @@ export namespace Prisma {
     isUsed?: BoolFieldUpdateOperationsInput | boolean
   }
 
-  export type CourseReviewUpdateWithoutUserInput = {
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    course?: CourseUpdateOneRequiredWithoutCoursereviewNestedInput
-  }
-
-  export type CourseReviewUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    courseId?: IntFieldUpdateOperationsInput | number
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseReviewUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    courseId?: IntFieldUpdateOperationsInput | number
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CourseCreateManyCategoryInput = {
     id?: number
     title: string
@@ -49406,6 +49406,7 @@ export namespace Prisma {
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUpdateManyWithoutCourseNestedInput
     lesson?: lessonUpdateManyWithoutCourseNestedInput
@@ -49413,7 +49414,6 @@ export namespace Prisma {
     quiz?: quizUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateWithoutCategoryInput = {
@@ -49427,6 +49427,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
+    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
     enrollment?: EnrollmentUncheckedUpdateManyWithoutCourseNestedInput
     lesson?: lessonUncheckedUpdateManyWithoutCourseNestedInput
@@ -49434,7 +49435,6 @@ export namespace Prisma {
     quiz?: quizUncheckedUpdateManyWithoutCourseNestedInput
     quizsubmission?: QuizSubmissionUncheckedUpdateManyWithoutCourseNestedInput
     roadmapcourse?: RoadmapCourseUncheckedUpdateManyWithoutCourseNestedInput
-    coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
   }
 
   export type CourseUncheckedUpdateManyWithoutCategoryInput = {
@@ -49559,8 +49559,8 @@ export namespace Prisma {
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     feedback?: NullableStringFieldUpdateOperationsInput | string | null
     chatmessage?: ChatMessageUpdateManyWithoutCounselingsessionNestedInput
-    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
     users?: UserUpdateOneRequiredWithoutCounselingsessionNestedInput
+    payment?: PaymentUpdateManyWithoutCounselingSessionNestedInput
   }
 
   export type CounselingSessionUncheckedUpdateWithoutCounselorInput = {
@@ -49608,6 +49608,15 @@ export namespace Prisma {
     completedVideoCount: number
     completedQuizCount: number
     isCompleted: boolean
+  }
+
+  export type CourseReviewCreateManyCourseInput = {
+    id?: number
+    userId: number
+    rating: number
+    comment?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type coursevideoCreateManyCourseInput = {
@@ -49673,15 +49682,6 @@ export namespace Prisma {
     order: number
   }
 
-  export type CourseReviewCreateManyCourseInput = {
-    id?: number
-    userId: number
-    rating: number
-    comment?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type CertificateUpdateWithoutCourseInput = {
     certificateId?: StringFieldUpdateOperationsInput | string
     fileUrl?: StringFieldUpdateOperationsInput | string
@@ -49729,6 +49729,32 @@ export namespace Prisma {
     completedVideoCount?: IntFieldUpdateOperationsInput | number
     completedQuizCount?: IntFieldUpdateOperationsInput | number
     isCompleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type CourseReviewUpdateWithoutCourseInput = {
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCoursereviewNestedInput
+  }
+
+  export type CourseReviewUncheckedUpdateWithoutCourseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CourseReviewUncheckedUpdateManyWithoutCourseInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    rating?: IntFieldUpdateOperationsInput | number
+    comment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type coursevideoUpdateWithoutCourseInput = {
@@ -49811,8 +49837,8 @@ export namespace Prisma {
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
-    roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
     counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
+    roadmap?: RoadmapUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }
@@ -49921,53 +49947,27 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
   }
 
-  export type CourseReviewUpdateWithoutCourseInput = {
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutCoursereviewNestedInput
-  }
-
-  export type CourseReviewUncheckedUpdateWithoutCourseInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CourseReviewUncheckedUpdateManyWithoutCourseInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    rating?: IntFieldUpdateOperationsInput | number
-    comment?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type JobMatchingCreateManyCvReviewInput = {
-    id?: string
+  export type jobmatchingCreateManyCvreviewInput = {
+    id: string
     userId: number
     dreamJob: string
     matches: JsonNullValueInput | InputJsonValue
     aiAnalysis: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    updatedAt?: Date | string
+    updatedAt: Date | string
   }
 
-  export type JobMatchingUpdateWithoutCvReviewInput = {
+  export type jobmatchingUpdateWithoutCvreviewInput = {
     id?: StringFieldUpdateOperationsInput | string
     dreamJob?: StringFieldUpdateOperationsInput | string
     matches?: JsonNullValueInput | InputJsonValue
     aiAnalysis?: JsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutJobmatchingNestedInput
+    users?: UserUpdateOneRequiredWithoutJobmatchingNestedInput
   }
 
-  export type JobMatchingUncheckedUpdateWithoutCvReviewInput = {
+  export type jobmatchingUncheckedUpdateWithoutCvreviewInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     dreamJob?: StringFieldUpdateOperationsInput | string
@@ -49977,7 +49977,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobMatchingUncheckedUpdateManyWithoutCvReviewInput = {
+  export type jobmatchingUncheckedUpdateManyWithoutCvreviewInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     dreamJob?: StringFieldUpdateOperationsInput | string
@@ -50156,8 +50156,8 @@ export namespace Prisma {
     orderId?: NullableStringFieldUpdateOperationsInput | string | null
     snapToken?: NullableStringFieldUpdateOperationsInput | string | null
     enrollment?: EnrollmentUpdateManyWithoutPaymentNestedInput
-    course?: CourseUpdateOneWithoutPaymentNestedInput
     counselingSession?: CounselingSessionUpdateOneWithoutPaymentNestedInput
+    course?: CourseUpdateOneWithoutPaymentNestedInput
     users?: UserUpdateOneRequiredWithoutPaymentNestedInput
     userroadmap?: UserRoadmapUpdateManyWithoutPaymentNestedInput
   }

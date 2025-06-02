@@ -137,13 +137,6 @@ exports.Prisma.UserScalarFieldEnum = {
   resetTokenExpiry: 'resetTokenExpiry'
 };
 
-exports.Prisma.RoadmapMatcherScalarFieldEnum = {
-  id: 'id',
-  keyword: 'keyword',
-  roadmapId: 'roadmapId',
-  matchField: 'matchField'
-};
-
 exports.Prisma.AssessmentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -257,9 +250,6 @@ exports.Prisma.CVReviewScalarFieldEnum = {
   fileName: 'fileName',
   filePath: 'filePath',
   fileSize: 'fileSize',
-  b2FileId: 'b2FileId',
-  b2FileName: 'b2FileName',
-  b2FileUrl: 'b2FileUrl',
   extractedText: 'extractedText',
   careerField: 'careerField',
   relevancyRate: 'relevancyRate',
@@ -272,7 +262,10 @@ exports.Prisma.CVReviewScalarFieldEnum = {
   aiAnalysis: 'aiAnalysis',
   suggestions: 'suggestions',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  b2FileId: 'b2FileId',
+  b2FileName: 'b2FileName',
+  b2FileUrl: 'b2FileUrl'
 };
 
 exports.Prisma.EnrollmentScalarFieldEnum = {
@@ -306,16 +299,6 @@ exports.Prisma.LessonProgressScalarFieldEnum = {
   lessonId: 'lessonId',
   isCompleted: 'isCompleted',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.NotificationScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  title: 'title',
-  body: 'body',
-  type: 'type',
-  isRead: 'isRead',
-  createdAt: 'createdAt'
 };
 
 exports.Prisma.PaymentScalarFieldEnum = {
@@ -386,17 +369,6 @@ exports.Prisma.VoucherScalarFieldEnum = {
   isUsed: 'isUsed'
 };
 
-exports.Prisma.JobMatchingScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  cvReviewId: 'cvReviewId',
-  dreamJob: 'dreamJob',
-  matches: 'matches',
-  aiAnalysis: 'aiAnalysis',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.JobScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -410,6 +382,34 @@ exports.Prisma.JobScalarFieldEnum = {
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JobmatchingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cvReviewId: 'cvReviewId',
+  dreamJob: 'dreamJob',
+  matches: 'matches',
+  aiAnalysis: 'aiAnalysis',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  body: 'body',
+  type: 'type',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RoadmapmatcherScalarFieldEnum = {
+  id: 'id',
+  keyword: 'keyword',
+  roadmapId: 'roadmapId',
+  matchField: 'matchField'
 };
 
 exports.Prisma.SortOrder = {
@@ -436,11 +436,6 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   gender: 'gender',
   profilePicture: 'profilePicture',
   resetToken: 'resetToken'
-};
-
-exports.Prisma.RoadmapMatcherOrderByRelevanceFieldEnum = {
-  keyword: 'keyword',
-  matchField: 'matchField'
 };
 
 exports.Prisma.AssessmentOrderByRelevanceFieldEnum = {
@@ -511,11 +506,11 @@ exports.Prisma.CVReviewOrderByRelevanceFieldEnum = {
   id: 'id',
   fileName: 'fileName',
   filePath: 'filePath',
+  extractedText: 'extractedText',
+  careerField: 'careerField',
   b2FileId: 'b2FileId',
   b2FileName: 'b2FileName',
-  b2FileUrl: 'b2FileUrl',
-  extractedText: 'extractedText',
-  careerField: 'careerField'
+  b2FileUrl: 'b2FileUrl'
 };
 
 exports.Prisma.JobMatchOrderByRelevanceFieldEnum = {
@@ -525,12 +520,6 @@ exports.Prisma.JobMatchOrderByRelevanceFieldEnum = {
 exports.Prisma.lessonOrderByRelevanceFieldEnum = {
   title: 'title',
   content: 'content'
-};
-
-exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
-  title: 'title',
-  body: 'body',
-  type: 'type'
 };
 
 exports.Prisma.PaymentOrderByRelevanceFieldEnum = {
@@ -555,13 +544,7 @@ exports.Prisma.VoucherOrderByRelevanceFieldEnum = {
   code: 'code'
 };
 
-exports.Prisma.JobMatchingOrderByRelevanceFieldEnum = {
-  id: 'id',
-  cvReviewId: 'cvReviewId',
-  dreamJob: 'dreamJob'
-};
-
-exports.Prisma.JobOrderByRelevanceFieldEnum = {
+exports.Prisma.jobOrderByRelevanceFieldEnum = {
   id: 'id',
   title: 'title',
   company: 'company',
@@ -571,6 +554,23 @@ exports.Prisma.JobOrderByRelevanceFieldEnum = {
   jobType: 'jobType',
   category: 'category'
 };
+
+exports.Prisma.jobmatchingOrderByRelevanceFieldEnum = {
+  id: 'id',
+  cvReviewId: 'cvReviewId',
+  dreamJob: 'dreamJob'
+};
+
+exports.Prisma.notificationOrderByRelevanceFieldEnum = {
+  title: 'title',
+  body: 'body',
+  type: 'type'
+};
+
+exports.Prisma.roadmapmatcherOrderByRelevanceFieldEnum = {
+  keyword: 'keyword',
+  matchField: 'matchField'
+};
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
   CONSULTANT: 'CONSULTANT'
@@ -578,7 +578,6 @@ exports.Role = exports.$Enums.Role = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  RoadmapMatcher: 'RoadmapMatcher',
   Assessment: 'Assessment',
   BookmarkCourse: 'BookmarkCourse',
   CourseReview: 'CourseReview',
@@ -595,7 +594,6 @@ exports.Prisma.ModelName = {
   JobMatch: 'JobMatch',
   lesson: 'lesson',
   LessonProgress: 'LessonProgress',
-  Notification: 'Notification',
   Payment: 'Payment',
   quiz: 'quiz',
   QuizSubmission: 'QuizSubmission',
@@ -603,8 +601,10 @@ exports.Prisma.ModelName = {
   RoadmapCourse: 'RoadmapCourse',
   UserRoadmap: 'UserRoadmap',
   Voucher: 'Voucher',
-  JobMatching: 'JobMatching',
-  Job: 'Job'
+  job: 'job',
+  jobmatching: 'jobmatching',
+  notification: 'notification',
+  roadmapmatcher: 'roadmapmatcher'
 };
 
 /**
