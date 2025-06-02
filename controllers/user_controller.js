@@ -253,7 +253,7 @@ exports.updateProfile = async (req, res) => {
         console.log('[updateProfile] Generated signed URL:', signedUrl);
         
         // Validasi panjang URL sebelum simpan ke DB
-        const MAX_URL_LENGTH = 512; // Sesuai dengan @db.VarChar(512)
+        const MAX_URL_LENGTH = 191; // TEMPORARY: sesuai dengan varchar(191) di production
         if (signedUrl && signedUrl.length > MAX_URL_LENGTH) {
           console.warn(`[updateProfile] Signed URL too long: ${signedUrl.length} chars. Using fileName instead.`);
           // Fallback: simpan nama file aja, nanti generate signed URL saat diambil
