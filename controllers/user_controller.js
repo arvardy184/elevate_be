@@ -234,6 +234,15 @@ exports.updateProfile = async (req, res) => {
     let profilePicture = existing.profilePicture;
     if(req.file) {
       try {
+        // Validate file exists sebelum upload
+        const fs = require('fs');
+        if (!fs.existsSync(req.file.path)) {
+          console.error('[updateProfile] File not found:', req.file.path);
+          return res.status(400).json({
+            message: 'File upload gagal. Silakan coba lagi.'
+          });
+        }
+
         const uploadResult = await uploadToStorage(req.file, FileCategory.PROFILE_PICTURE);
         console.log('[updateProfile] Upload result:', uploadResult);
         
@@ -244,9 +253,9 @@ exports.updateProfile = async (req, res) => {
         
         profilePicture = signedUrl;
       } catch (error) {
-        console.error('Error uploading profile picture:', error);
+        console.error('[updateProfile] Error uploading profile picture:', error);
         return res.status(400).json({
-          message: 'Gagal upload foto profile. ' + error.message
+          message: 'Gagal upload foto profile. Silakan coba lagi. Detail: ' + error.message
         });
       }
     }
@@ -288,7 +297,7 @@ exports.updateProfile = async (req, res) => {
       updatedUser
     });
   } catch(e) {
-    console.error(e);
+    console.error('[updateProfile] Server error:', e);
     return res.status(500).json({
       message: 'Terjadi kesalahan server.',
     });

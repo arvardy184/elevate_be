@@ -5,6 +5,16 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { swaggerUi, swaggerSpec } = require("./docs/swagger");
 const chatService = require("./services/chat_service");
+const { ensureUploadFolders } = require("./utils/folderUtils");
+
+// Ensure upload folders exist saat startup
+try {
+  ensureUploadFolders();
+  console.log("✅ Upload folders initialized successfully");
+} catch (error) {
+  console.error("❌ Error initializing upload folders:", error);
+}
+
 console.log("🔥 swaggerUi:", swaggerUi);
 
 // Routes
