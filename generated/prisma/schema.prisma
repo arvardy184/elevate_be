@@ -19,7 +19,7 @@ model User {
   gender            String?
   birthDate         DateTime?
   role              Role                @default(USER)
-  profilePicture    String?             @db.VarChar(512)
+  profilePicture    String?             @db.Text
   createdAt         DateTime            @default(now())
   resetToken        String?
   resetTokenExpiry  DateTime?
