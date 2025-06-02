@@ -128,15 +128,35 @@ exports.getProfile = async (req, res) => {
     }
     
     // Generate signed URL untuk profile picture jika ada
-    if (user.profilePicture && user.profilePicture.includes('elevate-be/')) {
+    if (user.profilePicture) {
       try {
-        // Extract filename from URL
-        const fileName = user.profilePicture.split('/file/elevate-be/')[1];
+        let fileName = null;
+        
+        // Case 1: Relative path yang baru (elevate-be/filename)
+        if (user.profilePicture.startsWith('elevate-be/')) {
+          fileName = user.profilePicture.replace('elevate-be/', '');
+          console.log('[getProfile] Detected relative path, generating signed URL for:', fileName);
+        }
+        // Case 2: URL lama yang ada 'elevate-be/' di dalamnya
+        else if (user.profilePicture.includes('elevate-be/')) {
+          // Extract filename from URL
+          fileName = user.profilePicture.split('/file/elevate-be/')[1];
+          if (fileName) {
+            // Remove query parameters kalau ada
+            fileName = fileName.split('?')[0];
+            console.log('[getProfile] Extracted filename from existing URL:', fileName);
+          }
+        }
+        
+        // Generate signed URL kalau berhasil dapat filename
         if (fileName) {
           const signedUrl = await generateSignedUrl(fileName, 24 * 3600); // 24 hours
           user.profilePicture = signedUrl;
-          console.log('[getProfile] Generated signed URL for existing profile picture');
+          console.log('[getProfile] Generated signed URL for profile picture');
+        } else {
+          console.log('[getProfile] Could not extract filename, keeping original URL');
         }
+        
       } catch (error) {
         console.error('[getProfile] Error generating signed URL:', error);
         // Keep original URL if signing fails
