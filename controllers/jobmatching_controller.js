@@ -5,6 +5,7 @@ const fs = require('fs').promises;
 const cvParserService = require('../services/cv_parser_service');
 const aiService = require('../services/ai_service');
 const b2StorageService = require('../services/b2_storage_service');
+const { v4: uuidv4 } = require('uuid');
 /**
  * @swagger
  * components:
@@ -344,11 +345,11 @@ class JobMatchingController {
     try {
       const userId = req.user.id;
       
-      const jobMatchings = await prisma.jobMatching.findMany({
+      const jobMatchings = await prisma.jobmatching.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' },
         include: {
-          cvReview: {
+          cvreview: {
             select: {
               fileName: true,
               careerField: true,
@@ -527,23 +528,25 @@ class JobMatchingController {
       );
 
       // Simpan hasil matching ke database
-      const jobMatching = await prisma.jobMatching.create({
+      const jobMatching = await prisma.jobmatching.create({
         data: {
+          id: uuidv4(),
           userId: userId,
           cvReviewId: cvReviewId || null,
           dreamJob: dreamJob,
           matches: matchingResult.matches || [],
-          aiAnalysis: matchingResult.aiAnalysis || {}
+          aiAnalysis: matchingResult.aiAnalysis || {},
+          updatedAt: new Date()
         },
         include: {
-          user: {
+          users: {
             select: {
               id: true,
               firstName: true,
               lastName: true
             }
           },
-          cvReview: cvReviewId ? {
+          cvreview: cvReviewId ? {
             select: {
               fileName: true,
               careerField: true,
@@ -561,7 +564,7 @@ class JobMatchingController {
           dreamJob: jobMatching.dreamJob,
           matches: jobMatching.matches,
           aiAnalysis: jobMatching.aiAnalysis,
-          cvReview: jobMatching.cvReview,
+          cvReview: jobMatching.cvreview,
           createdAt: jobMatching.createdAt,
           totalMatches: Array.isArray(jobMatching.matches) ? jobMatching.matches.length : 0
         }
@@ -744,26 +747,27 @@ class JobMatchingController {
         // Simpan hasil matching ke database
         const jobMatching = await prisma.jobmatching.create({
           data: {
+            id: uuidv4(),
             userId: userId,
-            cvReviewId: cvReviewId,
+            cvReviewId: cvReviewId || null,
             dreamJob: dreamJob,
             matches: matchingResult.matches || [],
-            aiAnalysis: matchingResult.aiAnalysis || {}
+            aiAnalysis: matchingResult.aiAnalysis || {},
+            updatedAt: new Date()
           },
           include: {
-            user: {
+            users: {
               select: {
                 id: true,
                 firstName: true,
                 lastName: true
               }
             },
-            cvReview: cvReviewId ? {
+            cvreview: cvReviewId ? {
               select: {
                 fileName: true,
                 careerField: true,
-                overallScore: true,
-                b2FileUrl: true
+                overallScore: true
               }
             } : false
           }
@@ -784,7 +788,7 @@ class JobMatchingController {
             dreamJob: jobMatching.dreamJob,
             matches: jobMatching.matches,
             aiAnalysis: jobMatching.aiAnalysis,
-            cvReview: jobMatching.cvReview,
+            cvReview: jobMatching.cvreview,
             createdAt: jobMatching.createdAt,
             totalMatches: Array.isArray(jobMatching.matches) ? jobMatching.matches.length : 0,
             cvSaved: saveCV === true || saveCV === 'true'
