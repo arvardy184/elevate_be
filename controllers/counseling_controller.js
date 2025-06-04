@@ -87,18 +87,12 @@ exports.getAllCounselors = async (req, res) => {
         skip: parseInt(skip),
         take: parseInt(limit),
         include: {
-          user: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              email: true,
-              profilePicture: true
-            }
+          users: {
+            select: { firstName: true, lastName: true, email: true }
           },
           _count: {
             select: {
-              sessions: {
+              counselingsession: {
                 where: { status: 'COMPLETED' }
               }
             }
@@ -128,7 +122,7 @@ exports.getAllCounselors = async (req, res) => {
         return {
           ...counselor,
           averageRating: Math.round(averageRating * 10) / 10,
-          totalSessions: counselor._count.sessions
+          totalSessions: counselor._count.counselingsession
         };
       })
     );
@@ -164,18 +158,12 @@ exports.getCounselorById = async (req, res) => {
     const counselor = await prisma.counselor.findUnique({
       where: { id: parseInt(id) },
       include: {
-        user: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            profilePicture: true
-          }
+        users: {
+          select: { firstName: true, lastName: true, email: true }
         },
         _count: {
           select: {
-            sessions: {
+            counselingsession: {
               where: { status: 'COMPLETED' }
             }
           }
@@ -209,7 +197,7 @@ exports.getCounselorById = async (req, res) => {
       data: {
         ...counselor,
         averageRating: Math.round(averageRating * 10) / 10,
-        totalSessions: counselor._count.sessions
+        totalSessions: counselor._count.counselingsession
       }
     });
   } catch (error) {
@@ -247,7 +235,7 @@ exports.createCounselingSession = async (req, res) => {
       },
       include: {
         users: {
-          select: { name: true, email: true }
+          select: { firstName: true, lastName: true, email: true }
         }
       }
     });
@@ -295,7 +283,7 @@ exports.createCounselingSession = async (req, res) => {
         counselor: {
           include: {
             users: {
-              select: { name: true, email: true }
+              select: { firstName: true, lastName: true, email: true }
             }
           }
         }
@@ -315,7 +303,7 @@ exports.createCounselingSession = async (req, res) => {
             id: session.id,
             price: price,
             quantity: 1,
-            name: `Konsultasi dengan ${counselor.users.name} - ${topic}`
+            name: `Konsultasi dengan ${counselor.users.firstName} ${counselor.users.lastName} - ${topic}`
           }]
         });
 
@@ -376,13 +364,7 @@ exports.getMySessions = async (req, res) => {
           counselor: {
             include: {
               users: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                  email: true,
-                  profilePicture: true
-                }
+                select: { firstName: true, lastName: true, email: true }
               }
             }
           },
@@ -442,13 +424,7 @@ exports.getSessionById = async (req, res) => {
         counselor: {
           include: {
             users: {
-              select: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                email: true,
-                profilePicture: true
-              }
+              select: { firstName: true, lastName: true, email: true }
             }
           }
         },

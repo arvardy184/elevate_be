@@ -163,8 +163,8 @@ exports.getCourses = async (req, res) => {
 
     if (search) {
       whereClause.OR = [
-        { title: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
+        { title: { contains: search } },
+        { description: { contains: search } },
       ];
     }
     const courses = await prisma.course.findMany({

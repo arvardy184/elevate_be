@@ -136,18 +136,22 @@ class JobMatchingController {
       
       // Filter berdasarkan query params
       if (category) {
-        whereClause.category = { contains: category, mode: 'insensitive' };
+        whereClause.category = { 
+          contains: category
+        };
       }
       if (location) {
-        whereClause.location = { contains: location, mode: 'insensitive' };
+        whereClause.location = { 
+          contains: location
+        };
       }
       if (jobType) {
         whereClause.jobType = jobType;
       }
       if (search) {
         whereClause.OR = [
-          { title: { contains: search, mode: 'insensitive' } },
-          { company: { contains: search, mode: 'insensitive' } }
+          { title: { contains: search } },
+          { company: { contains: search } }
         ];
       }
       
