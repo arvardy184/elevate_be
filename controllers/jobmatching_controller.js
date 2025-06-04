@@ -1,4 +1,10 @@
 const prisma = require('../prisma/client');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs').promises;
+const cvParserService = require('../services/cv_parser_service');
+const aiService = require('../services/ai_service');
+const b2StorageService = require('../services/b2_storage_service');
 /**
  * @swagger
  * components:
@@ -58,6 +64,40 @@ const prisma = require('../prisma/client');
  *           type: string
  *           format: date-time
  */
+
+// Multer config untuk upload CV di job matching
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/cv/');
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `cv-jobmatch-${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
+    cb(null, uniqueName);
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    console.log('Job matching - File received:', {
+      fieldname: file.fieldname,
+      originalname: file.originalname,
+      mimetype: file.mimetype
+    });
+    
+    const allowedTypes = ['.pdf', '.doc', '.docx'];
+    const extname = path.extname(file.originalname).toLowerCase();
+    
+    if (allowedTypes.includes(extname)) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Format file tidak didukung. Gunakan PDF, DOC, atau DOCX'));
+    }
+  }
+});
 
 class JobMatchingController {
   /**
@@ -536,6 +576,246 @@ class JobMatchingController {
       });
     }
   }
+
+  /**
+   * @swagger
+   * /api/job-matching/upload-and-match:
+   *   post:
+   *     summary: Upload CV dan langsung job matching
+   *     tags: [JobMatching]
+   *     security:
+   *       - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               cv:
+   *                 type: string
+   *                 format: binary
+   *                 description: File CV (PDF/DOC/DOCX)
+   *               dreamJob:
+   *                 type: string
+   *                 description: Pekerjaan impian
+   *                 example: "Software Engineer"
+   *               saveCV:
+   *                 type: boolean
+   *                 description: Simpan CV untuk review (optional, default false)
+   *                 example: false
+   *     responses:
+   *       200:
+   *         description: CV uploaded dan job matching berhasil
+   *       400:
+   *         description: File atau data tidak valid
+   *       500:
+   *         description: Server error
+   */
+  static async uploadCVAndMatch(req, res) {
+    try {
+      const userId = req.user.id;
+      const { dreamJob, saveCV = false } = req.body;
+      
+      console.log('Upload CV and match request:', {
+        body: req.body,
+        file: req.file ? { 
+          fieldname: req.file.fieldname, 
+          originalname: req.file.originalname,
+          size: req.file.size 
+        } : null,
+        dreamJob,
+        saveCV
+      });
+
+      // Validasi input
+      if (!req.file) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'File CV wajib diupload'
+        });
+      }
+
+      if (!dreamJob) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Dream job wajib diisi'
+        });
+      }
+
+      try {
+        // Extract text dari CV
+        console.log('📄 Extracting text from CV...');
+        const extractedText = await cvParserService.extractText(req.file.path);
+        
+        if (!extractedText || extractedText.trim().length < 50) {
+          // Delete file jika parsing gagal
+          await fs.unlink(req.file.path).catch(console.error);
+          return res.status(400).json({
+            status: 'error',
+            message: 'Gagal mengextract text dari CV. Pastikan file tidak corrupt dan berisi teks.'
+          });
+        }
+
+        console.log('✅ CV text extracted successfully, length:', extractedText.length);
+
+        // Jika user mau save CV untuk review juga
+        let cvReviewId = null;
+        if (saveCV === true || saveCV === 'true') {
+          console.log('💾 Saving CV for review...');
+          
+          // Upload to B2 Storage
+          const b2Upload = await b2StorageService.uploadCV(
+            req.file.path, 
+            req.file.originalname, 
+            userId
+          );
+
+          if (b2Upload.success) {
+            // Simpan ke database sebagai CV Review juga
+            const cvReview = await prisma.cVReview.create({
+              data: {
+                userId: userId,
+                fileName: req.file.originalname,
+                filePath: req.file.path,
+                fileSize: req.file.size,
+                
+                // B2 Storage info
+                b2FileId: b2Upload.fileId,
+                b2FileName: b2Upload.fileName,
+                b2FileUrl: b2Upload.url,
+                
+                extractedText: extractedText,
+                careerField: dreamJob, // Use dreamJob sebagai careerField
+                
+                // Default scores (belum dianalisis untuk review)
+                relevancyRate: 0,
+                targetedJobRate: 0,
+                overallScore: 0,
+                relevantSkill: 0,
+                workExperience: 0,
+                consistency: 0,
+                writingQuality: 0,
+                
+                aiAnalysis: {},
+                suggestions: []
+              }
+            });
+
+            cvReviewId = cvReview.id;
+            console.log('✅ CV saved for review with ID:', cvReviewId);
+          }
+        }
+
+        // Ambil semua active jobs
+        console.log('🔍 Getting available jobs...');
+        const availableJobs = await prisma.job.findMany({
+          where: { isActive: true },
+          take: 50 // Limit untuk performa
+        });
+
+        if (availableJobs.length === 0) {
+          // Delete file karena tidak ada job untuk matching
+          await fs.unlink(req.file.path).catch(console.error);
+          return res.status(200).json({
+            status: 'success',
+            message: 'CV berhasil diupload tapi belum ada job tersedia untuk matching',
+            data: {
+              matches: [],
+              aiAnalysis: {
+                summary: 'Belum ada job tersedia untuk dianalisis'
+              },
+              cvReviewId: cvReviewId
+            }
+          });
+        }
+
+        console.log(`✅ Found ${availableJobs.length} jobs, performing AI matching...`);
+
+        // Lakukan job matching dengan AI
+        const matchingResult = await aiService.performJobMatching(
+          extractedText, 
+          dreamJob, 
+          availableJobs
+        );
+
+        console.log('✅ AI matching completed');
+
+        // Simpan hasil matching ke database
+        const jobMatching = await prisma.jobMatching.create({
+          data: {
+            userId: userId,
+            cvReviewId: cvReviewId,
+            dreamJob: dreamJob,
+            matches: matchingResult.matches || [],
+            aiAnalysis: matchingResult.aiAnalysis || {}
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true
+              }
+            },
+            cvReview: cvReviewId ? {
+              select: {
+                fileName: true,
+                careerField: true,
+                overallScore: true,
+                b2FileUrl: true
+              }
+            } : false
+          }
+        });
+
+        // Delete local file jika tidak disimpan untuk review
+        if (!saveCV || saveCV === 'false') {
+          await fs.unlink(req.file.path).catch(console.error);
+        }
+
+        console.log('✅ Job matching completed and saved');
+
+        return res.status(200).json({
+          status: 'success',
+          message: 'CV berhasil diupload dan job matching selesai!',
+          data: {
+            id: jobMatching.id,
+            dreamJob: jobMatching.dreamJob,
+            matches: jobMatching.matches,
+            aiAnalysis: jobMatching.aiAnalysis,
+            cvReview: jobMatching.cvReview,
+            createdAt: jobMatching.createdAt,
+            totalMatches: Array.isArray(jobMatching.matches) ? jobMatching.matches.length : 0,
+            cvSaved: saveCV === true || saveCV === 'true'
+          }
+        });
+
+      } catch (processingError) {
+        console.error('Error processing CV:', processingError);
+        // Delete file on processing error
+        await fs.unlink(req.file.path).catch(console.error);
+        throw processingError;
+      }
+
+    } catch (error) {
+      console.error('Error in uploadCVAndMatch:', error);
+      
+      // Delete file jika ada error
+      if (req.file && req.file.path) {
+        await fs.unlink(req.file.path).catch(console.error);
+      }
+
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan saat upload CV dan job matching',
+        error: error.message
+      });
+    }
+  }
 }
 
-module.exports = JobMatchingController; 
+module.exports = {
+  JobMatchingController,
+  upload
+}; 

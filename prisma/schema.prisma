@@ -473,4 +473,5 @@ model roadmapmatcher {
 enum Role {
   USER
   CONSULTANT
+  ADMIN
 }

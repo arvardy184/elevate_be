@@ -25,29 +25,84 @@ Job Matching system di Elevate mendukung 2 skenario:
 2. Get Job Details → /api/job-matching/jobs/{id}
 ```
 
-## 📋 API Endpoints
+## 🚀 Endpoints
 
-### 1. Job Matching (Main Endpoint)
+### 1. Job Matching dengan CV Review yang sudah ada
 ```
 POST /api/job-matching/match
 Authorization: Bearer {token}
 Content-Type: application/json
 
-Body Options:
-
-Option A - With CV Review:
+Body:
 {
   "dreamJob": "Software Engineer",
-  "cvReviewId": "clxxxxx-xxxx-xxxx"
-}
-
-Option B - Without CV:
-{
-  "dreamJob": "Data Scientist"
+  "cvReviewId": "clxx-cv-review-id" // optional
 }
 ```
 
-**Response:**
+### 2. Upload CV dan langsung Job Matching ⭐ NEW!
+```
+POST /api/job-matching/upload-and-match
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+Form Data:
+- cv: [file] (PDF/DOC/DOCX, max 5MB)
+- dreamJob: "Software Engineer"
+- saveCV: true/false (optional, default: false)
+```
+
+**Keunggulan endpoint baru:**
+- ✅ Upload CV dan matching dalam 1 request
+- ✅ Otomatis extract text dari CV
+- ✅ Option untuk save CV sebagai CV Review juga
+- ✅ Support semua format CV (PDF, DOC, DOCX)
+- ✅ Upload ke cloud storage (B2) jika saveCV=true
+
+**Response untuk upload-and-match:**
+```json
+{
+  "status": "success",
+  "message": "CV berhasil diupload dan job matching selesai!",
+  "data": {
+    "id": "matching_id",
+    "dreamJob": "Software Engineer",
+    "matches": [
+      {
+        "jobId": "job_id_1",
+        "title": "Senior Software Engineer",
+        "company": "Tech Corp",
+        "matchScore": 92,
+        "skillMatch": 88,
+        "experienceMatch": 85,
+        "locationMatch": 95,
+        "salaryPotential": "$80k-120k",
+        "reasons": ["Strong technical background", "Experience matches requirements"],
+        "missingSkills": ["Kubernetes", "GraphQL"],
+        "strengths": ["React expertise", "Team leadership"]
+      }
+    ],
+    "aiAnalysis": {
+      "summary": "Found excellent matches based on your profile",
+      "dreamJobAlignment": "Very high alignment with available positions",
+      "recommendations": ["Apply to top 3 matches", "Focus on Kubernetes skills"],
+      "skillGaps": ["Cloud technologies", "DevOps tools"],
+      "careerPath": "Senior to Lead Engineer progression"
+    },
+    "cvReview": { // Only if saveCV=true
+      "fileName": "john_doe_cv.pdf",
+      "careerField": "Software Engineering",
+      "overallScore": 0, // Will be 0 until CV review analysis is done
+      "b2FileUrl": "https://download-url"
+    },
+    "totalMatches": 5,
+    "cvSaved": true, // Indicates if CV was saved for review
+    "createdAt": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+**Response untuk original match endpoint:**
 ```json
 {
   "status": "success",
@@ -88,17 +143,17 @@ Option B - Without CV:
 }
 ```
 
-### 2. Get Job Details
+### 3. Get Job Details
 ```
 GET /api/job-matching/jobs/{id}
 ```
 
-### 3. Get Job Categories
+### 4. Get Job Categories
 ```
 GET /api/job-matching/categories
 ```
 
-### 4. Get Matching History
+### 5. Get Matching History
 ```
 GET /api/job-matching/history
 Authorization: Bearer {token}
@@ -123,16 +178,23 @@ Authorization: Bearer {token}
 ```
 → AI akan analisis CV + dream job untuk rekomendasi yang lebih personal
 
-### Case 3: Upload CV Baru untuk Job Matching
+### Case 3: Upload CV Baru untuk Job Matching ⭐ NEW!
 ```
-1. POST /api/cv-review/upload 
-   - cv: new_cv.pdf
-   - careerField: "DevOps Engineer"
-   
-2. POST /api/job-matching/match
-   - dreamJob: "DevOps Engineer"  
-   - cvReviewId: {id_from_step_1}
+Form Data:
+cv: [CV_FILE.pdf]
+dreamJob: "Data Scientist"
+saveCV: true
 ```
+→ AI akan extract CV, save untuk review (opsional), dan langsung matching dengan jobs
+
+### Case 4: Quick Job Matching tanpa Save CV
+```
+Form Data:
+cv: [CV_FILE.pdf]
+dreamJob: "Full Stack Developer"
+saveCV: false
+```
+→ AI akan extract CV, matching jobs, tapi tidak save CV untuk review
 
 ## 🚀 Testing Examples
 
@@ -193,3 +255,29 @@ curl -X POST http://localhost:3009/api/job-matching/match \
 - **reasons**: Alasan kenapa job ini cocok
 - **missingSkills**: Skill yang perlu dipelajari
 - **strengths**: Kelebihan kandidat untuk job ini 
+
+## 🔧 Error Handling
+
+### Upload Errors
+```json
+{
+  "status": "error",
+  "message": "Format file tidak didukung. Gunakan PDF, DOC, atau DOCX"
+}
+```
+
+### File Size Error
+```json
+{
+  "status": "error",
+  "message": "File terlalu besar. Maksimal 5MB."
+}
+```
+
+### CV Parsing Error
+```json
+{
+  "status": "error",
+  "message": "Gagal mengextract text dari CV. Pastikan file tidak corrupt dan berisi teks."
+}
+``` 

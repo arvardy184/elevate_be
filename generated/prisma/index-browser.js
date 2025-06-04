@@ -573,7 +573,8 @@ exports.Prisma.roadmapmatcherOrderByRelevanceFieldEnum = {
 };
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
-  CONSULTANT: 'CONSULTANT'
+  CONSULTANT: 'CONSULTANT',
+  ADMIN: 'ADMIN'
 };
 
 exports.Prisma.ModelName = {

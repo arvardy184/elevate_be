@@ -160,7 +160,8 @@ export type roadmapmatcher = $Result.DefaultSelection<Prisma.$roadmapmatcherPayl
 export namespace $Enums {
   export const Role: {
   USER: 'USER',
-  CONSULTANT: 'CONSULTANT'
+  CONSULTANT: 'CONSULTANT',
+  ADMIN: 'ADMIN'
 };
 
 export type Role = (typeof Role)[keyof typeof Role]

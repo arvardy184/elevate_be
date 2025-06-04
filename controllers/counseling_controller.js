@@ -555,4 +555,40 @@ exports.rateSession = async (req, res) => {
       error: error.message
     });
   }
-}; 
+};
+
+exports.adminCreateSession = async (req, res) => {
+  try {
+    // Cek role admin
+    if (!req.user || req.user.role !== 'ADMIN') {
+      return res.status(403).json({ success: false, message: 'Hanya admin yang bisa akses' });
+    }
+    const {
+      userId, counselorId, topic, question, status = 'ACTIVE',
+      isPaymentRequired = false, price = null, createdAt, response = null
+    } = req.body;
+
+    if (!userId || !counselorId || !topic || !question) {
+      return res.status(400).json({ success: false, message: 'Field wajib diisi' });
+    }
+
+    const session = await prisma.counselingSession.create({
+      data: {
+        userId,
+        counselorId,
+        topic,
+        question,
+        status,
+        isPaymentRequired,
+        price,
+        createdAt: createdAt ? new Date(createdAt) : undefined,
+        response
+      }
+    });
+
+    res.status(201).json({ success: true, data: session });
+  } catch (error) {
+    console.error('Admin create session error:', error);
+    res.status(500).json({ success: false, message: 'Gagal tambah session', error: error.message });
+  }
+};
