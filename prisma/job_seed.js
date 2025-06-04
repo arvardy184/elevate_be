@@ -1,4 +1,5 @@
 const prisma = require('./client');
+const { v4: uuidv4 } = require('uuid');
 
 async function seedJobs() {
   try {
@@ -6,6 +7,7 @@ async function seedJobs() {
 
     const jobsData = [
       {
+        id: uuidv4(),
         title: "Software Engineer",
         company: "Tech Innovate",
         description: "Join our team as a Software Engineer to develop cutting-edge web applications using React, Node.js, and cloud technologies. You'll work on scalable solutions that impact millions of users.",
@@ -18,9 +20,11 @@ async function seedJobs() {
         salaryRange: "Rp 8,000,000 - Rp 15,000,000",
         jobType: "full-time",
         category: "Web Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Frontend Developer",
         company: "Digital Solutions",
         description: "We're looking for a Frontend Developer to create beautiful, responsive user interfaces using modern technologies like React, TypeScript, and Tailwind CSS.",
@@ -33,9 +37,11 @@ async function seedJobs() {
         salaryRange: "Rp 6,000,000 - Rp 12,000,000",
         jobType: "full-time",
         category: "Web Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Backend Developer",
         company: "CloudTech",
         description: "Join as Backend Developer to build robust APIs and microservices using Node.js, Python, and cloud technologies. Experience with databases and system architecture required.",
@@ -48,9 +54,11 @@ async function seedJobs() {
         salaryRange: "Rp 10,000,000 - Rp 18,000,000",
         jobType: "full-time",
         category: "Web Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Mobile Developer (Flutter)",
         company: "AppCraft Studio",
         description: "Develop cross-platform mobile applications using Flutter and Dart. You'll work on consumer-facing apps with millions of downloads.",
@@ -63,9 +71,11 @@ async function seedJobs() {
         salaryRange: "Rp 9,000,000 - Rp 16,000,000",
         jobType: "full-time",
         category: "Mobile Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "iOS Developer",
         company: "Mobile Innovations",
         description: "Create premium iOS applications using Swift and SwiftUI. Join our team building next-generation mobile experiences.",
@@ -78,9 +88,11 @@ async function seedJobs() {
         salaryRange: "Rp 8,500,000 - Rp 16,500,000",
         jobType: "full-time",
         category: "Mobile Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Data Scientist",
         company: "DataInsights Corp",
         description: "Analyze large datasets and build machine learning models to derive business insights. Experience with Python, ML libraries, and statistical analysis required.",
@@ -93,9 +105,11 @@ async function seedJobs() {
         salaryRange: "Rp 12,000,000 - Rp 20,000,000",
         jobType: "full-time",
         category: "Data Science",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Machine Learning Engineer",
         company: "AI Dynamics",
         description: "Build and deploy ML models at scale. Work with deep learning frameworks and cloud ML platforms to solve complex business problems.",
@@ -108,9 +122,11 @@ async function seedJobs() {
         salaryRange: "Rp 15,000,000 - Rp 25,000,000",
         jobType: "full-time",
         category: "Data Science",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "UI/UX Designer",
         company: "Design Studio",
         description: "Create intuitive and beautiful user experiences for web and mobile applications. Work closely with developers to implement design systems.",
@@ -123,9 +139,11 @@ async function seedJobs() {
         salaryRange: "Rp 7,000,000 - Rp 14,000,000",
         jobType: "full-time",
         category: "UI/UX Design",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Product Designer",
         company: "Startup Unicorn",
         description: "Lead product design from concept to launch. Create user-centered designs that solve real problems and drive business growth.",
@@ -138,9 +156,11 @@ async function seedJobs() {
         salaryRange: "Rp 10,000,000 - Rp 18,000,000",
         jobType: "full-time",
         category: "UI/UX Design",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Cloud Engineer",
         company: "Cloud Solutions Inc",
         description: "Design and manage cloud infrastructure using AWS, Azure, or GCP. Implement DevOps practices and ensure system scalability and security.",
@@ -153,9 +173,11 @@ async function seedJobs() {
         salaryRange: "Rp 11,000,000 - Rp 19,000,000",
         jobType: "full-time",
         category: "Cloud Computing",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "DevOps Engineer",
         company: "TechScale",
         description: "Automate deployment pipelines and manage infrastructure as code. Work with containerization and orchestration technologies.",
@@ -168,9 +190,11 @@ async function seedJobs() {
         salaryRange: "Rp 12,000,000 - Rp 20,000,000",
         jobType: "full-time",
         category: "Cloud Computing",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Cybersecurity Analyst",
         company: "SecureGuard",
         description: "Protect our systems from cyber threats. Monitor security events, conduct vulnerability assessments, and implement security measures.",
@@ -183,9 +207,11 @@ async function seedJobs() {
         salaryRange: "Rp 10,000,000 - Rp 17,000,000",
         jobType: "full-time",
         category: "Cyber Security",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Digital Marketing Specialist",
         company: "Marketing Pro",
         description: "Develop and execute digital marketing campaigns across multiple channels. Analyze campaign performance and optimize for better ROI.",
@@ -198,9 +224,11 @@ async function seedJobs() {
         salaryRange: "Rp 6,000,000 - Rp 12,000,000",
         jobType: "full-time",
         category: "Digital Marketing",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Game Developer",
         company: "GameStudio",
         description: "Create engaging mobile and PC games using Unity or Unreal Engine. Work on gameplay mechanics, graphics optimization, and player experience.",
@@ -213,9 +241,11 @@ async function seedJobs() {
         salaryRange: "Rp 8,000,000 - Rp 15,000,000",
         jobType: "full-time",
         category: "Game Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       },
       {
+        id: uuidv4(),
         title: "Junior Software Engineer",
         company: "StartupTech",
         description: "Entry-level position for fresh graduates. Learn and grow while building web applications using modern technologies.",
@@ -228,7 +258,8 @@ async function seedJobs() {
         salaryRange: "Rp 5,000,000 - Rp 8,000,000",
         jobType: "full-time",
         category: "Web Development",
-        isActive: true
+        isActive: true,
+        updatedAt: new Date()
       }
     ];
 

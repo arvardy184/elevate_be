@@ -123,6 +123,8 @@ class JobMatchingController {
    */
   static async getJobs(req, res) {
     try {
+      console.log('🔍 getJobs called with query:', req.query);
+      
       const { 
         category, 
         location, 
@@ -155,6 +157,12 @@ class JobMatchingController {
         ];
       }
       
+      console.log('🔍 WhereClause:', JSON.stringify(whereClause, null, 2));
+      
+      // Debug: Cek total jobs di database
+      const totalJobsInDb = await prisma.job.count();
+      console.log('🔍 Total jobs in database:', totalJobsInDb);
+      
       const [jobs, total] = await Promise.all([
         prisma.job.findMany({
           where: whereClause,
@@ -176,6 +184,8 @@ class JobMatchingController {
         }),
         prisma.job.count({ where: whereClause })
       ]);
+      
+      console.log('🔍 Query result - jobs count:', jobs.length, 'total:', total);
       
       return res.status(200).json({
         status: 'success',
