@@ -48,8 +48,8 @@ async function seedCounselors() {
         where: { email: 'dr.ahmad@counseling.com' },
         update: {},
         create: {
-          firstName: 'Dr. Ahmad',
-          lastName: 'Rahman',
+          firstName: 'Dr. Arvan',
+          lastName: 'Ardana',
           email: 'dr.ahmad@counseling.com',
           password: await bcrypt.hash('password123', 10),
           role: 'CONSULTANT',
