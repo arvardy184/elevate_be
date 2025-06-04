@@ -742,7 +742,7 @@ class JobMatchingController {
         console.log('✅ AI matching completed');
 
         // Simpan hasil matching ke database
-        const jobMatching = await prisma.jobMatching.create({
+        const jobMatching = await prisma.jobmatching.create({
           data: {
             userId: userId,
             cvReviewId: cvReviewId,
