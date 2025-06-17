@@ -310,13 +310,14 @@ exports.enrollCourse = async (req, res) => {
         .status(400)
         .json({ message: "Anda sudah terdaftar di course ini" });
     }
-
-    if (course.isPaid) {
-      return res.status(402).json({
-        message:
-          "Course ini berbayar. Silakan lakukan pembayaran terlebih dahulu.",
-      });
-    }
+    
+    //sementara tanpa pembayaran
+    // if (course.isPaid) {
+    //   return res.status(402).json({
+    //     message:
+    //       "Course ini berbayar. Silakan lakukan pembayaran terlebih dahulu.",
+    //   });
+    // }
 
     await prisma.enrollment.create({
       data: {
