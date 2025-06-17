@@ -10,11 +10,85 @@ const {
  * @swagger
  * /courses:
  *   get:
- *     summary: Mendapatkan daftar semua courses
+ *     summary: Mendapatkan daftar semua courses dengan optional authentication
  *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: categoryId
+ *         schema:
+ *           type: integer
+ *         description: Filter berdasarkan kategori
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Pencarian berdasarkan judul atau deskripsi
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Halaman yang ingin diakses
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Jumlah item per halaman
  *     responses:
  *       200:
  *         description: Berhasil mendapatkan list courses
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 courses:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       thumbnail:
+ *                         type: string
+ *                       price:
+ *                         type: number
+ *                       isPaid:
+ *                         type: boolean
+ *                       isActive:
+ *                         type: boolean
+ *                       category:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: integer
+ *                           name:
+ *                             type: string
+ *                       isEnrolled:
+ *                         type: boolean
+ *                         nullable: true
+ *                         description: Status enrollment (null jika tidak login)
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                     page:
+ *                       type: integer
+ *                     limit:
+ *                       type: integer
+ *                     totalPages:
+ *                       type: integer
  */
 
 const courseController = require("../controllers/course_controller");
@@ -22,17 +96,135 @@ const courseController = require("../controllers/course_controller");
 // GET /api/courses - Dengan optional auth untuk field isEnrolled
 router.get("/", optionalAuth, courseController.getCourses);
 
+/**
+ * @swagger
+ * /courses/me:
+ *   get:
+ *     summary: Mendapatkan daftar course yang diikuti user
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Berhasil mendapatkan course yang diikuti
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 courses:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       category:
+ *                         type: string
+ *                       thumbnail:
+ *                         type: string
+ *                       enrolledAt:
+ *                         type: string
+ *                         format: date-time
+ */
+
 // GET /api/courses/me - harus sebelum /:id
 router.get("/me", verifyToken, courseController.GetMyCourses);
+
+/**
+ * @swagger
+ * /courses/bookmarks:
+ *   get:
+ *     summary: Mendapatkan daftar course yang di-bookmark user
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Berhasil mendapatkan course yang di-bookmark
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 count:
+ *                   type: integer
+ *                 courses:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       title:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       thumbnail:
+ *                         type: string
+ *                       category:
+ *                         type: object
+ *                         properties:
+ *                           id:
+ *                             type: integer
+ *                           name:
+ *                             type: string
+ */
 
 // GET /api/courses/bookmarks - harus sebelum /:id
 router.get("/bookmarks", verifyToken, courseController.getBookmarkedCourses);
 
-// GET /api/courses/:id
-router.get("/:id", courseController.getCourseById);
-
-// POST /api/courses/:id/enroll
-router.post("/:id/enroll", verifyToken, courseController.enrollCourse);
+/**
+ * @swagger
+ * /courses/{courseId}/bookmark:
+ *   post:
+ *     summary: Toggle bookmark course (tambah/hapus bookmark)
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID course
+ *     responses:
+ *       200:
+ *         description: Bookmark berhasil dihapus (toggle off)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 isBookmarked:
+ *                   type: boolean
+ *       201:
+ *         description: Course berhasil di-bookmark (toggle on)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 isBookmarked:
+ *                   type: boolean
+ *       400:
+ *         description: Sudah memiliki 100 bookmark (limit reached)
+ *       404:
+ *         description: Course tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 
 // POST /api/courses/:courseId/bookmark
 router.post(
@@ -41,6 +233,35 @@ router.post(
   courseController.bookmarkCourse
 );
 
+/**
+ * @swagger
+ * /courses/{courseId}/is-bookmarked:
+ *   get:
+ *     summary: Cek apakah course sudah di-bookmark
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID course
+ *     responses:
+ *       200:
+ *         description: Status bookmark berhasil dicek
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isBookmarked:
+ *                   type: boolean
+ *       500:
+ *         description: Server error
+ */
+
 // GET /api/courses/:courseId/is-bookmarked
 router.get(
   "/:courseId/is-bookmarked",
@@ -48,12 +269,50 @@ router.get(
   courseController.isBookmarked
 );
 
-//post /api/:lessonId/progress
-router.post(
-  "/:lessonId/progress",
-  verifyToken,
-  courseController.updateLessonProgress
-);
+/**
+ * @swagger
+ * /courses/{courseId}/progress:
+ *   get:
+ *     summary: Dapatkan progress user dalam course
+ *     tags: [Course]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID course
+ *     responses:
+ *       200:
+ *         description: Progress course berhasil diambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 courseId:
+ *                   type: integer
+ *                 userId:
+ *                   type: string
+ *                 totalLessons:
+ *                   type: integer
+ *                 completedLessons:
+ *                   type: integer
+ *                 totalQuizzes:
+ *                   type: integer
+ *                 completedQuizzes:
+ *                   type: integer
+ *                 isCompleted:
+ *                   type: boolean
+ *       403:
+ *         description: Belum terdaftar di course ini
+ *       404:
+ *         description: Course tidak ditemukan
+ *       500:
+ *         description: Server error
+ */
 
 // GET /api/courses/:courseId/progress
 router.get(
@@ -343,3 +602,9 @@ module.exports = router;
  *       200:
  *         description: Hasil quiz berhasil diambil
  */
+
+// GET /api/courses/:id
+router.get("/:id", courseController.getCourseById);
+
+// POST /api/courses/:id/enroll
+router.post("/:id/enroll", verifyToken, courseController.enrollCourse);
