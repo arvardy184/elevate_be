@@ -758,190 +758,6 @@ exports.addCourseVideo = async (req, res) => {
 };
 
 // GET /api/courses/:courseId/quizzes
-exports.getQuizzezForCourse = async (req, res) => {
-  const { courseId } = req.params;
-
-  try {
-    //mengambil semua quiz untuk kursus tertentu
-    const quizzes = await prisma.quiz.findMany({
-      where: {
-        courseId: Number(courseId),
-      },
-    });
-    if (quizzes.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Tidak ada quiz untuk kursus ini" });
-    }
-
-    return res.status(200).json({ quizzes });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: "Terjadi kesalahan server" });
-  }
-};
-
-// POST /api/courses/:courseId/quizzes/:quizId/submit
-exports.submitQuizAnswer = async (req, res) => {
-  const { courseId, quizId } = req.params;
-  const userId = req.user.id;
-  const { answers } = req.body; // Jawaban dari user
-
-  // Validasi input
-  if (!answers || !Array.isArray(answers)) {
-    return res.status(400).json({ 
-      message: "Answers harus berupa array dan tidak boleh kosong",
-      example: { "answers": ["A", "B", "C"] }
-    });
-  }
-
-  try {
-    const [enrollment, quiz, existingSubmission] = await Promise.all([
-      prisma.enrollment.findFirst({
-        where: {
-          userId,
-          courseId: Number(courseId),
-        },
-      }),
-      prisma.quiz.findUnique({
-        where: {
-          id: Number(quizId),
-        },
-      }),
-      prisma.quizSubmission.findFirst({
-        where: {
-          userId,
-          quizId: Number(quizId),
-        },
-      }),
-    ]);
-    if (!enrollment) {
-      return res
-        .status(403)
-        .json({ message: "Anda belum terdaftar di course ini" });
-    }
-
-    if (!quiz) {
-      return res.status(404).json({ message: "Quiz tidak ditemukan" });
-    }
-
-    if (existingSubmission) {
-      return res
-        .status(400)
-        .json({ message: "Anda sudah mengirim jawaban untuk quiz ini" });
-    }
-
-    const correctAnswers = quiz.correctAnswer?.split(",") || [];
-    let score = 0;
-
-    answers.forEach((answer, index) => {
-      if (index < correctAnswers.length && correctAnswers[index] === answer) {
-        score++;
-      }
-    });
-
-    // Simpan hasil quiz ke database atau update progress
-    const result = await prisma.quizSubmission.create({
-      data: {
-        userId: req.user.id,
-        courseId: Number(courseId),
-        quizId: Number(quizId),
-        answers: answers, // Tambahkan field answers yang required
-        score,
-        totalQuestions: answers.length,
-        isPassed: score >= Math.ceil(answers.length / 2), // Anggap lulus jika benar lebih dari setengah
-      },
-    });
-
-    return res.status(200).json({
-      message: "Quiz berhasil disubmit",
-      score,
-      totalQuestions: answers.length,
-      isPassed: result.isPassed,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Terjadi kesalahan server" });
-  }
-};
-
-// GET /api/courses/:courseId/quizzes/:quizId/results
-exports.getQuizResult = async (req, res) => {
-  const { courseId, quizId } = req.params;
-  const userId = req.user.id;
-
-  try {
-    const quizResult = await prisma.quizSubmission.findFirst({
-      where: {
-        userId,
-        quizId: Number(quizId),
-        courseId: Number(courseId),
-      },
-    });
-    if (!quizResult) {
-      return res.status(404).json({ message: "Hasil quiz tidak ditemukan" });
-    }
-    return res.status(200).json({
-      message: "Hasil quiz ditemukan",
-      score: quizResult.score,
-      totalQuestions: quizResult.totalQuestions,
-      isPassed: quizResult.isPassed,
-    });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: "Terjadi kesalahan server" });
-  }
-};
-
-// GET /api/courses/:courseId/videos
-exports.getCourseVideos = async (req, res) => {
-  console.log("[getCourseVideos] masuk controller");
-  const { courseId } = req.params;
-
-  try {
-    const courseVideos = await prisma.coursevideo.findMany({
-      where: {
-        courseId: Number(courseId),
-      },
-      orderBy: { order: 'asc' }
-    });
-
-    if (!courseVideos.length) {
-      return res
-        .status(404)
-        .json({ message: "Tidak ada video untuk kursus ini" });
-    }
-
-    // Generate proxy URLs untuk semua video (private bucket access via backend)
-    console.log("[getCourseVideos] Generating proxy URLs for private bucket access");
-    
-    const videosWithProxyUrls = courseVideos.map((video) => {
-      // Generate proxy URL yang akan di-handle sama backend
-      const proxyUrl = `${req.protocol}://${req.get('host')}/api/courses/videos/proxy/${video.id}`;
-      
-      return {
-        ...video,
-        videoUrl: proxyUrl, // Replace dengan proxy URL
-        originalUrl: video.videoUrl, // Keep original untuk reference
-        isProxied: true
-      };
-    });
-    
-    return res.status(200).json({ 
-      courseVideos: videosWithProxyUrls,
-      note: "Videos accessible via proxy URLs (secure private bucket access)"
-    });
-
-  } catch (error) {
-    console.error("[getCourseVideos] Error:", error);
-    return res.status(500).json({ 
-      message: "Error mengambil video kursus", 
-      error: error.message 
-    });
-  }
-};
-
-// GET /api/courses/:courseId/quizzes
 exports.getCourseQuizzes = async (req, res) => {
   const { courseId } = req.params;
 
@@ -958,6 +774,100 @@ exports.getCourseQuizzes = async (req, res) => {
         .json({ message: "Tidak ada quiz untuk kursus ini" });
     }
     return res.status(200).json({ quizzes });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/quizzes/list - Metadata quiz saja (tanpa pertanyaan)
+exports.getCourseQuizzesMetadata = async (req, res) => {
+  const { courseId } = req.params;
+
+  try {
+    const quizzes = await prisma.quiz.findMany({
+      where: {
+        courseId: Number(courseId),
+      },
+      select: {
+        id: true,
+        courseId: true,
+        isLocked: true,
+        // Tidak include question, options, correctAnswer
+      },
+    });
+
+    if (!quizzes.length) {
+      return res
+        .status(404)
+        .json({ message: "Tidak ada quiz untuk kursus ini" });
+    }
+    
+    // Tambah info tambahan untuk setiap quiz
+    const quizzesWithMetadata = quizzes.map((quiz, index) => ({
+      ...quiz,
+      title: `Quiz ${index + 1}`, // Generate title sederhana
+      order: index + 1,
+    }));
+    
+    return res.status(200).json({ 
+      quizzes: quizzesWithMetadata,
+      count: quizzes.length,
+      message: "Daftar quiz berhasil diambil (metadata saja)"
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/quizzes/:quizId - Detail quiz individual dengan pertanyaan
+exports.getQuizDetail = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    // Cek apakah user sudah enroll di course
+    const enrollment = await prisma.enrollment.findFirst({
+      where: {
+        userId,
+        courseId: Number(courseId),
+      },
+    });
+
+    if (!enrollment) {
+      return res
+        .status(403)
+        .json({ message: "Anda belum terdaftar di course ini" });
+    }
+
+    const quiz = await prisma.quiz.findUnique({
+      where: {
+        id: Number(quizId),
+      },
+    });
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz tidak ditemukan" });
+    }
+
+    if (quiz.courseId !== Number(courseId)) {
+      return res.status(400).json({ message: "Quiz tidak terkait dengan course ini" });
+    }
+
+    // Cek apakah user sudah pernah submit quiz ini
+    const existingSubmission = await prisma.quizSubmission.findFirst({
+      where: {
+        userId,
+        quizId: Number(quizId),
+      },
+    });
+
+    return res.status(200).json({ 
+      quiz,
+      hasSubmitted: !!existingSubmission,
+      submission: existingSubmission || null
+    });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ message: "Terjadi kesalahan server" });
@@ -1759,6 +1669,182 @@ exports.proxyVideoContent = async (req, res) => {
     console.error('[proxyVideoContent] Error:', error);
     res.status(500).json({ 
       message: "Error accessing video",
+      error: error.message 
+    });
+  }
+};
+
+// POST /api/courses/:courseId/quizzes/:quizId/submit
+exports.submitQuizAnswer = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+  const { answers } = req.body; // Jawaban dari user
+
+  // Validasi input
+  if (!answers || !Array.isArray(answers)) {
+    return res.status(400).json({ 
+      message: "Answers harus berupa array dan tidak boleh kosong",
+      example: { "answers": ["A", "B", "C"] }
+    });
+  }
+
+  try {
+    const [enrollment, quiz, existingSubmission] = await Promise.all([
+      prisma.enrollment.findFirst({
+        where: {
+          userId,
+          courseId: Number(courseId),
+        },
+      }),
+      prisma.quiz.findUnique({
+        where: {
+          id: Number(quizId),
+        },
+      }),
+      prisma.quizSubmission.findFirst({
+        where: {
+          userId,
+          quizId: Number(quizId),
+        },
+      }),
+    ]);
+    if (!enrollment) {
+      return res
+        .status(403)
+        .json({ message: "Anda belum terdaftar di course ini" });
+    }
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz tidak ditemukan" });
+    }
+
+    if (existingSubmission) {
+      return res
+        .status(400)
+        .json({ message: "Anda sudah mengirim jawaban untuk quiz ini" });
+    }
+
+    // Handle both single quiz and multiple quiz scenarios
+    let correctAnswers = [];
+    if (quiz.correctAnswer) {
+      // If correctAnswer contains comma, split it. Otherwise, treat as single answer
+      correctAnswers = quiz.correctAnswer.includes(',') 
+        ? quiz.correctAnswer.split(",") 
+        : [quiz.correctAnswer];
+    }
+    
+    let score = 0;
+
+    // For single quiz submission, compare the single answer
+    if (correctAnswers.length === 1 && answers.length === 1) {
+      if (correctAnswers[0] === answers[0]) {
+        score = 1;
+      }
+    } else {
+      // For multiple quiz submission, compare each answer by index
+      answers.forEach((answer, index) => {
+        if (index < correctAnswers.length && correctAnswers[index] === answer) {
+          score++;
+        }
+      });
+    }
+
+    // Simpan hasil quiz ke database atau update progress
+    const result = await prisma.quizSubmission.create({
+      data: {
+        userId: req.user.id,
+        courseId: Number(courseId),
+        quizId: Number(quizId),
+        answers: answers, // Tambahkan field answers yang required
+        score,
+        totalQuestions: answers.length,
+        isPassed: score >= Math.ceil(answers.length / 2), // Anggap lulus jika benar lebih dari setengah
+      },
+    });
+
+    return res.status(200).json({
+      message: "Quiz berhasil disubmit",
+      score,
+      totalQuestions: answers.length,
+      isPassed: result.isPassed,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/quizzes/:quizId/results
+exports.getQuizResult = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const quizResult = await prisma.quizSubmission.findFirst({
+      where: {
+        userId,
+        quizId: Number(quizId),
+        courseId: Number(courseId),
+      },
+    });
+    if (!quizResult) {
+      return res.status(404).json({ message: "Hasil quiz tidak ditemukan" });
+    }
+    return res.status(200).json({
+      message: "Hasil quiz ditemukan",
+      score: quizResult.score,
+      totalQuestions: quizResult.totalQuestions,
+      isPassed: quizResult.isPassed,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/videos
+exports.getCourseVideos = async (req, res) => {
+  console.log("[getCourseVideos] masuk controller");
+  const { courseId } = req.params;
+
+  try {
+    const courseVideos = await prisma.coursevideo.findMany({
+      where: {
+        courseId: Number(courseId),
+      },
+      orderBy: { order: 'asc' }
+    });
+
+    if (!courseVideos.length) {
+      return res
+        .status(404)
+        .json({ message: "Tidak ada video untuk kursus ini" });
+    }
+
+    // Generate proxy URLs untuk semua video (private bucket access via backend)
+    console.log("[getCourseVideos] Generating proxy URLs for private bucket access");
+    
+    const videosWithProxyUrls = courseVideos.map((video) => {
+      // Generate proxy URL yang akan di-handle sama backend
+      const proxyUrl = `${req.protocol}://${req.get('host')}/api/courses/videos/proxy/${video.id}`;
+      
+      return {
+        ...video,
+        videoUrl: proxyUrl, // Replace dengan proxy URL
+        originalUrl: video.videoUrl, // Keep original untuk reference
+        isProxied: true
+      };
+    });
+    
+    return res.status(200).json({ 
+      courseVideos: videosWithProxyUrls,
+      note: "Videos accessible via proxy URLs (secure private bucket access)"
+    });
+
+  } catch (error) {
+    console.error("[getCourseVideos] Error:", error);
+    return res.status(500).json({ 
+      message: "Error mengambil video kursus", 
       error: error.message 
     });
   }

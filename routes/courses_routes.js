@@ -66,7 +66,21 @@ router.get(
 router.get(
   "/:courseId/quizzes",
   verifyToken,
-  courseController.getQuizzezForCourse
+  courseController.getCourseQuizzes
+);
+
+// GET /api/courses/:courseId/quizzes/list - Metadata quiz saja
+router.get(
+  "/:courseId/quizzes/list",
+  verifyToken,
+  courseController.getCourseQuizzesMetadata
+);
+
+// GET /api/courses/:courseId/quizzes/:quizId - Detail quiz individual
+router.get(
+  "/:courseId/quizzes/:quizId",
+  verifyToken,
+  courseController.getQuizDetail
 );
 
 // GET /api/courses/:courseId/videos
