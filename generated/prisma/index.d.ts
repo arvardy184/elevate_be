@@ -13264,6 +13264,9 @@ export namespace Prisma {
     price: number | null
     createdById: number | null
     createdAt: Date | null
+    b2FileId: string | null
+    b2FileName: string | null
+    b2ThumbnailUrl: string | null
   }
 
   export type CourseMaxAggregateOutputType = {
@@ -13276,6 +13279,9 @@ export namespace Prisma {
     price: number | null
     createdById: number | null
     createdAt: Date | null
+    b2FileId: string | null
+    b2FileName: string | null
+    b2ThumbnailUrl: string | null
   }
 
   export type CourseCountAggregateOutputType = {
@@ -13288,6 +13294,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt: number
+    b2FileId: number
+    b2FileName: number
+    b2ThumbnailUrl: number
     _all: number
   }
 
@@ -13316,6 +13325,9 @@ export namespace Prisma {
     price?: true
     createdById?: true
     createdAt?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2ThumbnailUrl?: true
   }
 
   export type CourseMaxAggregateInputType = {
@@ -13328,6 +13340,9 @@ export namespace Prisma {
     price?: true
     createdById?: true
     createdAt?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2ThumbnailUrl?: true
   }
 
   export type CourseCountAggregateInputType = {
@@ -13340,6 +13355,9 @@ export namespace Prisma {
     price?: true
     createdById?: true
     createdAt?: true
+    b2FileId?: true
+    b2FileName?: true
+    b2ThumbnailUrl?: true
     _all?: true
   }
 
@@ -13439,6 +13457,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt: Date
+    b2FileId: string | null
+    b2FileName: string | null
+    b2ThumbnailUrl: string | null
     _count: CourseCountAggregateOutputType | null
     _avg: CourseAvgAggregateOutputType | null
     _sum: CourseSumAggregateOutputType | null
@@ -13470,6 +13491,9 @@ export namespace Prisma {
     price?: boolean
     createdById?: boolean
     createdAt?: boolean
+    b2FileId?: boolean
+    b2FileName?: boolean
+    b2ThumbnailUrl?: boolean
     certificate?: boolean | Course$certificateArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     users?: boolean | UserDefaultArgs<ExtArgs>
@@ -13497,9 +13521,12 @@ export namespace Prisma {
     price?: boolean
     createdById?: boolean
     createdAt?: boolean
+    b2FileId?: boolean
+    b2FileName?: boolean
+    b2ThumbnailUrl?: boolean
   }
 
-  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "thumbnail" | "categoryId" | "isPaid" | "price" | "createdById" | "createdAt", ExtArgs["result"]["course"]>
+  export type CourseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "thumbnail" | "categoryId" | "isPaid" | "price" | "createdById" | "createdAt" | "b2FileId" | "b2FileName" | "b2ThumbnailUrl", ExtArgs["result"]["course"]>
   export type CourseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     certificate?: boolean | Course$certificateArgs<ExtArgs>
     category?: boolean | CategoryDefaultArgs<ExtArgs>
@@ -13542,6 +13569,9 @@ export namespace Prisma {
       price: number
       createdById: number
       createdAt: Date
+      b2FileId: string | null
+      b2FileName: string | null
+      b2ThumbnailUrl: string | null
     }, ExtArgs["result"]["course"]>
     composites: {}
   }
@@ -13932,6 +13962,9 @@ export namespace Prisma {
     readonly price: FieldRef<"Course", 'Int'>
     readonly createdById: FieldRef<"Course", 'Int'>
     readonly createdAt: FieldRef<"Course", 'DateTime'>
+    readonly b2FileId: FieldRef<"Course", 'String'>
+    readonly b2FileName: FieldRef<"Course", 'String'>
+    readonly b2ThumbnailUrl: FieldRef<"Course", 'String'>
   }
     
 
@@ -32891,7 +32924,10 @@ export namespace Prisma {
     isPaid: 'isPaid',
     price: 'price',
     createdById: 'createdById',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    b2FileId: 'b2FileId',
+    b2FileName: 'b2FileName',
+    b2ThumbnailUrl: 'b2ThumbnailUrl'
   };
 
   export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
@@ -33241,7 +33277,10 @@ export namespace Prisma {
   export const CourseOrderByRelevanceFieldEnum: {
     title: 'title',
     description: 'description',
-    thumbnail: 'thumbnail'
+    thumbnail: 'thumbnail',
+    b2FileId: 'b2FileId',
+    b2FileName: 'b2FileName',
+    b2ThumbnailUrl: 'b2ThumbnailUrl'
   };
 
   export type CourseOrderByRelevanceFieldEnum = (typeof CourseOrderByRelevanceFieldEnum)[keyof typeof CourseOrderByRelevanceFieldEnum]
@@ -34150,6 +34189,9 @@ export namespace Prisma {
     price?: IntFilter<"Course"> | number
     createdById?: IntFilter<"Course"> | number
     createdAt?: DateTimeFilter<"Course"> | Date | string
+    b2FileId?: StringNullableFilter<"Course"> | string | null
+    b2FileName?: StringNullableFilter<"Course"> | string | null
+    b2ThumbnailUrl?: StringNullableFilter<"Course"> | string | null
     certificate?: CertificateListRelationFilter
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -34174,6 +34216,9 @@ export namespace Prisma {
     price?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
+    b2FileId?: SortOrderInput | SortOrder
+    b2FileName?: SortOrderInput | SortOrder
+    b2ThumbnailUrl?: SortOrderInput | SortOrder
     certificate?: CertificateOrderByRelationAggregateInput
     category?: CategoryOrderByWithRelationInput
     users?: UserOrderByWithRelationInput
@@ -34202,6 +34247,9 @@ export namespace Prisma {
     price?: IntFilter<"Course"> | number
     createdById?: IntFilter<"Course"> | number
     createdAt?: DateTimeFilter<"Course"> | Date | string
+    b2FileId?: StringNullableFilter<"Course"> | string | null
+    b2FileName?: StringNullableFilter<"Course"> | string | null
+    b2ThumbnailUrl?: StringNullableFilter<"Course"> | string | null
     certificate?: CertificateListRelationFilter
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
     users?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -34226,6 +34274,9 @@ export namespace Prisma {
     price?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
+    b2FileId?: SortOrderInput | SortOrder
+    b2FileName?: SortOrderInput | SortOrder
+    b2ThumbnailUrl?: SortOrderInput | SortOrder
     _count?: CourseCountOrderByAggregateInput
     _avg?: CourseAvgOrderByAggregateInput
     _max?: CourseMaxOrderByAggregateInput
@@ -34246,6 +34297,9 @@ export namespace Prisma {
     price?: IntWithAggregatesFilter<"Course"> | number
     createdById?: IntWithAggregatesFilter<"Course"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Course"> | Date | string
+    b2FileId?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    b2FileName?: StringNullableWithAggregatesFilter<"Course"> | string | null
+    b2ThumbnailUrl?: StringNullableWithAggregatesFilter<"Course"> | string | null
   }
 
   export type CourseProgressWhereInput = {
@@ -36263,6 +36317,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -36287,6 +36344,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -36306,6 +36366,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -36330,6 +36393,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -36352,6 +36418,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
   }
 
   export type CourseUpdateManyMutationInput = {
@@ -36361,6 +36430,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourseUncheckedUpdateManyInput = {
@@ -36373,6 +36445,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourseProgressCreateInput = {
@@ -38543,6 +38618,9 @@ export namespace Prisma {
     price?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2ThumbnailUrl?: SortOrder
   }
 
   export type CourseAvgOrderByAggregateInput = {
@@ -38562,6 +38640,9 @@ export namespace Prisma {
     price?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2ThumbnailUrl?: SortOrder
   }
 
   export type CourseMinOrderByAggregateInput = {
@@ -38574,6 +38655,9 @@ export namespace Prisma {
     price?: SortOrder
     createdById?: SortOrder
     createdAt?: SortOrder
+    b2FileId?: SortOrder
+    b2FileName?: SortOrder
+    b2ThumbnailUrl?: SortOrder
   }
 
   export type CourseSumOrderByAggregateInput = {
@@ -42245,6 +42329,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
@@ -42267,6 +42354,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -42826,6 +42916,9 @@ export namespace Prisma {
     price?: IntFilter<"Course"> | number
     createdById?: IntFilter<"Course"> | number
     createdAt?: DateTimeFilter<"Course"> | Date | string
+    b2FileId?: StringNullableFilter<"Course"> | string | null
+    b2FileName?: StringNullableFilter<"Course"> | string | null
+    b2ThumbnailUrl?: StringNullableFilter<"Course"> | string | null
   }
 
   export type CourseProgressUpsertWithWhereUniqueWithoutUsersInput = {
@@ -43347,6 +43440,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -43370,6 +43466,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
@@ -43476,6 +43575,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -43499,6 +43601,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
@@ -43595,6 +43700,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
@@ -43617,6 +43725,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -43662,6 +43773,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
     courseprogress?: CourseProgressCreateNestedManyWithoutCourseInput
@@ -43685,6 +43799,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
@@ -43791,6 +43908,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
@@ -43814,6 +43934,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
@@ -45303,6 +45426,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -45326,6 +45452,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
     coursevideo?: coursevideoUncheckedCreateNestedManyWithoutCourseInput
@@ -45432,6 +45561,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -45455,6 +45587,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
     coursevideo?: coursevideoUncheckedUpdateManyWithoutCourseNestedInput
@@ -45551,6 +45686,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -45574,6 +45712,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -45608,6 +45749,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -45631,6 +45775,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -45845,6 +45992,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -45868,6 +46018,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -46010,6 +46163,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -46033,6 +46189,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -46321,6 +46480,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -46344,6 +46506,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -46401,6 +46566,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -46424,6 +46592,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -46715,6 +46886,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -46738,6 +46912,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -46949,6 +47126,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -46972,6 +47152,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -47112,6 +47295,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -47135,6 +47321,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -47200,6 +47389,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -47223,6 +47415,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -47257,6 +47452,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -47280,6 +47478,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -47408,6 +47609,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -47431,6 +47635,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -47690,6 +47897,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateCreateNestedManyWithoutCourseInput
     category: CategoryCreateNestedOneWithoutCourseInput
     users: UserCreateNestedOneWithoutCourseInput
@@ -47713,6 +47923,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
     certificate?: CertificateUncheckedCreateNestedManyWithoutCourseInput
     courseprogress?: CourseProgressUncheckedCreateNestedManyWithoutCourseInput
     coursereview?: CourseReviewUncheckedCreateNestedManyWithoutCourseInput
@@ -47769,6 +47982,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
@@ -47792,6 +48008,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -48722,6 +48941,9 @@ export namespace Prisma {
     isPaid: boolean
     price: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
   }
 
   export type CourseProgressCreateManyUsersInput = {
@@ -48979,6 +49201,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     category?: CategoryUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
@@ -49001,6 +49226,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -49022,6 +49250,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CourseProgressUpdateWithoutUsersInput = {
@@ -49395,6 +49626,9 @@ export namespace Prisma {
     price: number
     createdById: number
     createdAt?: Date | string
+    b2FileId?: string | null
+    b2FileName?: string | null
+    b2ThumbnailUrl?: string | null
   }
 
   export type CourseUpdateWithoutCategoryInput = {
@@ -49404,6 +49638,9 @@ export namespace Prisma {
     isPaid?: BoolFieldUpdateOperationsInput | boolean
     price?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUpdateManyWithoutCourseNestedInput
     users?: UserUpdateOneRequiredWithoutCourseNestedInput
     courseprogress?: CourseProgressUpdateManyWithoutCourseNestedInput
@@ -49426,6 +49663,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
     certificate?: CertificateUncheckedUpdateManyWithoutCourseNestedInput
     courseprogress?: CourseProgressUncheckedUpdateManyWithoutCourseNestedInput
     coursereview?: CourseReviewUncheckedUpdateManyWithoutCourseNestedInput
@@ -49447,6 +49687,9 @@ export namespace Prisma {
     price?: IntFieldUpdateOperationsInput | number
     createdById?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    b2FileId?: NullableStringFieldUpdateOperationsInput | string | null
+    b2FileName?: NullableStringFieldUpdateOperationsInput | string | null
+    b2ThumbnailUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ChatMessageCreateManyCounselingsessionInput = {

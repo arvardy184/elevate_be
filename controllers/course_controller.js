@@ -530,7 +530,7 @@ exports.updateLessonProgress = async (req, res) => {
  *         description: Server error
  */
 exports.getCourseProgress = async (req, res) => {
-  const { courseId } = Number(req.params.id);
+  const courseId = Number(req.params.id);
   const userId = req.user.id;
 
   try {
@@ -635,24 +635,38 @@ exports.addCourseVideo = async (req, res) => {
   console.log("userId:", userId);
   console.log("req.body:", req.body);
   try {
-    // Pastikan course ada
-    const course = await prisma.course.findFirst({
-      where: {
-        id: Number(courseId),
-        createdById: userId,
-        // isActive: true,
-      },
+    // Cek course ada atau tidak dulu
+    const course = await prisma.course.findUnique({
+      where: { id: Number(courseId) }
     });
     console.log("[addCourseVideo] course:", course);
 
     if (!course) {
-      console.error(
-        "[addCourseVideo] Course tidak ditemukan atau akses ditolak"
-      );
-      return res.status(403).json({
-        message: "Course tidak ditemukan atau Anda tidak memiliki akses",
+      console.error("[addCourseVideo] Course tidak ditemukan");
+      return res.status(404).json({
+        message: "Course tidak ditemukan"
       });
     }
+
+    // Cek authorization - hanya creator course atau admin yang bisa upload
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+
+    const isCreator = course.createdById === userId;
+    const isAdmin = user?.role === 'ADMIN';
+
+    if (!isCreator && !isAdmin) {
+      console.error("[addCourseVideo] User bukan creator course atau admin");
+      console.log("[addCourseVideo] Course createdById:", course.createdById);
+      console.log("[addCourseVideo] User ID:", userId);
+      console.log("[addCourseVideo] User role:", user?.role);
+      return res.status(403).json({
+        message: "Hanya creator course atau admin yang dapat mengupload video"
+      });
+    }
+
     console.log("[addCourseVideo] req.file:", req.file);
     if (
       !req.file ||
@@ -664,15 +678,6 @@ exports.addCourseVideo = async (req, res) => {
       return res
         .status(400)
         .json({ message: "File video harus berupa MP4, MOV, AVI, atau MKV" });
-    }
-
-    // Pastikan user yang mengupload adalah creator course
-    if (course.createdById !== req.user.id) {
-      console.error("[addCourseVideo] User bukan creator course");
-      return res.status(403).json({
-        message:
-          "Anda tidak memiliki akses untuk mengupload video ke course ini",
-      });
     }
 
     let videoUrl = null;
@@ -728,9 +733,23 @@ exports.addCourseVideo = async (req, res) => {
     });
     console.log("[addCourseVideo] newVideo:", newVideo);
 
+    // Generate proxy URL untuk response (secure access)
+    const proxyUrl = `${req.protocol}://${req.get('host')}/api/courses/videos/proxy/${newVideo.id}`;
+    
+    const videoResponse = {
+      ...newVideo,
+      videoUrl: proxyUrl, // Replace dengan proxy URL
+      originalUrl: newVideo.videoUrl, // Keep original untuk reference
+      isProxied: true
+    };
+
     return res
       .status(201)
-      .json({ message: "Video berhasil ditambahkan", video: newVideo });
+      .json({ 
+        message: "Video berhasil ditambahkan", 
+        video: videoResponse,
+        note: "Video accessible via secure proxy URL"
+      });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Terjadi kesalahan server" });
@@ -768,7 +787,7 @@ exports.submitQuizAnswer = async (req, res) => {
   const { answers } = req.body; // Jawaban dari user
 
   try {
-    cinst[(enrollment, quiz, existingSubmission)] = await Promise.all([
+    const [enrollment, quiz, existingSubmission] = await Promise.all([
       prisma.enrollment.findFirst({
         where: {
           userId,
@@ -806,20 +825,11 @@ exports.submitQuizAnswer = async (req, res) => {
     const correctAnswers = quiz.correctAnswer?.split(",") || [];
     let score = 0;
 
-    userAnswers.forEach((answer, index) => {
+    answers.forEach((answer, index) => {
       if (index < correctAnswers.length && correctAnswers[index] === answer) {
         score++;
       }
     });
-
-    // Menyimpan jawaban user untuk quiz ini
-    const quiz = await prisma.quiz.findUnique({
-      where: { id: Number(quizId) },
-    });
-
-    if (!quiz) {
-      return res.status(404).json({ message: "Quiz tidak ditemukan" });
-    }
 
     // Simpan hasil quiz ke database atau update progress
     const result = await prisma.quizSubmission.create({
@@ -946,7 +956,7 @@ exports.getCourseQuizzes = async (req, res) => {
 
 // POST /api/courses/:courseId/bookmark
 exports.bookmarkCourse = async (req, res) => {
-  const { courseId } = Number(req.params.courseId);
+  const courseId = Number(req.params.courseId);
   const userId = req.user.id;
 
   try {
@@ -959,7 +969,7 @@ exports.bookmarkCourse = async (req, res) => {
       }),
       prisma.bookmarkCourse.count({
         where: {
-          courseId: Number(userId),
+          userId: userId,
         },
       }),
     ]);
@@ -1595,13 +1605,28 @@ exports.proxyVideoContent = async (req, res) => {
       return res.status(404).json({ message: "Video tidak ditemukan" });
     }
 
-    // TODO: Add authentication/authorization check here
-    // Contoh: Check if user enrolled in course
-    // const userId = req.user?.id;
-    // const isEnrolled = video.course.enrollment.some(e => e.userId === userId);
-    // if (!isEnrolled) {
-    //   return res.status(403).json({ message: "Akses ditolak" });
-    // }
+    // Authentication/authorization check
+    const userId = req.user?.id;
+    
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    
+    // Check if user enrolled in course or is admin
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+    
+    const isAdmin = user?.role === 'ADMIN';
+    const isEnrolled = video.course.enrollment.some(e => e.userId === userId);
+    const isCreator = video.course.createdById === userId;
+    
+    if (!isEnrolled && !isAdmin && !isCreator) {
+      return res.status(403).json({ 
+        message: "Akses ditolak - Anda harus enroll di course ini atau menjadi admin" 
+      });
+    }
 
     if (!video.s3Key) {
       return res.status(400).json({ message: "Video file tidak ditemukan" });

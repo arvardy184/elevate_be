@@ -97,6 +97,13 @@ const uploadCertificate = multer({
   fileFilter
 }).single('certificate');
 
+// Middleware upload untuk course thumbnail
+const uploadCourseThumbnail = multer({
+  storage,
+  limits: uploadLimits.profilePicture, // Same limit as profile picture (2MB)
+  fileFilter
+}).single('thumbnail');
+
 // Middleware untuk handle error upload
 const handleUploadError = (uploadFunction) => {
   console.log('[handleUploadError] masuk middleware');
@@ -123,5 +130,6 @@ module.exports = {
   handleUploadError,
   uploadProfilePicture,
   uploadCourseVideo,
-  uploadCertificate
+  uploadCertificate,
+  uploadCourseThumbnail
 }; 

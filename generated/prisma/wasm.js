@@ -222,7 +222,10 @@ exports.Prisma.CourseScalarFieldEnum = {
   isPaid: 'isPaid',
   price: 'price',
   createdById: 'createdById',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  b2FileId: 'b2FileId',
+  b2FileName: 'b2FileName',
+  b2ThumbnailUrl: 'b2ThumbnailUrl'
 };
 
 exports.Prisma.CourseProgressScalarFieldEnum = {
@@ -482,7 +485,10 @@ exports.Prisma.CounselorOrderByRelevanceFieldEnum = {
 exports.Prisma.CourseOrderByRelevanceFieldEnum = {
   title: 'title',
   description: 'description',
-  thumbnail: 'thumbnail'
+  thumbnail: 'thumbnail',
+  b2FileId: 'b2FileId',
+  b2FileName: 'b2FileName',
+  b2ThumbnailUrl: 'b2ThumbnailUrl'
 };
 
 exports.Prisma.coursevideoOrderByRelevanceFieldEnum = {

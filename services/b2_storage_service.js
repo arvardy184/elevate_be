@@ -217,6 +217,137 @@ class B2StorageService {
   }
 
   /**
+   * Upload course thumbnail to B2
+   * @param {string} localFilePath - Local file path
+   * @param {string} fileName - Original filename
+   * @param {string} courseIdentifier - Course identifier for folder structure
+   * @returns {Object} Upload result with B2 URL and fileId
+   */
+  async uploadCourseThumbnail(localFilePath, fileName, courseIdentifier) {
+    let retryCount = 0;
+    const maxRetries = 2;
+    
+    while (retryCount <= maxRetries) {
+      try {
+        // Initialize jika belum
+        await this.initialize();
+
+        // Generate unique filename with course folder
+        const fileExtension = path.extname(fileName);
+        const timestamp = Date.now();
+        const uniqueFileName = `courses/thumbnails/${courseIdentifier}/${timestamp}-${fileName.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+
+        // Read file
+        const fileBuffer = await fs.readFile(localFilePath);
+        
+        // Get upload URL
+        const uploadUrlResponse = await this.b2.getUploadUrl({
+          bucketId: this.bucketId,
+        });
+
+        const uploadUrl = uploadUrlResponse.data.uploadUrl;
+        const uploadAuthToken = uploadUrlResponse.data.authorizationToken;
+
+        // Upload file
+        const uploadResponse = await this.b2.uploadFile({
+          uploadUrl: uploadUrl,
+          uploadAuthToken: uploadAuthToken,
+          filename: uniqueFileName,
+          data: fileBuffer,
+          mime: this.getImageMimeType(fileExtension),
+          hash: null, // Let B2 calculate hash
+          info: {
+            courseIdentifier: courseIdentifier,
+            originalName: fileName,
+            uploadedAt: new Date().toISOString(),
+            type: 'course-thumbnail'
+          }
+        });
+
+        console.log('✅ File uploaded successfully to B2:', {
+          fileId: uploadResponse.data.fileId,
+          fileName: uniqueFileName,
+          bucketId: this.bucketId,
+          bucketName: this.bucketName
+        });
+
+        // Try different URL formats
+        // Format 1: Friendly URL (if bucket configured)
+        const friendlyUrl = `https://f${this.bucketId.slice(2, 12)}.backblazeb2.com/file/${this.bucketName}/${uniqueFileName}`;
+        
+        // Format 2: Download URL using B2 API endpoint
+        const downloadUrl = `${this.downloadUrl}/file/${this.bucketName}/${uniqueFileName}`;
+        
+        // Format 3: Standard B2 download URL
+        const standardUrl = `https://f${this.bucketId.substring(2, 12)}.backblazeb2.com/file/${this.bucketName}/${uniqueFileName}`;
+        
+        console.log('🔗 Generated URLs:', {
+          friendlyUrl,
+          downloadUrl,
+          standardUrl,
+          bucketInfo: {
+            bucketId: this.bucketId,
+            bucketName: this.bucketName,
+            bucketIdSlice: this.bucketId.slice(2, 12)
+          }
+        });
+
+        // Use the download URL from API for now (more reliable)
+        const finalUrl = downloadUrl;
+
+        return {
+          success: true,
+          fileId: uploadResponse.data.fileId,
+          fileName: uniqueFileName,
+          originalName: fileName,
+          url: finalUrl,
+          alternativeUrls: {
+            friendlyUrl,
+            downloadUrl,
+            standardUrl
+          },
+          size: fileBuffer.length,
+          uploadedAt: new Date()
+        };
+
+      } catch (error) {
+        console.error(`❌ Error uploading course thumbnail to B2 (attempt ${retryCount + 1}):`, {
+          message: error.message,
+          status: error.status,
+          code: error.code,
+          response: error.response?.data,
+          stack: error.stack
+        });
+        
+        // Check apakah error adalah 401 (expired token)
+        if (error.response && error.response.status === 401) {
+          console.log('🔄 Token expired saat upload thumbnail, invalidating cache dan akan retry...');
+          // Invalidate token cache biar initialize akan refresh token
+          this.authToken = null;
+          this.tokenExpiryTime = null;
+          this.downloadUrl = null;
+          
+          retryCount++;
+          if (retryCount <= maxRetries) {
+            console.log(`🔄 Retrying upload thumbnail (attempt ${retryCount + 1})...`);
+            continue; // Retry dengan token baru
+          }
+        }
+        
+        // Jika bukan 401 atau sudah max retry, return error
+        return {
+          success: false,
+          error: error.message,
+          details: {
+            status: error.status,
+            code: error.code
+          }
+        };
+      }
+    }
+  }
+
+  /**
    * Get file info from B2
    * @param {string} fileId - B2 file ID
    */
@@ -277,11 +408,128 @@ class B2StorageService {
   }
 
   /**
-   * Generate download URL for file
+   * Get image MIME type based on file extension
+   * @param {string} extension - File extension
+   */
+  getImageMimeType(extension) {
+    const imageMimeTypes = {
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.png': 'image/png',
+      '.gif': 'image/gif',
+      '.webp': 'image/webp',
+      '.bmp': 'image/bmp'
+    };
+    return imageMimeTypes[extension.toLowerCase()] || 'image/jpeg';
+  }
+
+  /**
+   * Test file accessibility and generate alternative URLs
+   * @param {string} fileId - B2 file ID
    * @param {string} fileName - File name in B2
    */
+  async testFileAccess(fileId, fileName) {
+    try {
+      await this.initialize();
+      
+      // Get file info first
+      const fileInfoResponse = await this.getFileInfo(fileId);
+      
+      if (!fileInfoResponse.success) {
+        return {
+          success: false,
+          error: 'Failed to get file info',
+          details: fileInfoResponse.error
+        };
+      }
+      
+      // Generate different URL formats
+      const friendlyUrl = `https://f${this.bucketId.slice(2, 12)}.backblazeb2.com/file/${this.bucketName}/${fileName}`;
+      const downloadUrl = `${this.downloadUrl}/file/${this.bucketName}/${fileName}`;
+      const standardUrl = `https://f${this.bucketId.substring(2, 12)}.backblazeb2.com/file/${this.bucketName}/${fileName}`;
+      const alternativeUrl = `https://${this.bucketName}.s3.us-west-000.backblazeb2.com/${fileName}`;
+      
+      return {
+        success: true,
+        fileInfo: fileInfoResponse.data,
+        urls: {
+          friendlyUrl,
+          downloadUrl,
+          standardUrl,
+          alternativeUrl
+        },
+        bucketInfo: {
+          bucketId: this.bucketId,
+          bucketName: this.bucketName,
+          bucketIdSlice: this.bucketId.slice(2, 12)
+        }
+      };
+      
+    } catch (error) {
+      console.error('❌ Error testing file access:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Generate authorized download URL for private files
+   * @param {string} fileName - File name in B2
+   * @param {number} validDurationInSeconds - URL validity duration (default 24 hours)
+   */
+  async generateAuthorizedUrl(fileName, validDurationInSeconds = 86400) {
+    try {
+      await this.initialize();
+      
+      // Get download authorization token
+      const downloadAuth = await this.b2.getDownloadAuthorization({
+        bucketId: this.bucketId,
+        fileNamePrefix: '', // Allow access to all files in bucket
+        validDurationInSeconds
+      });
+      
+      // Generate authorized URL
+      const authorizedUrl = `${this.downloadUrl}/file/${this.bucketName}/${fileName}?Authorization=${downloadAuth.data.authorizationToken}`;
+      
+      return {
+        success: true,
+        url: authorizedUrl,
+        authToken: downloadAuth.data.authorizationToken,
+        expiresAt: new Date(Date.now() + (validDurationInSeconds * 1000))
+      };
+      
+    } catch (error) {
+      console.error('❌ Error generating authorized URL:', error);
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Generate authorized URLs for course thumbnails
+   * @param {string} fileName - File name in B2
+   */
+  async generateThumbnailUrl(fileName) {
+    // For course thumbnails, use 7 days validity (longer cache time)
+    return await this.generateAuthorizedUrl(fileName, 7 * 24 * 60 * 60); // 7 days
+  }
+
   getDownloadUrl(fileName) {
     return `${this.downloadUrl}/file/${this.bucketName}/${fileName}`;
+  }
+
+  /**
+   * Alias for generateAuthorizedUrl (for compatibility)
+   * @param {string} fileName - File name in B2
+   * @param {number} validDurationInSeconds - URL validity duration
+   */
+  async generateSignedUrl(fileName, validDurationInSeconds = 3600) {
+    const result = await this.generateAuthorizedUrl(fileName, validDurationInSeconds);
+    return result.success ? result.url : null;
   }
 }
 

@@ -162,27 +162,30 @@ model Counselor {
 }
 
 model Course {
-  id             Int              @id @default(autoincrement())
-  title          String
-  description    String
-  thumbnail      String
-  categoryId     Int
-  isPaid         Boolean
-  price          Int
-  createdById    Int
-  createdAt      DateTime         @default(now())
-  certificate    Certificate[]
-  category       Category         @relation(fields: [categoryId], references: [id], map: "Course_categoryId_fkey")
-  users          User             @relation(fields: [createdById], references: [id], map: "Course_createdById_fkey")
-  courseprogress CourseProgress[]
-  coursereview   CourseReview[]
-  coursevideo    coursevideo[]
-  enrollment     Enrollment[]
-  lesson         lesson[]
-  payment        Payment[]
-  quiz           quiz[]
-  quizsubmission QuizSubmission[]
-  roadmapcourse  RoadmapCourse[]
+  id               Int              @id @default(autoincrement())
+  title            String
+  description      String
+  thumbnail        String
+  categoryId       Int
+  isPaid           Boolean
+  price            Int
+  createdById      Int
+  createdAt        DateTime         @default(now())
+  b2FileId         String?
+  b2FileName       String?
+  b2ThumbnailUrl   String?
+  certificate      Certificate[]
+  category         Category         @relation(fields: [categoryId], references: [id], map: "Course_categoryId_fkey")
+  users            User             @relation(fields: [createdById], references: [id], map: "Course_createdById_fkey")
+  courseprogress   CourseProgress[]
+  coursereview     CourseReview[]
+  coursevideo      coursevideo[]
+  enrollment       Enrollment[]
+  lesson           lesson[]
+  payment          Payment[]
+  quiz             quiz[]
+  quizsubmission   QuizSubmission[]
+  roadmapcourse    RoadmapCourse[]
 
   @@index([categoryId], map: "Course_categoryId_fkey")
   @@index([createdById], map: "Course_createdById_fkey")

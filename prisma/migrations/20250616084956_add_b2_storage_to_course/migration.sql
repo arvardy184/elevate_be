@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `course` ADD COLUMN `b2FileId` VARCHAR(191) NULL,
+    ADD COLUMN `b2FileName` VARCHAR(191) NULL,
+    ADD COLUMN `b2ThumbnailUrl` VARCHAR(191) NULL;
