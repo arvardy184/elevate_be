@@ -153,6 +153,7 @@ exports.getCourses = async (req, res) => {
   const { categoryId, search, page = 1, limit = 10 } = req.query;
   const take = Number(limit);
   const skip = (Number(page) - 1) * take;
+  const userId = req.user?.id; // Optional user ID (jika ada token)
 
   try {
     const whereClause = {};
@@ -167,21 +168,38 @@ exports.getCourses = async (req, res) => {
         { description: { contains: search } },
       ];
     }
-    const courses = await prisma.course.findMany({
-      where: whereClause,
+    
+    const [courses, totalCourses, userEnrollments] = await Promise.all([
+      prisma.course.findMany({
+        where: whereClause,
+        include: { category: true },
+        skip: skip,
+        take: take,
+        orderBy: { createdAt: "desc" }, // sort dari yang paling baru
+      }),
+      prisma.course.count({
+        where: whereClause,
+      }),
+      // Ambil enrollment user jika ada userId
+      userId ? prisma.enrollment.findMany({
+        where: { userId },
+        select: { courseId: true }
+      }) : []
+    ]);
 
-      include: { category: true },
-      skip: skip,
-      take: take,
-      orderBy: { createdAt: "desc" }, // sort dari yang paling baru
-    });
+    // Buat Set untuk course IDs yang sudah di-enroll user (untuk performance)
+    const enrolledCourseIds = new Set(
+      userEnrollments.map(enrollment => enrollment.courseId)
+    );
 
-    const totalCourses = await prisma.course.count({
-      where: whereClause,
-    });
+    // Tambahkan field isEnrolled ke setiap course
+    const coursesWithEnrollmentStatus = courses.map(course => ({
+      ...course,
+      isEnrolled: userId ? enrolledCourseIds.has(course.id) : null // null jika user belum login
+    }));
 
     return res.status(200).json({
-      courses,
+      courses: coursesWithEnrollmentStatus,
       pagination: {
         total: totalCourses,
         page: Number(page),

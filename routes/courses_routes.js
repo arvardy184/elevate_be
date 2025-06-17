@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { verifyToken, checkRole } = require("../middleware/auth_middleware");
+const { verifyToken, checkRole, optionalAuth } = require("../middleware/auth_middleware");
 const {
   handleUploadError,
   uploadCourseVideo,
@@ -19,8 +19,8 @@ const {
 
 const courseController = require("../controllers/course_controller");
 
-// GET /api/courses
-router.get("/", courseController.getCourses);
+// GET /api/courses - Dengan optional auth untuk field isEnrolled
+router.get("/", optionalAuth, courseController.getCourses);
 
 // GET /api/courses/me - harus sebelum /:id
 router.get("/me", verifyToken, courseController.GetMyCourses);
