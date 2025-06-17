@@ -220,6 +220,8 @@ exports.getCourses = async (req, res) => {
  *   get:
  *     summary: Ambil detail course berdasarkan ID
  *     tags: [Courses]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -236,7 +238,23 @@ exports.getCourses = async (req, res) => {
  *               type: object
  *               properties:
  *                 course:
- *                   $ref: '#/components/schemas/Course'
+ *                   allOf:
+ *                     - $ref: '#/components/schemas/Course'
+ *                     - type: object
+ *                       properties:
+ *                         averageRating:
+ *                           type: number
+ *                           description: Rating rata-rata course (0-5)
+ *                           example: 4.5
+ *                         totalReviews:
+ *                           type: integer
+ *                           description: Total jumlah review
+ *                           example: 25
+ *                         isEnrolled:
+ *                           type: boolean
+ *                           nullable: true
+ *                           description: Status enrollment user (null jika belum login)
+ *                           example: true
  *       404:
  *         description: Course tidak ditemukan
  *       500:
@@ -244,8 +262,10 @@ exports.getCourses = async (req, res) => {
  */
 exports.getCourseById = async (req, res) => {
   const { id } = req.params;
+  const userId = req.user?.id; // Optional user ID (jika ada token)
+  
   try {
-    const [course, reviewStats] = await Promise.all([
+    const [course, reviewStats, enrollment] = await Promise.all([
       prisma.course.findUnique({
         where: { id: Number(id) },
         include: { category: true }
@@ -254,21 +274,29 @@ exports.getCourseById = async (req, res) => {
         where: { courseId: Number(id) },
         _avg: { rating: true },
         _count: { rating: true }
-      })
+      }),
+      // Cek enrollment hanya jika user sudah login
+      userId ? prisma.enrollment.findFirst({
+        where: {
+          userId: userId,
+          courseId: Number(id)
+        }
+      }) : null
     ]);
 
     if (!course) {
       return res.status(404).json({ message: "Course tidak ditemukan" });
     }
 
-    // Tambah rating stats ke response
-    const courseWithRating = {
+    // Tambah rating stats dan enrollment status ke response
+    const courseWithDetails = {
       ...course,
       averageRating: reviewStats._avg.rating ? Math.round(reviewStats._avg.rating * 10) / 10 : 0,
-      totalReviews: reviewStats._count.rating
+      totalReviews: reviewStats._count.rating,
+      isEnrolled: userId ? !!enrollment : null // null jika user belum login
     };
 
-    return res.status(200).json({ course: courseWithRating });
+    return res.status(200).json({ course: courseWithDetails });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Terjadi kesalahan server" });
