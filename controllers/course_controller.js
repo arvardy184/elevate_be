@@ -1173,6 +1173,855 @@ exports.getQuizDetail = async (req, res) => {
  */
 exports.bookmarkCourse = async (req, res) => {
   const courseId = Number(req.params.courseId);
+  const userId = req.user.id;
+
+  try {
+    const [course, bookmarkCount] = await Promise.all([
+      prisma.course.findUnique({
+        where: {
+          id: Number(courseId),
+          isActive: true,
+        },
+      }),
+      prisma.bookmarkCourse.count({
+        where: {
+          userId: userId,
+        },
+      }),
+    ]);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course tidak ditemukan" });
+    }
+
+    if (bookmarkCount >= 100) {
+      return res.status(400).json({
+        message:
+          "Anda sudah memiliki 100 bookmark, silakan hapus bookmark yang tidak perlu lagi untuk membuat bookmark baru",
+      });
+    }
+
+    // Cek apakah bookmark sudah ada
+    const existingBookmark = await prisma.bookmarkCourse.findFirst({
+      where: {
+        userId,
+        courseId: Number(courseId),
+      },
+    });
+
+    if (existingBookmark) {
+      // Hapus bookmark jika sudah ada (toggle)
+      await prisma.bookmarkCourse.delete({
+        where: { id: existingBookmark.id },
+      });
+
+      return res.status(200).json({
+        message: "Bookmark berhasil dihapus",
+        isBookmarked: false,
+      });
+    } else {
+      // Buat bookmark baru jika belum ada
+      await prisma.bookmarkCourse.create({
+        data: {
+          userId,
+          courseId: Number(courseId),
+        },
+      });
+
+      return res.status(201).json({
+        message: "Course berhasil di-bookmark",
+        isBookmarked: true,
+      });
+    }
+  } catch (e) {
+    console.error("Error bookmarking course:", e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/bookmarks
+exports.getBookmarkedCourses = async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    // Gunakan model bookmarkCourse untuk mendapatkan course yang sudah di-bookmark
+    const bookmarks = await prisma.bookmarkCourse.findMany({
+      where: { userId },
+      include: {
+        course: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
+
+    if (!bookmarks || bookmarks.length === 0) {
+      return res.status(200).json({
+        message: "Belum ada course yang di-bookmark",
+        courses: [],
+      });
+    }
+
+    // Transform response untuk struktur yang lebih clean
+    const courses = bookmarks.map((bookmark) => bookmark.course);
+
+    return res.status(200).json({
+      message: "Berhasil mengambil daftar course yang di-bookmark",
+      count: courses.length,
+      courses,
+    });
+  } catch (e) {
+    console.error("Error getting bookmarked courses:", e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/is-bookmarked
+exports.isBookmarked = async (req, res) => {
+  const { courseId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const bookmark = await prisma.bookmarkCourse.findFirst({
+      where: {
+        userId,
+        courseId: Number(courseId),
+      },
+    });
+
+    return res.status(200).json({
+      isBookmarked: !!bookmark,
+    });
+  } catch (e) {
+    console.error("Error checking bookmark status:", e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/videos
+exports.getCourseVideos = async (req, res) => {
+  console.log("[getCourseVideos] masuk controller");
+  const { courseId } = req.params;
+
+  try {
+    const courseVideos = await prisma.coursevideo.findMany({
+      where: {
+        courseId: Number(courseId),
+      },
+      orderBy: { order: 'asc' }
+    });
+
+    if (!courseVideos.length) {
+      return res
+        .status(404)
+        .json({ message: "Tidak ada video untuk kursus ini" });
+    }
+
+    // Generate proxy URLs untuk semua video (private bucket access via backend)
+    console.log("[getCourseVideos] Generating proxy URLs for private bucket access");
+    
+    const videosWithProxyUrls = courseVideos.map((video) => {
+      // Generate proxy URL yang akan di-handle sama backend
+      const proxyUrl = `${req.protocol}://${req.get('host')}/api/courses/videos/proxy/${video.id}`;
+      
+      return {
+        ...video,
+        videoUrl: proxyUrl, // Replace dengan proxy URL
+        originalUrl: video.videoUrl, // Keep original untuk reference
+        isProxied: true
+      };
+    });
+    
+    return res.status(200).json({ 
+      courseVideos: videosWithProxyUrls,
+      note: "Videos accessible via proxy URLs (secure private bucket access)"
+    });
+
+  } catch (error) {
+    console.error("[getCourseVideos] Error:", error);
+    return res.status(500).json({ 
+      message: "Error mengambil video kursus", 
+      error: error.message 
+    });
+  }
+};
+
+// POST /api/courses/:courseId/quizzes/:quizId/submit
+exports.submitQuizAnswer = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+  const { answers } = req.body; // Jawaban dari user
+
+  // Validasi input
+  if (!answers || !Array.isArray(answers)) {
+    return res.status(400).json({ 
+      message: "Answers harus berupa array dan tidak boleh kosong",
+      example: { "answers": ["A", "B", "C"] }
+    });
+  }
+
+  try {
+    const [enrollment, quiz, existingSubmission] = await Promise.all([
+      prisma.enrollment.findFirst({
+        where: {
+          userId,
+          courseId: Number(courseId),
+        },
+      }),
+      prisma.quiz.findUnique({
+        where: {
+          id: Number(quizId),
+        },
+      }),
+      prisma.quizSubmission.findFirst({
+        where: {
+          userId,
+          quizId: Number(quizId),
+        },
+      }),
+    ]);
+    if (!enrollment) {
+      return res
+        .status(403)
+        .json({ message: "Anda belum terdaftar di course ini" });
+    }
+
+    if (!quiz) {
+      return res.status(404).json({ message: "Quiz tidak ditemukan" });
+    }
+
+    if (existingSubmission) {
+      return res
+        .status(400)
+        .json({ message: "Anda sudah mengirim jawaban untuk quiz ini" });
+    }
+
+    // Handle both single quiz and multiple quiz scenarios
+    let correctAnswers = [];
+    if (quiz.correctAnswer) {
+      // If correctAnswer contains comma, split it. Otherwise, treat as single answer
+      correctAnswers = quiz.correctAnswer.includes(',') 
+        ? quiz.correctAnswer.split(",") 
+        : [quiz.correctAnswer];
+    }
+    
+    let score = 0;
+
+    // For single quiz submission, compare the single answer
+    if (correctAnswers.length === 1 && answers.length === 1) {
+      if (correctAnswers[0] === answers[0]) {
+        score = 1;
+      }
+    } else {
+      // For multiple quiz submission, compare each answer by index
+      answers.forEach((answer, index) => {
+        if (index < correctAnswers.length && correctAnswers[index] === answer) {
+          score++;
+        }
+      });
+    }
+
+    // Simpan hasil quiz ke database atau update progress
+    const result = await prisma.quizSubmission.create({
+      data: {
+        userId: req.user.id,
+        courseId: Number(courseId),
+        quizId: Number(quizId),
+        answers: answers, // Tambahkan field answers yang required
+        score,
+        totalQuestions: answers.length,
+        isPassed: score >= Math.ceil(answers.length / 2), // Anggap lulus jika benar lebih dari setengah
+      },
+    });
+
+    return res.status(200).json({
+      message: "Quiz berhasil disubmit",
+      score,
+      totalQuestions: answers.length,
+      isPassed: result.isPassed,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:courseId/quizzes/:quizId/results
+exports.getQuizResult = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const quizResult = await prisma.quizSubmission.findFirst({
+      where: {
+        userId,
+        quizId: Number(quizId),
+        courseId: Number(courseId),
+      },
+    });
+    if (!quizResult) {
+      return res.status(404).json({ message: "Hasil quiz tidak ditemukan" });
+    }
+    return res.status(200).json({
+      message: "Hasil quiz ditemukan",
+      score: quizResult.score,
+      totalQuestions: quizResult.totalQuestions,
+      isPassed: quizResult.isPassed,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// DELETE /api/courses/:courseId/quizzes/:quizId/submission
+exports.deleteMyQuizSubmission = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    // Cek apakah submission ada
+    const submission = await prisma.quizSubmission.findFirst({
+      where: {
+        userId,
+        quizId: Number(quizId),
+        courseId: Number(courseId),
+      },
+    });
+
+    if (!submission) {
+      return res.status(404).json({ 
+        message: "Submission quiz tidak ditemukan" 
+      });
+    }
+
+    // Hapus submission
+    await prisma.quizSubmission.delete({
+      where: {
+        id: submission.id,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Quiz submission berhasil dihapus, Anda bisa mengerjakan quiz lagi",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// GET /api/courses/:id/reviews
+exports.getCourseReviews = async (req, res) => {
+  try {
+    const courseId = parseInt(req.params.id);
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+
+    const [reviews, total, avgRating] = await Promise.all([
+      prisma.courseReview.findMany({
+        where: { courseId },
+        include: {
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              profilePicture: true
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' },
+        skip: parseInt(skip),
+        take: parseInt(limit)
+      }),
+      prisma.courseReview.count({ where: { courseId } }),
+      prisma.courseReview.aggregate({
+        where: { courseId },
+        _avg: { rating: true },
+        _count: { rating: true }
+      })
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        reviews,
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages: Math.ceil(total / limit),
+          totalItems: total,
+          itemsPerPage: parseInt(limit)
+        },
+        stats: {
+          averageRating: avgRating._avg.rating ? Math.round(avgRating._avg.rating * 10) / 10 : 0,
+          totalReviews: avgRating._count.rating
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error getting course reviews:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengambil review course',
+      error: error.message
+    });
+  }
+};
+
+// POST /api/courses/:id/reviews
+exports.createCourseReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.id);
+    const { rating, comment } = req.body;
+
+    // Validasi input
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Rating harus antara 1-5'
+      });
+    }
+
+    // Cek apakah user sudah enroll di course
+    const enrollment = await prisma.enrollment.findFirst({
+      where: { userId, courseId }
+    });
+
+    if (!enrollment) {
+      return res.status(403).json({
+        success: false,
+        message: 'Anda harus enroll di course ini untuk memberikan review'
+      });
+    }
+
+    // Cek apakah user sudah pernah review
+    const existingReview = await prisma.courseReview.findUnique({
+      where: { userId_courseId: { userId, courseId } }
+    });
+
+    if (existingReview) {
+      return res.status(400).json({
+        success: false,
+        message: 'Anda sudah memberikan review untuk course ini'
+      });
+    }
+
+    // Buat review baru
+    const review = await prisma.courseReview.create({
+      data: {
+        userId,
+        courseId,
+        rating: parseInt(rating),
+        comment: comment || null
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profilePicture: true
+          }
+        }
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Review berhasil ditambahkan',
+      data: review
+    });
+  } catch (error) {
+    console.error('Error creating course review:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal menambahkan review',
+      error: error.message
+    });
+  }
+};
+
+// PUT /api/courses/:id/reviews
+exports.updateCourseReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.id);
+    const { rating, comment } = req.body;
+
+    // Validasi input
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Rating harus antara 1-5'
+      });
+    }
+
+    // Cek apakah review ada dan milik user
+    const existingReview = await prisma.courseReview.findUnique({
+      where: { userId_courseId: { userId, courseId } }
+    });
+
+    if (!existingReview) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review tidak ditemukan'
+      });
+    }
+
+    // Update review
+    const updatedReview = await prisma.courseReview.update({
+      where: { userId_courseId: { userId, courseId } },
+      data: {
+        rating: parseInt(rating),
+        comment: comment || null
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profilePicture: true
+          }
+        }
+      }
+    });
+
+    res.json({
+      success: true,
+      message: 'Review berhasil diupdate',
+      data: updatedReview
+    });
+  } catch (error) {
+    console.error('Error updating course review:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengupdate review',
+      error: error.message
+    });
+  }
+};
+
+// DELETE /api/courses/:id/reviews
+exports.deleteCourseReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.id);
+
+    // Cek apakah review ada dan milik user
+    const existingReview = await prisma.courseReview.findUnique({
+      where: { userId_courseId: { userId, courseId } }
+    });
+
+    if (!existingReview) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review tidak ditemukan'
+      });
+    }
+
+    // Hapus review
+    await prisma.courseReview.delete({
+      where: { userId_courseId: { userId, courseId } }
+    });
+
+    res.json({
+      success: true,
+      message: 'Review berhasil dihapus'
+    });
+  } catch (error) {
+    console.error('Error deleting course review:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal menghapus review',
+      error: error.message
+    });
+  }
+};
+
+// GET /api/courses/:id/reviews/me
+exports.getMyReview = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.id);
+
+    const review = await prisma.courseReview.findUnique({
+      where: { userId_courseId: { userId, courseId } },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profilePicture: true
+          }
+        }
+      }
+    });
+
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Anda belum memberikan review untuk course ini'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: review
+    });
+  } catch (error) {
+    console.error('Error getting my review:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Gagal mengambil review',
+      error: error.message
+    });
+  }
+};
+
+// GET /api/courses/videos/proxy/:videoId
+exports.proxyVideoContent = async (req, res) => {
+  const { videoId } = req.params;
+  
+  try {
+    // Cari video di database
+    const video = await prisma.coursevideo.findUnique({
+      where: { id: Number(videoId) },
+      include: { 
+        course: {
+          include: { enrollment: true }
+        }
+      }
+    });
+
+    if (!video) {
+      return res.status(404).json({ message: "Video tidak ditemukan" });
+    }
+
+    // Authentication/authorization check
+    const userId = req.user?.id;
+    
+    if (!userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+    
+    // Check if user enrolled in course or is admin
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+    
+    const isAdmin = user?.role === 'ADMIN';
+    const isEnrolled = video.course.enrollment.some(e => e.userId === userId);
+    const isCreator = video.course.createdById === userId;
+    
+    if (!isEnrolled && !isAdmin && !isCreator) {
+      return res.status(403).json({ 
+        message: "Akses ditolak - Anda harus enroll di course ini atau menjadi admin" 
+      });
+    }
+
+    if (!video.s3Key) {
+      return res.status(400).json({ message: "Video file tidak ditemukan" });
+    }
+
+    // Generate signed URL untuk akses internal
+    const signedUrl = await storageService.generateSignedUrl(video.s3Key, 3600); // 1 hour
+    
+    // Set headers untuk video streaming
+    res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    
+    // Handle range requests untuk video streaming
+    const range = req.headers.range;
+    
+    if (range) {
+      // Get file info first untuk content length
+      try {
+        const urlObj = new URL(signedUrl);
+        const protocol = urlObj.protocol === 'https:' ? require('https') : require('http');
+        
+        // Head request untuk dapatkan content length
+        const headReq = protocol.request({
+          hostname: urlObj.hostname,
+          port: urlObj.port,
+          path: urlObj.pathname + urlObj.search,
+          method: 'HEAD',
+          headers: {
+            'Authorization': urlObj.searchParams.get('Authorization') || ''
+          }
+        }, (headRes) => {
+          const contentLength = parseInt(headRes.headers['content-length'] || '0');
+          
+          if (contentLength === 0) {
+            return res.status(500).json({ message: "Cannot determine file size" });
+          }
+          
+          // Parse range
+          const parts = range.replace(/bytes=/, "").split("-");
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : contentLength - 1;
+          const chunksize = (end - start) + 1;
+          
+          // Set partial content headers
+          res.status(206);
+          res.setHeader('Content-Range', `bytes ${start}-${end}/${contentLength}`);
+          res.setHeader('Content-Length', chunksize.toString());
+          
+          // Stream the requested range
+          const getReq = protocol.request({
+            hostname: urlObj.hostname,
+            port: urlObj.port,
+            path: urlObj.pathname + urlObj.search,
+            method: 'GET',
+            headers: {
+              'Authorization': urlObj.searchParams.get('Authorization') || '',
+              'Range': `bytes=${start}-${end}`
+            }
+          }, (getRes) => {
+            getRes.pipe(res);
+          });
+          
+          getReq.on('error', (error) => {
+            console.error('Error streaming video:', error);
+            res.status(500).json({ message: "Error streaming video" });
+          });
+          
+          getReq.end();
+        });
+        
+        headReq.on('error', (error) => {
+          console.error('Error getting file info:', error);
+          res.status(500).json({ message: "Error accessing video file" });
+        });
+        
+        headReq.end();
+        
+      } catch (error) {
+        console.error('Error parsing signed URL:', error);
+        res.status(500).json({ message: "Error processing video request" });
+      }
+    } else {
+      // No range, stream entire file
+      try {
+        const urlObj = new URL(signedUrl);
+        const protocol = urlObj.protocol === 'https:' ? require('https') : require('http');
+        
+        const getReq = protocol.request({
+          hostname: urlObj.hostname,
+          port: urlObj.port,
+          path: urlObj.pathname + urlObj.search,
+          method: 'GET',
+          headers: {
+            'Authorization': urlObj.searchParams.get('Authorization') || ''
+          }
+        }, (getRes) => {
+          // Set content length if available
+          if (getRes.headers['content-length']) {
+            res.setHeader('Content-Length', getRes.headers['content-length']);
+          }
+          
+          getRes.pipe(res);
+        });
+        
+        getReq.on('error', (error) => {
+          console.error('Error streaming video:', error);
+          res.status(500).json({ message: "Error streaming video" });
+        });
+        
+        getReq.end();
+        
+      } catch (error) {
+        console.error('Error streaming video:', error);
+        res.status(500).json({ message: "Error processing video request" });
+      }
+    }
+    
+  } catch (error) {
+    console.error('[proxyVideoContent] Error:', error);
+    res.status(500).json({ 
+      message: "Error accessing video",
+      error: error.message 
+    });
+  }
+};
+
+// GET /api/courses/:courseId/certificate
+exports.getCourseCertificate = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.courseId);
+
+    const cert = await prisma.certificate.findFirst({
+      where: {
+        userId,
+        courseId,
+      },
+    });
+
+    if (!cert) {
+      return res.status(404).json({
+        message: "Sertifikat tidak ditemukan",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Sertifikat berhasil diambil",
+      cert,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({
+      message: "Terjadi kesalahan server",
+    });
+  }
+};
+
+exports.downloadCertificate = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.courseId);
+
+    const cert = await prisma.certificate.findFirst({
+      where: {
+        userId,
+        courseId,
+      },
+    });
+
+    if (!cert) {
+      return res.status(404).json({
+        message: "Sertifikat tidak ditemukan",
+      });
+    }
+
+    const fileUrl = cert.fileUrl;
+    const fileName = cert.s3Key;
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+
+    const fileStream = await storageService.getFileStream(fileUrl);
+    fileStream.pipe(res);
+
+    return res.status(200).json({
+      message: "Sertifikat berhasil diunduh",
+      fileUrl,
+      fileName,
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({
+      message: "Terjadi kesalahan server",
+    });
+  }
+};
+
 exports.resetCourseSubmissions = async (req, res) => {
   const { courseId } = req.params;
   const { targetUserId } = req.body; // Optional: reset submission user tertentu saja
@@ -1298,4 +2147,4 @@ exports.adminDeleteQuizSubmission = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: "Terjadi kesalahan server" });
   }
-}};
+};
