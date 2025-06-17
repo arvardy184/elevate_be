@@ -787,6 +787,14 @@ exports.submitQuizAnswer = async (req, res) => {
   const userId = req.user.id;
   const { answers } = req.body; // Jawaban dari user
 
+  // Validasi input
+  if (!answers || !Array.isArray(answers)) {
+    return res.status(400).json({ 
+      message: "Answers harus berupa array dan tidak boleh kosong",
+      example: { "answers": ["A", "B", "C"] }
+    });
+  }
+
   try {
     const [enrollment, quiz, existingSubmission] = await Promise.all([
       prisma.enrollment.findFirst({
@@ -838,6 +846,7 @@ exports.submitQuizAnswer = async (req, res) => {
         userId: req.user.id,
         courseId: Number(courseId),
         quizId: Number(quizId),
+        answers: answers, // Tambahkan field answers yang required
         score,
         totalQuestions: answers.length,
         isPassed: score >= Math.ceil(answers.length / 2), // Anggap lulus jika benar lebih dari setengah
