@@ -604,7 +604,7 @@ module.exports = router;
  */
 
 // GET /api/courses/:id
-router.get("/:id", courseController.getCourseById);
+router.get("/:id", optionalAuth, courseController.getCourseById);
 
 // POST /api/courses/:id/enroll
 router.post("/:id/enroll", verifyToken, courseController.enrollCourse);
