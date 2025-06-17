@@ -758,4 +758,30 @@ router.get('/test-b2-file', AdminController.testB2FileAccess);
  */
 router.post('/refresh-authorized-urls', AdminController.refreshAuthorizedUrls);
 
+// ===== QUIZ SUBMISSION MANAGEMENT =====
+/**
+ * @swagger
+ * /admin/quiz-submissions/{submissionId}:
+ *   delete:
+ *     summary: Delete quiz submission by ID (Admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: submissionId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of quiz submission to delete
+ *     responses:
+ *       200:
+ *         description: Quiz submission deleted successfully
+ *       404:
+ *         description: Quiz submission not found
+ *       500:
+ *         description: Server error
+ */
+router.delete('/quiz-submissions/:submissionId', require('../controllers/course_controller').adminDeleteQuizSubmission);
+
 module.exports = router; 

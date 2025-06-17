@@ -1867,3 +1867,123 @@ exports.getCourseVideos = async (req, res) => {
     });
   }
 };
+
+// DELETE /api/courses/:courseId/quizzes/:quizId/submission - Hapus submission sendiri (untuk testing)
+exports.deleteMyQuizSubmission = async (req, res) => {
+  const { courseId, quizId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    // Cek apakah submission ada
+    const submission = await prisma.quizSubmission.findFirst({
+      where: {
+        userId,
+        quizId: Number(quizId),
+        courseId: Number(courseId),
+      },
+    });
+
+    if (!submission) {
+      return res.status(404).json({ 
+        message: "Submission quiz tidak ditemukan" 
+      });
+    }
+
+    // Hapus submission
+    await prisma.quizSubmission.delete({
+      where: {
+        id: submission.id,
+      },
+    });
+
+    return res.status(200).json({
+      message: "Quiz submission berhasil dihapus, Anda bisa mengerjakan quiz lagi",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// DELETE /api/courses/:courseId/submissions/reset - Reset semua submission untuk course (Admin only)
+exports.resetCourseSubmissions = async (req, res) => {
+  const { courseId } = req.params;
+  const { targetUserId } = req.body; // Optional: reset submission user tertentu saja
+
+  try {
+    // Cek apakah course ada
+    const course = await prisma.course.findUnique({
+      where: { id: Number(courseId) }
+    });
+
+    if (!course) {
+      return res.status(404).json({ message: "Course tidak ditemukan" });
+    }
+
+    const whereClause = {
+      courseId: Number(courseId),
+    };
+
+    // Jika ada targetUserId, reset submission user tertentu saja
+    if (targetUserId) {
+      whereClause.userId = Number(targetUserId);
+    }
+
+    // Hapus semua submission
+    const deletedSubmissions = await prisma.quizSubmission.deleteMany({
+      where: whereClause,
+    });
+
+    return res.status(200).json({
+      message: `Berhasil reset ${deletedSubmissions.count} quiz submissions untuk course ${course.title}`,
+      deletedCount: deletedSubmissions.count,
+      targetUserId: targetUserId || "semua user",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};
+
+// DELETE /api/admin/quiz-submissions/:submissionId - Admin hapus submission tertentu
+exports.adminDeleteQuizSubmission = async (req, res) => {
+  const { submissionId } = req.params;
+
+  try {
+    // Cek apakah submission ada
+    const submission = await prisma.quizSubmission.findUnique({
+      where: { id: Number(submissionId) },
+      include: {
+        users: { select: { firstName: true, lastName: true } },
+        quiz: { select: { id: true } },
+        course: { select: { title: true } }
+      }
+    });
+
+    if (!submission) {
+      return res.status(404).json({ 
+        message: "Quiz submission tidak ditemukan" 
+      });
+    }
+
+    // Hapus submission
+    await prisma.quizSubmission.delete({
+      where: { id: Number(submissionId) },
+    });
+
+    return res.status(200).json({
+      message: "Quiz submission berhasil dihapus oleh admin",
+      deletedSubmission: {
+        id: submission.id,
+        user: `${submission.users.firstName} ${submission.users.lastName}`,
+        course: submission.course.title,
+        quizId: submission.quiz.id,
+        score: submission.score,
+        totalQuestions: submission.totalQuestions,
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+};

@@ -100,6 +100,21 @@ router.get(
   courseController.getQuizResult
 );
 
+// DELETE /api/courses/:courseId/quizzes/:quizId/submission - Hapus submission sendiri
+router.delete(
+  "/:courseId/quizzes/:quizId/submission",
+  verifyToken,
+  courseController.deleteMyQuizSubmission
+);
+
+// DELETE /api/courses/:courseId/submissions/reset - Reset semua submission (Admin only)
+router.delete(
+  "/:courseId/submissions/reset",
+  verifyToken,
+  checkRole('ADMIN'),
+  courseController.resetCourseSubmissions
+);
+
 // POST /api/courses/:courseId/videos
 // Admin/Creator: Menambah video ke kursus
 router.post(
