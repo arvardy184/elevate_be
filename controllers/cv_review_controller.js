@@ -407,6 +407,23 @@ class CVReviewController {
     try {
       const userId = req.user.id;
       const { id } = req.params;
+      
+      // Debug logging untuk troubleshoot
+      console.log('updateCVReview request:', {
+        body: req.body,
+        bodyType: typeof req.body,
+        contentType: req.headers['content-type'],
+        method: req.method
+      });
+      
+      // Defensive check untuk req.body
+      if (!req.body || typeof req.body !== 'object') {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Request body tidak valid atau kosong'
+        });
+      }
+      
       const { careerField } = req.body;
 
       if (!careerField || careerField.trim().length === 0) {

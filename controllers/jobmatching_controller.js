@@ -344,26 +344,56 @@ class JobMatchingController {
   static async getJobMatchingHistory(req, res) {
     try {
       const userId = req.user.id;
-      
-      const jobMatchings = await prisma.jobmatching.findMany({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-        include: {
-          cvreview: {
-            select: {
-              fileName: true,
-              careerField: true,
-              overallScore: true
-            }
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const offset = (page - 1) * limit;
+
+      const [jobMatchings, total] = await Promise.all([
+        prisma.jobmatching.findMany({
+          where: { userId },
+          orderBy: { createdAt: 'desc' },
+          skip: offset,
+          take: limit,
+          select: {
+            id: true,
+            dreamJob: true,
+            matches: true,
+            cvreview: {
+              select: {
+                fileName: true,
+                careerField: true,
+                overallScore: true
+              }
+            },
+            createdAt: true,
+            updatedAt: true
           }
-        }
-      });
+        }),
+        prisma.jobmatching.count({
+          where: { userId }
+        })
+      ]);
+
+      // Transform data untuk response yang clean
+      const transformedData = jobMatchings.map(jm => ({
+        id: jm.id,
+        dreamJob: jm.dreamJob,
+        totalMatches: Array.isArray(jm.matches) ? jm.matches.length : 0,
+        cvReview: jm.cvreview,
+        createdAt: jm.createdAt,
+        updatedAt: jm.updatedAt
+      }));
       
       return res.status(200).json({
         status: 'success',
         message: 'Job matching history berhasil diambil',
-        data: jobMatchings,
-        total: jobMatchings.length
+        data: transformedData,
+        pagination: {
+          page: page,
+          limit: limit,
+          total: total,
+          totalPages: Math.ceil(total / limit)
+        }
       });
       
     } catch (error) {
@@ -813,6 +843,311 @@ class JobMatchingController {
       return res.status(500).json({
         status: 'error',
         message: 'Terjadi kesalahan saat upload CV dan job matching',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/job-matching/{id}:
+   *   get:
+   *     summary: Get detail job matching by ID
+   *     tags: [JobMatching]
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: Job matching ID
+   *     responses:
+   *       200:
+   *         description: Detail job matching berhasil diambil
+   *       404:
+   *         description: Job matching tidak ditemukan
+   *       500:
+   *         description: Server error
+   */
+  static async getJobMatchingById(req, res) {
+    try {
+      const userId = req.user.id;
+      const { id } = req.params;
+
+      const jobMatching = await prisma.jobmatching.findFirst({
+        where: {
+          id: id,
+          userId: userId
+        },
+        include: {
+          users: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true
+            }
+          },
+          cvreview: {
+            select: {
+              fileName: true,
+              careerField: true,
+              overallScore: true,
+              b2FileUrl: true
+            }
+          }
+        }
+      });
+
+      if (!jobMatching) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Job matching tidak ditemukan'
+        });
+      }
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Detail job matching berhasil diambil',
+        data: {
+          id: jobMatching.id,
+          dreamJob: jobMatching.dreamJob,
+          matches: jobMatching.matches,
+          aiAnalysis: jobMatching.aiAnalysis,
+          cvReview: jobMatching.cvreview,
+          totalMatches: Array.isArray(jobMatching.matches) ? jobMatching.matches.length : 0,
+          createdAt: jobMatching.createdAt,
+          updatedAt: jobMatching.updatedAt
+        }
+      });
+
+    } catch (error) {
+      console.error('Error in getJobMatchingById:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan saat mengambil detail job matching',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/job-matching/{id}:
+   *   put:
+   *     summary: Update job matching (re-run dengan dreamJob baru)
+   *     tags: [JobMatching]
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: Job matching ID
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               dreamJob:
+   *                 type: string
+   *                 description: Pekerjaan impian baru
+   *                 example: "Data Scientist"
+   *     responses:
+   *       200:
+   *         description: Job matching berhasil diupdate dan dianalisis ulang
+   *       404:
+   *         description: Job matching tidak ditemukan
+   *       400:
+   *         description: Dream job wajib diisi
+   *       500:
+   *         description: Server error
+   */
+  static async updateJobMatching(req, res) {
+    try {
+      const userId = req.user.id;
+      const { id } = req.params;
+      const { dreamJob } = req.body;
+
+      if (!dreamJob || dreamJob.trim().length === 0) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'Dream job wajib diisi'
+        });
+      }
+
+      // Cek apakah job matching exists dan milik user
+      const existingJobMatching = await prisma.jobmatching.findFirst({
+        where: {
+          id: id,
+          userId: userId
+        },
+        include: {
+          cvreview: true
+        }
+      });
+
+      if (!existingJobMatching) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Job matching tidak ditemukan'
+        });
+      }
+
+      // Ambil semua active jobs
+      console.log(`Re-running job matching ${id} with new dreamJob: ${dreamJob}`);
+      const availableJobs = await prisma.job.findMany({
+        where: { isActive: true },
+        take: 50 // Limit untuk performa
+      });
+
+      if (availableJobs.length === 0) {
+        return res.status(200).json({
+          status: 'success',
+          message: 'Job matching diupdate tapi belum ada job tersedia',
+          data: {
+            id: existingJobMatching.id,
+            dreamJob: dreamJob,
+            matches: [],
+            aiAnalysis: {
+              summary: 'Belum ada job tersedia untuk dianalisis'
+            },
+            cvReview: existingJobMatching.cvreview,
+            totalMatches: 0,
+            updatedAt: new Date()
+          }
+        });
+      }
+
+      // Lakukan job matching ulang dengan AI
+      let extractedText = '';
+      if (existingJobMatching.cvreview && existingJobMatching.cvreview.extractedText) {
+        extractedText = existingJobMatching.cvreview.extractedText;
+      }
+
+      const matchingResult = await aiService.performJobMatching(
+        extractedText, 
+        dreamJob, 
+        availableJobs
+      );
+
+      // Update job matching di database
+      const updatedJobMatching = await prisma.jobmatching.update({
+        where: { id: id },
+        data: {
+          dreamJob: dreamJob,
+          matches: matchingResult.matches || [],
+          aiAnalysis: matchingResult.aiAnalysis || {},
+          updatedAt: new Date()
+        },
+        include: {
+          users: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true
+            }
+          },
+          cvreview: {
+            select: {
+              fileName: true,
+              careerField: true,
+              overallScore: true,
+              b2FileUrl: true
+            }
+          }
+        }
+      });
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Job matching berhasil diupdate dan dianalisis ulang!',
+        data: {
+          id: updatedJobMatching.id,
+          dreamJob: updatedJobMatching.dreamJob,
+          matches: updatedJobMatching.matches,
+          aiAnalysis: updatedJobMatching.aiAnalysis,
+          cvReview: updatedJobMatching.cvreview,
+          totalMatches: Array.isArray(updatedJobMatching.matches) ? updatedJobMatching.matches.length : 0,
+          createdAt: updatedJobMatching.createdAt,
+          updatedAt: updatedJobMatching.updatedAt
+        }
+      });
+
+    } catch (error) {
+      console.error('Error in updateJobMatching:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan saat mengupdate job matching',
+        error: error.message
+      });
+    }
+  }
+
+  /**
+   * @swagger
+   * /api/job-matching/{id}:
+   *   delete:
+   *     summary: Delete job matching
+   *     tags: [JobMatching]
+   *     security:
+   *       - bearerAuth: []
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: Job matching ID
+   *     responses:
+   *       200:
+   *         description: Job matching berhasil dihapus
+   *       404:
+   *         description: Job matching tidak ditemukan
+   *       500:
+   *         description: Server error
+   */
+  static async deleteJobMatching(req, res) {
+    try {
+      const userId = req.user.id;
+      const { id } = req.params;
+
+      const jobMatching = await prisma.jobmatching.findFirst({
+        where: {
+          id: id,
+          userId: userId
+        }
+      });
+
+      if (!jobMatching) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Job matching tidak ditemukan'
+        });
+      }
+
+      // Delete dari database
+      await prisma.jobmatching.delete({
+        where: { id: id }
+      });
+
+      return res.status(200).json({
+        status: 'success',
+        message: 'Job matching berhasil dihapus'
+      });
+
+    } catch (error) {
+      console.error('Error in deleteJobMatching:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'Terjadi kesalahan saat menghapus job matching',
         error: error.message
       });
     }

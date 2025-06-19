@@ -265,15 +265,33 @@ exports.getCourseById = async (req, res) => {
   const userId = req.user?.id; // Optional user ID (jika ada token)
   
   try {
-    const [course, reviewStats, enrollment] = await Promise.all([
-      prisma.course.findUnique({
-        where: { id: Number(id) },
-        include: { category: true }
-      }),
+    // Get course first
+    const course = await prisma.course.findUnique({
+      where: { id: Number(id) },
+      include: { category: true }
+    });
+
+    if (!course) {
+      return res.status(404).json({ message: "Course tidak ditemukan" });
+    }
+
+    // Get review stats and enrollment in parallel
+    const [reviewStats, enrollment] = await Promise.all([
       prisma.courseReview.aggregate({
         where: { courseId: Number(id) },
-        _avg: { rating: true },
-        _count: { rating: true }
+        _avg: { 
+          rating: true 
+        },
+        _count: { 
+          rating: true 
+        }
+      }).catch((error) => {
+        console.error('Review aggregate error:', error);
+        // Return default values if aggregate fails
+        return {
+          _avg: { rating: null },
+          _count: { rating: 0 }
+        };
       }),
       // Cek enrollment hanya jika user sudah login
       userId ? prisma.enrollment.findFirst({
@@ -283,10 +301,6 @@ exports.getCourseById = async (req, res) => {
         }
       }) : null
     ]);
-
-    if (!course) {
-      return res.status(404).json({ message: "Course tidak ditemukan" });
-    }
 
     // Tambah rating stats dan enrollment status ke response
     const courseWithDetails = {
@@ -298,8 +312,11 @@ exports.getCourseById = async (req, res) => {
 
     return res.status(200).json({ course: courseWithDetails });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Terjadi kesalahan server" });
+    console.error('[getCourseById] Error:', error);
+    return res.status(500).json({ 
+      message: "Terjadi kesalahan server",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 

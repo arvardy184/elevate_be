@@ -64,6 +64,15 @@ router.get('/categories', JobMatchingController.getJobCategories);
 // GET /api/job-matching/history - get job matching history (need auth)
 router.get('/history', verifyToken, JobMatchingController.getJobMatchingHistory);
 
+// GET /api/job-matching/:id - get job matching detail by ID (need auth)
+router.get('/:id', verifyToken, JobMatchingController.getJobMatchingById);
+
+// PUT /api/job-matching/:id - update job matching (re-run with new dreamJob) (need auth)
+router.put('/:id', verifyToken, JobMatchingController.updateJobMatching);
+
+// DELETE /api/job-matching/:id - delete job matching (need auth)
+router.delete('/:id', verifyToken, JobMatchingController.deleteJobMatching);
+
 // Debug middleware untuk job matching
 const debugJobMatching = (req, res, next) => {
   console.log('Job matching route debug:', {
